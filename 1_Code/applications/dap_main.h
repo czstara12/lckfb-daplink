@@ -8,7 +8,7 @@
 
 #define LCKFB_DAPLINK_VERSION_MAJOR '1'
 #define LCKFB_DAPLINK_VERSION_MINOR '0'
-#define LCKFB_DAPLINK_VERSION_PATCH '0'
+#define LCKFB_DAPLINK_VERSION_PATCH '1'
 
 extern chry_ringbuffer_t g_uartrx;
 extern chry_ringbuffer_t g_uartrx_for_lvgl;

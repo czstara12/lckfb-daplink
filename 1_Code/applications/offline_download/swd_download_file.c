@@ -81,8 +81,8 @@ program_target_t flash_algo = {
     0x00000400, // ram_to_flash_bytes_to_be_written
 };
 
-uint32_t Flash_Sect_Size = 8 * 1024;
-uint32_t Flash_Page_Size = 4 * 1024;
+//uint32_t Flash_Sect_Size = 8 * 1024;
+//uint32_t Flash_Page_Size = 4 * 1024;
 uint32_t Flash_Start_Addr = 0x00000000;
 
 static uint8_t file_read_buf[4*1024];
@@ -107,13 +107,16 @@ int8_t swd_download_update_flash_algo(char *_file_path)
     // flash_algo.sys_call_s.static_base = 0x20000C00;
     // flash_algo.sys_call_s.stack_pointer = 0x20001000;
 
-    flash_algo.program_buffer = 0x20008000;
+    flash_algo.program_buffer = 0x20000000+flm_size;
     flash_algo.algo_start = 0x20000000;
 
     flash_algo.algo_size = flm_size;
     flash_algo.algo_blob = get_flm_flash_blob_addr();
 
-    flash_algo.program_buffer_size = 0x00001000;   //这个和实际flash写入时的容量相关
+    flash_algo.program_buffer_size = target_device.szPage;   //这个和实际flash写入时的容量相关
+	
+	flash_algo.sys_call_s.breakpoint = 0x20000000 + 1;
+    flash_algo.sys_call_s.static_base = flash_algo.program_buffer + flash_algo.program_buffer_size;
 	
 	Flash_Start_Addr = target_device.devAdr;
 	return 0;
@@ -195,7 +198,7 @@ int32_t swd_download_from_file(char *_file_path)
 
     // 3 擦除目标单片机的Flash
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "erase flash");
-    for (uint32_t addr = 0; addr < file_stat.st_size; addr += Flash_Sect_Size)
+    for (uint32_t addr = 0; addr < file_stat.st_size; addr += target_device.szPage)
     {
         target_flash_erase_sector(Flash_Start_Addr + addr);
         offline_download_info.progress = (addr * 100) / file_stat.st_size;
@@ -210,24 +213,24 @@ int32_t swd_download_from_file(char *_file_path)
 //    }
     // 5 下载至目标单片机的Flash
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "download flash");
-    for (uint32_t addr = 0; addr < file_stat.st_size; addr += Flash_Page_Size)
+    for (uint32_t addr = 0; addr < file_stat.st_size; addr += target_device.szPage)
     {
-        read_size = read(fd, file_read_buf, sizeof(file_read_buf));
+        read_size = read(fd, file_read_buf, target_device.szPage);
 
 		LOG_I("read size = %d", read_size);
         offline_download_info.progress = (addr * 100) / file_stat.st_size;
         target_flash_program_page(Flash_Start_Addr + addr, file_read_buf,
-                                  sizeof(file_read_buf));
+                                  target_device.szPage);
     }
     close(fd);
     fd = open(file_path, O_RDONLY); //重新打开文件要从头开始读
     // 6 读回校验
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "verify flash");
-    for (uint32_t addr = 0; addr < file_stat.st_size; addr += sizeof(file_read_buf))
+    for (uint32_t addr = 0; addr < file_stat.st_size; addr += target_device.szPage)
     {
-        swd_read_memory(Flash_Start_Addr + addr, target_mcu_flash_read_buf, sizeof(target_mcu_flash_read_buf));
+        swd_read_memory(Flash_Start_Addr + addr, target_mcu_flash_read_buf, target_device.szPage);
 
-        read_size = read(fd, file_read_buf, sizeof(file_read_buf));
+        read_size = read(fd, file_read_buf, target_device.szPage);
 
         LOG_I("file read size = %d", read_size);
         offline_download_info.progress = (addr * 100) / file_stat.st_size;
@@ -236,8 +239,8 @@ int32_t swd_download_from_file(char *_file_path)
         // ulog_hexdump("file", 8,file_read_buf,sizeof(file_read_buf));
 
         if (rt_memcmp(target_mcu_flash_read_buf, file_read_buf,
-                      file_stat.st_size - addr > sizeof(file_read_buf)
-                          ? sizeof(file_read_buf)
+                      file_stat.st_size - addr > target_device.szPage
+                          ? target_device.szPage
                           : file_stat.st_size - addr)
             == 0)
         {
