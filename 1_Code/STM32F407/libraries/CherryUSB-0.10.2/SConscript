@@ -1,0 +1,28 @@
+import rtconfig
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+
+path = [cwd + '/common']
+path += [cwd + '/core']
+path += [cwd + '/class/cdc']
+path += [cwd + '/class/msc']
+path += [cwd + '/class/hid']
+
+
+# The set of source files associated with this SConscript file.
+
+src = Split('''
+core/usbd_core.c
+class/cdc/usbd_cdc.c
+class/hid/usbd_hid.c
+port/dwc2/usb_dc_dwc2.c
+''')
+
+
+CPPDEFINES = ['USE_STDPERIPH_DRIVER']
+
+group = DefineGroup('Libraries/CherryUSB', src, depend = [''], CPPPATH = path, CPPDEFINES = CPPDEFINES)
+
+Return('group')

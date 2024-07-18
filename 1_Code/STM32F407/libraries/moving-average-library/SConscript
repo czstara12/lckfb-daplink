@@ -1,0 +1,16 @@
+import rtconfig
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+path = [cwd]
+
+# The set of source files associated with this SConscript file.
+
+src = Split('''
+filter.c
+''')
+
+group = DefineGroup('Libraries/fileter', src, depend = [''], CPPPATH = path)
+
+Return('group')

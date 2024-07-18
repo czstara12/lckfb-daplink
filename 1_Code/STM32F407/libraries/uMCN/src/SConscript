@@ -1,0 +1,12 @@
+from building import *
+
+cwd     = GetCurrentDir()
+src     = Glob('uMCN.c')
+CPPPATH = [cwd + '/../inc']
+
+if GetDepend(['']):
+    src += ['cmd_mcn.c']
+
+group = DefineGroup('uMCN', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')
