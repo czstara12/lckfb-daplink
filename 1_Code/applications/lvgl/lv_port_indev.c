@@ -131,6 +131,4 @@ void lv_port_indev_init(void)
 	lv_group_add_obj(menu_group,ui_menuAboutB);
     lv_group_focus_obj(ui_menuDAPLINKB);
 
-
-    lv_indev_set_group(indev, menu_group);
 }
