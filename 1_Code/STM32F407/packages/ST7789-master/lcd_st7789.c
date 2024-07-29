@@ -582,7 +582,7 @@ rt_err_t spi_lcd_init(uint32_t freq)
         struct rt_spi_configuration spi_config;
         spi_config.data_width = 8;
         spi_config.max_hz = freq * 1000 * 1000;
-        spi_config.mode = RT_SPI_MASTER | RT_SPI_MODE_3 | RT_SPI_MSB;
+        spi_config.mode = RT_SPI_MASTER | RT_SPI_MODE_0 | RT_SPI_MSB;
         rt_spi_configure(lcd_dev, &spi_config);
     }
     else
