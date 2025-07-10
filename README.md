@@ -44,11 +44,11 @@ DAC波形输出（支持正弦波，方波，三角波，梯形波，上升斜�
 
 ## 下载发行版中的附件
 
-单击 [立创DAPLINK调试工具固件V1.0.0](https://gitee.com/lcsc/LCKFB-DAPLINK-DEBUG-TOOL/releases/tag/V1.0.0)
+会有更新 图片仅供参考 请点击右边最新的发行版
 
 ![dN2B45y6dR](./4_docs/images/dN2B45y6dR.jpg)
 
-下载[LCKFB-DAPLINK-DEBUG-TOOL-V1.0.0.bin](https://gitee.com/lcsc/LCKFB-DAPLINK-DEBUG-TOOL/releases/download/V1.0.0/LCKFB-DAPLINK-DEBUG-TOOL-V1.0.0.bin)
+下载固件   GD版本的天空星就选择GD开头的  STM32版本的天空星就选择STM开头的
 
 ![Cg2mpJf2kY](./4_docs/images/Cg2mpJf2kY.jpg)
 
