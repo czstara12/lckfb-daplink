@@ -113,6 +113,13 @@ SECTIONS
     } >RAM2
     _sitcm = LOADADDR(.TCM);
 
+    .ccm.uffs (NOLOAD) :
+    {
+        . = ALIGN(8);
+        *(.ccm.uffs)
+        . = ALIGN(8);
+    } >RAM2
+
     .stack :
     {
         . = ALIGN(4);

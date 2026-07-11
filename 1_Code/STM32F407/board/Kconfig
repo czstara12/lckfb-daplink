@@ -3,11 +3,10 @@ menu "Hardware Drivers Config"
 menu "Onboard Peripheral Drivers"
 
     config BSP_USING_SPI_FLASH
-        bool "Enable SPI FLASH (W25Q128 spi1)"
+        bool "Enable Winbond W25N01GV SPI NAND (spi1)"
         select BSP_USING_SPI
         select BSP_USING_SPI1
-        select RT_USING_SFUD
-        select RT_SFUD_USING_SFDP
+        select RT_USING_MTD_NAND
         default n
 
     menuconfig BSP_USING_FS
@@ -28,25 +27,18 @@ menu "Onboard Peripheral Drivers"
                     default y
             endif
 
-            config BSP_USING_FLASH_FATFS
-                bool "Enable FAL filesystem partition base on W25Q128"
-                select BSP_USING_FAL
-                default n
-            if BSP_USING_FLASH_FATFS
-                menuconfig BSP_USING_FLASH_FS_AUTO_MOUNT
+            config BSP_USING_FLASH_UFFS
+                bool "Enable onboard SPI NAND UFFS filesystem"
+                depends on BSP_USING_SPI_FLASH
+                select PKG_USING_DFS_UFFS
+                select RT_USING_DFS_UFFS
+                default y
+            if BSP_USING_FLASH_UFFS
+                menuconfig BSP_USING_FLASH_UFFS_AUTO_MOUNT
                     bool "Enable filesystem auto mount"
                     default y
             endif
         endif
-
-    config BSP_USING_FAL
-        bool "Enable FAL (enable on-chip flash and spi1 flash)"
-        select BSP_USING_SPI_FLASH
-        select RT_USING_FAL
-        select FAL_DEBUG_CONFIG
-        select FAL_PART_HAS_TABLE_CFG
-        select FAL_USING_SFUD_PORT
-        select BSP_USING_ON_CHIP_FLASH
 
 endmenu
 
@@ -433,7 +425,7 @@ menu "On-chip Peripheral Drivers"
     config BSP_USING_FMC
         bool
         default n
- source "$(BSP_DIR)/libraries/HAL_Drivers/drivers/Kconfig"
+ source "libraries/HAL_Drivers/drivers/Kconfig"
 
 endmenu
 

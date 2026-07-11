@@ -16,18 +16,11 @@ if GetDepend(['BSP_USING_ETH']):
 if GetDepend(['BSP_USING_RS485']):
     src += Glob('drv_rs485.c')
     
-if GetDepend(['BSP_USING_SOFT_SPI_FLASH']):
-    src += Glob('soft_spi_flash_init.c')
-
 if GetDepend(['BSP_USING_SPI_FLASH']):
-    src += Glob('spi_flash_init.c')
+    src += Glob('w25n01gv.c')
 
 if GetDepend(['BSP_USING_FS']):
     src += Glob('drv_filesystem.c')
-
-if GetDepend(['BSP_USING_FAL']):
-    src += Glob('fal/fal_spi_flash_sfud_port.c')
-    path += [cwd + '/fal']
 
 if GetDepend(['BSP_USING_SRAM']):
     src += Glob('drv_sram.c')
@@ -39,9 +32,6 @@ if GetDepend(['BSP_USING_ONBOARD_LCD']):
 if GetDepend(['BSP_USING_ONBOARD_LED_MATRIX']):
 	src += Glob('led_matrix/drv_matrix_led.c')
 	path += [cwd + '/led_matrix']
-
-if GetDepend(['BSP_USING_EASYFLASH']):
-    src += Glob('ef_fal_port.c')
 
 if GetDepend(['BSP_USING_ENC28j60']):
     src += Glob('drv_enc28j60.c')

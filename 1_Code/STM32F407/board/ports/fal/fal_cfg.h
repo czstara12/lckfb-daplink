@@ -24,13 +24,11 @@
 extern const struct fal_flash_dev stm32_onchip_flash_16k;
 extern const struct fal_flash_dev stm32_onchip_flash_64k;
 extern const struct fal_flash_dev stm32_onchip_flash_128k;
-extern struct fal_flash_dev w25q128;
 
 /* flash device table */
 #define FAL_FLASH_DEV_TABLE                                          \
 {                                                                    \
     &stm32_onchip_flash_128k,                                        \
-    &w25q128,                                                        \
 }
 
 /* ====================== Partition Configuration ========================== */
@@ -39,9 +37,5 @@ extern struct fal_flash_dev w25q128;
 {                                                                                                                   \
     {FAL_PART_MAGIC_WROD,        "app", "onchip_flash_128k",                            0,       384 * 1024, 0}, \
     {FAL_PART_MAGIC_WROD,      "param", "onchip_flash_128k",                   384 * 1024,       512 * 1024, 0}, \
-    {FAL_PART_MAGIC_WROD,  "easyflash",    "W25Q128",                                   0,       512 * 1024, 0}, \
-    {FAL_PART_MAGIC_WROD,   "download",    "W25Q128",                          512 * 1024,       512 * 1024, 0}, \
-    {FAL_PART_MAGIC_WROD, "filesystem",    "W25Q128",                  (512 + 512) * 1024,  15 * 1024 * 1024, 0}, \
 }
 #endif /*FAL_PART_TABLE*/
-
