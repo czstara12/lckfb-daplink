@@ -28,6 +28,10 @@
 #ifndef __DAP_CONFIG_H__
 #define __DAP_CONFIG_H__
 
+#if defined(__GNUC__) && !defined(__forceinline)
+#define __forceinline inline __attribute__((always_inline))
+#endif
+
 //#include "board.h"
 //#include "core_cm4.h"
 //#include "gd32f4xx_misc.h"

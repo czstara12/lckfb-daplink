@@ -40,7 +40,6 @@ typedef enum {
 #define DAC_GPIO_PUPD     GPIO_PUPD_NONE
 #define DAC_GPIO_PIN      GPIO_PIN_5
 
-void dac_config(void);
 void switch_waveform(WaveformType new_wave);
 void dac_timer_frequency_set(uint32_t _frequency);
 void dac_output_data_set(uint16_t data);

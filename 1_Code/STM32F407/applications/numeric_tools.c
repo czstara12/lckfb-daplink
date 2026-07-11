@@ -11,6 +11,7 @@
 */
 #include <stdio.h>
 #include <board.h>
+#include <rtthread.h>
 #include "string.h"
 #include "math.h"
 

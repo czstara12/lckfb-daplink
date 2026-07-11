@@ -24,7 +24,7 @@ elif rtconfig.PLATFORM in ['armcc', 'armclang']:
 elif rtconfig.PLATFORM in ['iccarm']:
     src += [startup_path_prefix + '/STM32F4xx_HAL/CMSIS/Device/ST/STM32F4xx/Source/Templates/iar/startup_stm32f407xx.s']
 
-CPPDEFINES = ['STM32F407xx','CONFIG_USB_DWC2_PORT=FS_PORT','USE_USB_FS,CONFIG_DWC2_GD32','CONFIG_USB_ERROR_USE_SYSTEM']
+CPPDEFINES = ['STM32F407xx', 'CONFIG_USB_DWC2_PORT=FS_PORT', 'USE_USB_FS', 'CONFIG_DWC2_GD32', 'CONFIG_USB_ERROR_USE_SYSTEM']
 group = DefineGroup('Drivers', src, depend = [''], CPPPATH = path, CPPDEFINES = CPPDEFINES)
 
 
