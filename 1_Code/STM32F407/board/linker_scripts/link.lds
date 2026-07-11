@@ -102,6 +102,17 @@ SECTIONS
         _edata = . ;
     } >RAM1
 
+    .TCM : AT (_sidata + SIZEOF(.data))
+    {
+        . = ALIGN(4);
+        _stcm = .;
+        *(.TCM)
+        *(.TCM.*)
+        . = ALIGN(4);
+        _etcm = .;
+    } >RAM2
+    _sitcm = LOADADDR(.TCM);
+
     .stack :
     {
         . = ALIGN(4);
@@ -122,12 +133,18 @@ SECTIONS
         *(.bss.*)
         *(COMMON)
 
-        . = ALIGN(4);
-        /* This is used by the startup in order to initialize the .bss secion */
-        _ebss = . ;
-
         *(.bss.init)
     } > RAM1
+
+    .noncacheable (NOLOAD) :
+    {
+        . = ALIGN(32);
+        *(.noncacheable)
+        *(.noncacheable.*)
+        . = ALIGN(32);
+        /* 将启动清零范围扩展到 USB 缓冲区末尾 */
+        _ebss = .;
+    } >RAM1
     __bss_end = .;
 
     .MCUlcdgrambysram (NOLOAD) : ALIGN(4)

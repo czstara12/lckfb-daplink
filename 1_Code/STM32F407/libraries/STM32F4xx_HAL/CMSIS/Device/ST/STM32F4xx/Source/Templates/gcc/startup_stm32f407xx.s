@@ -40,6 +40,10 @@ defined in linker script */
 .word  _sdata
 /* end address for the .data section. defined in linker script */
 .word  _edata
+/* .TCM 段加载地址与运行地址，由链接脚本定义 */
+.word  _sitcm
+.word  _stcm
+.word  _etcm
 /* start address for the .bss section. defined in linker script */
 .word  _sbss
 /* end address for the .bss section. defined in linker script */
@@ -77,6 +81,23 @@ LoopCopyDataInit:
   adds r4, r0, r3
   cmp r4, r1
   bcc CopyDataInit
+
+/* 将 .TCM 段初值从 flash 拷贝到 SRAM */
+  ldr r0, =_stcm
+  ldr r1, =_etcm
+  ldr r2, =_sitcm
+  movs r3, #0
+  b LoopCopyTCMInit
+
+CopyTCMInit:
+  ldr r4, [r2, r3]
+  str r4, [r0, r3]
+  adds r3, r3, #4
+
+LoopCopyTCMInit:
+  adds r4, r0, r3
+  cmp r4, r1
+  bcc CopyTCMInit
   
 /* Zero fill the bss segment. */
   ldr r2, =_sbss

@@ -91,7 +91,8 @@ void lv_port_disp_init(void)
 
     /*GCC*/
 #if defined ( __GNUC__ )
-    static lv_color_t buf_1[MY_DISP_HOR_RES * MY_DISP_HOR_RES / 2] __attribute__((section(".LVGLccm")));                          /*A buffer for 10 rows*/
+//    static lv_color_t buf_1[MY_DISP_HOR_RES * MY_DISP_HOR_RES / 2] __attribute__((section(".LVGLccm")));                          /*A buffer for 10 rows*/
+    static lv_color_t buf_1[PKG_ST_7789_HEIGHT*30];
     /*MDK*/
 #elif defined ( __CC_ARM )
 //    __attribute__((at(0x10000000))) lv_color_t buf_1[LCD_H * LCD_W / 2];
