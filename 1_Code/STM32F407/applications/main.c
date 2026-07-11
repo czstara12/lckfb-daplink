@@ -18,7 +18,7 @@
 #endif /* RT_USING_NANO */
 #include <drv_common.h>
 #include "bsp_led.h"
-#include "bsp_beep.h"
+#include "runtime_load_indicator.h"
 
 #define GPIO_LED    GET_PIN(B, 2)
 
@@ -26,10 +26,11 @@ int main(void)
 {
     rt_pin_mode(GPIO_LED, PIN_MODE_OUTPUT);
     bsp_led_init();
+    runtime_load_indicator_start();
+
     while (1)
     {
         bsp_led_left_right_move();
         rt_thread_mdelay(100);
     }
 }
-
