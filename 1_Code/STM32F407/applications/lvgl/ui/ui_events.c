@@ -27,7 +27,7 @@ extern lv_group_t *dac_output_group_main;
 extern lv_group_t *dac_output_group_keyboard;
 extern lv_group_t * about_group_main;
 
-extern rt_err_t rt_pwm_get(struct rt_device_pwm *device, struct rt_pwm_configuration *cfg);
+rt_err_t rt_pwm_get(struct rt_device_pwm *device, struct rt_pwm_configuration *cfg);
 
 extern lv_indev_t *indev;
 

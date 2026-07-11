@@ -500,7 +500,7 @@ void update_pwm_frequency_and_duty(void)
         return;
     }
 
-    extern rt_err_t rt_pwm_get(struct rt_device_pwm *device, struct rt_pwm_configuration *cfg);
+    rt_err_t rt_pwm_get(struct rt_device_pwm *device, struct rt_pwm_configuration *cfg);
     rt_pwm_get(pwm_dev, &current_pwm_config);
 
     if (last_pwm_config.period != current_pwm_config.period)
