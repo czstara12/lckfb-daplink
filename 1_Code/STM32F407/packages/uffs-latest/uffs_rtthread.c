@@ -50,117 +50,6 @@
 //#include <time.h>
 
 #define PFX "os  : "
-#define UFFS_CCM_HEAP_SIZE (48U * 1024U)
-#define UFFS_CCM_BLOCK_HEAD_SIZE RT_ALIGN(sizeof(struct uffs_ccm_block), RT_ALIGN_SIZE)
-
-struct uffs_ccm_block
-{
-	rt_size_t size;
-	rt_uint8_t used;
-	struct uffs_ccm_block *next;
-};
-
-#if defined(__ICCARM__)
-#pragma location = ".ccm.uffs"
-static rt_uint8_t uffs_ccm_heap[UFFS_CCM_HEAP_SIZE];
-#else
-static rt_uint8_t uffs_ccm_heap[UFFS_CCM_HEAP_SIZE] __attribute__((section(".ccm.uffs"), aligned(8)));
-#endif
-
-static struct uffs_ccm_block *uffs_ccm_head = RT_NULL;
-
-static void uffs_ccm_init(void)
-{
-	if (uffs_ccm_head != RT_NULL)
-	{
-		return;
-	}
-
-	uffs_ccm_head = (struct uffs_ccm_block *)uffs_ccm_heap;
-	uffs_ccm_head->size = sizeof(uffs_ccm_heap) - UFFS_CCM_BLOCK_HEAD_SIZE;
-	uffs_ccm_head->used = 0;
-	uffs_ccm_head->next = RT_NULL;
-}
-
-static int uffs_ccm_contains(const void *ptr)
-{
-	rt_ubase_t addr = (rt_ubase_t)ptr;
-	rt_ubase_t start = (rt_ubase_t)uffs_ccm_heap;
-	rt_ubase_t end = start + sizeof(uffs_ccm_heap);
-
-	return addr >= start && addr < end;
-}
-
-static void uffs_ccm_coalesce(void)
-{
-	struct uffs_ccm_block *block = uffs_ccm_head;
-
-	while (block != RT_NULL && block->next != RT_NULL)
-	{
-		if (!block->used && !block->next->used)
-		{
-			block->size += UFFS_CCM_BLOCK_HEAD_SIZE + block->next->size;
-			block->next = block->next->next;
-			continue;
-		}
-
-		block = block->next;
-	}
-}
-
-static void *uffs_ccm_malloc(rt_size_t size)
-{
-	struct uffs_ccm_block *block;
-
-	if (size == 0)
-	{
-		return RT_NULL;
-	}
-
-	uffs_ccm_init();
-	size = RT_ALIGN(size, RT_ALIGN_SIZE);
-
-	for (block = uffs_ccm_head; block != RT_NULL; block = block->next)
-	{
-		if (!block->used && block->size >= size)
-		{
-			if (block->size >= size + UFFS_CCM_BLOCK_HEAD_SIZE + RT_ALIGN_SIZE)
-			{
-				struct uffs_ccm_block *next;
-
-				next = (struct uffs_ccm_block *)((rt_uint8_t *)block +
-				       UFFS_CCM_BLOCK_HEAD_SIZE + size);
-				next->size = block->size - size - UFFS_CCM_BLOCK_HEAD_SIZE;
-				next->used = 0;
-				next->next = block->next;
-
-				block->size = size;
-				block->next = next;
-			}
-
-			block->used = 1;
-			return (rt_uint8_t *)block + UFFS_CCM_BLOCK_HEAD_SIZE;
-		}
-	}
-
-	return RT_NULL;
-}
-
-static URET uffs_ccm_free(void *ptr)
-{
-	struct uffs_ccm_block *block;
-
-	if (ptr == RT_NULL)
-	{
-		return U_SUCC;
-	}
-
-	block = (struct uffs_ccm_block *)((rt_uint8_t *)ptr - UFFS_CCM_BLOCK_HEAD_SIZE);
-	block->used = 0;
-	uffs_ccm_coalesce();
-
-	return U_SUCC;
-}
 
 int uffs_SemCreate(OSSEM *sem)
 {
@@ -225,38 +114,13 @@ unsigned int uffs_GetCurDateTime(void)
 #if CONFIG_USE_SYSTEM_MEMORY_ALLOCATOR > 0
 static void * sys_malloc(struct uffs_DeviceSt *dev, unsigned int size)
 {
-	void *ptr;
-	rt_base_t level;
-
 	dev = dev;
-	level = rt_hw_interrupt_disable();
-	ptr = uffs_ccm_malloc(size);
-	rt_hw_interrupt_enable(level);
-	if (ptr != RT_NULL)
-	{
-		uffs_Perror(UFFS_MSG_NORMAL, "CCM memory alloc %d bytes", size);
-		return ptr;
-	}
-
-	uffs_Perror(UFFS_MSG_NORMAL, "CCM memory alloc %d bytes failed, fallback system", size);
 	return rt_malloc(size);
 }
 
 static URET sys_free(struct uffs_DeviceSt *dev, void *p)
 {
-	rt_base_t level;
-
 	dev = dev;
-	if (uffs_ccm_contains(p))
-	{
-		URET ret;
-
-		level = rt_hw_interrupt_disable();
-		ret = uffs_ccm_free(p);
-		rt_hw_interrupt_enable(level);
-		return ret;
-	}
-
 	rt_free(p);
 	return U_SUCC;
 }

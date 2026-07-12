@@ -68,7 +68,7 @@
  *       but few writing performance will be improved when this 
  *       value is become larger than 'max pages per block'
  */
-#define MAX_PAGE_BUFFERS 18
+#define MAX_PAGE_BUFFERS 10
 
 
 /** 
@@ -92,7 +92,7 @@
  *
  *       the smaller the value the frequently the buffer will be flushed.
  */
-#define MAX_DIRTY_PAGES_IN_A_BLOCK 12
+#define MAX_DIRTY_PAGES_IN_A_BLOCK 7
 
 /**
  * \def MAX_DIRTY_BUF_GROUPS
@@ -131,13 +131,13 @@
  *
  *       use UFFS_STATIC_BUFF_SIZE() to calculate memory buffer size.
  */
-#define CONFIG_USE_STATIC_MEMORY_ALLOCATOR 0
+#define CONFIG_USE_STATIC_MEMORY_ALLOCATOR 1
 
 /**
  * \def CONFIG_USE_SYSTEM_MEMORY_ALLOCATOR
  * \note  using system platform's 'malloc' and 'free'.
  */
-#define CONFIG_USE_SYSTEM_MEMORY_ALLOCATOR 1
+#define CONFIG_USE_SYSTEM_MEMORY_ALLOCATOR 0
 
 
 

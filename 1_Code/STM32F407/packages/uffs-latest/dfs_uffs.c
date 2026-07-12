@@ -30,6 +30,19 @@
 #define UFFS_DEVICE_MAX         2    /* the max partions on a nand deivce*/
 #define UFFS_MOUNT_PATH_MAX     128  /* the mount point max length */
 #define FILE_PATH_MAX           256  /* the longest file path */
+#define UFFS_NAND_PAGES_PER_BLOCK 64
+#define UFFS_NAND_PAGE_SIZE       2048
+#define UFFS_NAND_BLOCK_COUNT     1024
+
+#if defined(__ICCARM__)
+#pragma location = ".ccm.uffs"
+static rt_uint8_t uffs_static_buffer[
+    UFFS_STATIC_BUFF_SIZE(UFFS_NAND_PAGES_PER_BLOCK, UFFS_NAND_PAGE_SIZE, UFFS_NAND_BLOCK_COUNT)];
+#else
+static rt_uint8_t uffs_static_buffer[
+    UFFS_STATIC_BUFF_SIZE(UFFS_NAND_PAGES_PER_BLOCK, UFFS_NAND_PAGE_SIZE, UFFS_NAND_BLOCK_COUNT)]
+    __attribute__((section(".ccm.uffs"), aligned(8)));
+#endif
 
 struct _nand_dev
 {
@@ -128,6 +141,10 @@ static int init_uffs_fs(
         /* set memory allocator for uffs */
 #if CONFIG_USE_SYSTEM_MEMORY_ALLOCATOR > 0
         uffs_MemSetupSystemAllocator(&mtb->dev->mem);
+#elif CONFIG_USE_STATIC_MEMORY_ALLOCATOR > 0
+        uffs_MemSetupStaticAllocator(&mtb->dev->mem,
+                                     uffs_static_buffer,
+                                     sizeof(uffs_static_buffer));
 #endif
         /* setup device init/release entry */
         mtb->dev->Init = _device_init;
