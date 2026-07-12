@@ -30,7 +30,10 @@
 
 #define SD_CARD_DET_PIN GET_PIN(D, 3)
 
-static rt_thread_t sd_card_tid = RT_NULL;
+static struct rt_thread sd_card_thread
+    __attribute__((section(".ccm.cpu"), aligned(8)));
+static rt_uint8_t sd_card_stack[THREAD_STACK_SIZE]
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 
 extern int rt_hw_sdio_init(void);
 
@@ -108,18 +111,28 @@ static void sd_card_thread_entry(void *param)
     }
 }
 
+/**
+ * @brief 初始化并启动 SD 卡监测线程。
+ *
+ * @return RT_EOK 表示启动成功，其他值表示线程初始化或启动失败。
+ */
 int sd_card_thread_start(void)
 {
-    /* 创建线程，sd_card，入口是sd_card_thread_entry*/
-    sd_card_tid = rt_thread_create("sd_card",
-                                   sd_card_thread_entry, RT_NULL,
-                            THREAD_STACK_SIZE,
-                            THREAD_PRIORITY, THREAD_TIMESLICE);
-    /* 如果获得线程控制块，启动这个线程 */
-    if (sd_card_tid != RT_NULL)
-        rt_thread_startup(sd_card_tid);
+    rt_err_t result;
 
-    return 0;
+    result = rt_thread_init(&sd_card_thread,
+                            "sd_card",
+                            sd_card_thread_entry,
+                            RT_NULL,
+                            sd_card_stack,
+                            sizeof(sd_card_stack),
+                            THREAD_PRIORITY,
+                            THREAD_TIMESLICE);
+    if (result != RT_EOK)
+    {
+        return result;
+    }
+
+    return rt_thread_startup(&sd_card_thread);
 }
 INIT_APP_EXPORT(sd_card_thread_start);
-

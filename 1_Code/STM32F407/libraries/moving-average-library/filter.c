@@ -3,7 +3,8 @@
 #include "Filter.h"
 
 //定义各个传感器的数据采样点列表
-uint16_t m_dataList[MAX_SENSOR_NUM][MAX_DATA_NUM] = {0};
+uint16_t m_dataList[MAX_SENSOR_NUM][MAX_DATA_NUM]
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 
 //冒泡排序
 void BubbleSort(uint16_t array[], int len)

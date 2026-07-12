@@ -35,7 +35,8 @@ extern void lv_port_disp_init(void);
 extern void lv_port_indev_init(void);
 extern void lv_user_gui_init(void);
 
-static struct rt_thread lvgl_thread;
+static struct rt_thread lvgl_thread
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 
 #ifdef rt_align
 rt_align(RT_ALIGN_SIZE)

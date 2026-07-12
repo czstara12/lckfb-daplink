@@ -46,17 +46,21 @@
 
 static rt_list_t _rt_thread_defunct = RT_LIST_OBJECT_INIT(_rt_thread_defunct);
 static struct rt_spinlock _defunct_spinlock;
-static struct rt_thread idle_thread[_CPUS_NR];
+static struct rt_thread idle_thread[_CPUS_NR]
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 rt_align(RT_ALIGN_SIZE)
-static rt_uint8_t idle_thread_stack[_CPUS_NR][IDLE_THREAD_STACK_SIZE];
+static rt_uint8_t idle_thread_stack[_CPUS_NR][IDLE_THREAD_STACK_SIZE]
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 
 #ifdef RT_USING_SMP
 #ifndef SYSTEM_THREAD_STACK_SIZE
 #define SYSTEM_THREAD_STACK_SIZE IDLE_THREAD_STACK_SIZE
 #endif
-static struct rt_thread rt_system_thread;
+static struct rt_thread rt_system_thread
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 rt_align(RT_ALIGN_SIZE)
-static rt_uint8_t rt_system_stack[SYSTEM_THREAD_STACK_SIZE];
+static rt_uint8_t rt_system_stack[SYSTEM_THREAD_STACK_SIZE]
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 static struct rt_semaphore system_sem;
 #endif
 

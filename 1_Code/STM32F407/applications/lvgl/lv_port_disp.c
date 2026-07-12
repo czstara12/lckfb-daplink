@@ -92,16 +92,16 @@ void lv_port_disp_init(void)
     /*GCC*/
 #if defined ( __GNUC__ )
 //    static lv_color_t buf_1[MY_DISP_HOR_RES * MY_DISP_HOR_RES / 2] __attribute__((section(".LVGLccm")));                          /*A buffer for 10 rows*/
-    static lv_color_t buf_1[PKG_ST_7789_HEIGHT*30];
+    static lv_color_t buf_1[PKG_ST_7789_HEIGHT*20];
     /*MDK*/
 #elif defined ( __CC_ARM )
 //    __attribute__((at(0x10000000))) lv_color_t buf_1[LCD_H * LCD_W / 2];
-    static lv_color_t buf_1[PKG_ST_7789_HEIGHT*30];
+    static lv_color_t buf_1[PKG_ST_7789_HEIGHT*20];
 //  static lv_color_t buf_2[PKG_ST_7789_HEIGHT*50];
 #endif
 
 //    lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, NULL, MY_DISP_HOR_RES * MY_DISP_HOR_RES / 2);   /*Initialize the display buffer*/
-      lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, NULL, PKG_ST_7789_HEIGHT*30);   /*Initialize the display buffer*/
+      lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, NULL, PKG_ST_7789_HEIGHT*20);   /*Initialize the display buffer*/
     /*-----------------------------------
      * Register the display in LVGL
      *----------------------------------*/

@@ -60,7 +60,7 @@
  * \note uffs cache the block info for opened directories and files,
  *       a practical value is 5 ~ MAX_OBJECT_HANDLE
  */
-#define MAX_CACHED_BLOCK_INFO 10
+#define MAX_CACHED_BLOCK_INFO 8
 
 /** 
  * \def MAX_PAGE_BUFFERS
@@ -164,7 +164,7 @@
  * \def MAX_OBJECT_HANDLE
  * maximum number of object handle 
  */
-#define MAX_OBJECT_HANDLE	50
+#define MAX_OBJECT_HANDLE	32
 #define FD_SIGNATURE_SHIFT	6	
 
 
@@ -172,7 +172,7 @@
  * \def MAX_DIR_HANDLE
  * maximum number of uffs_DIR
  */
-#define MAX_DIR_HANDLE 10	
+#define MAX_DIR_HANDLE 6
 
 /**
  * \def MINIMUN_ERASED_BLOCK

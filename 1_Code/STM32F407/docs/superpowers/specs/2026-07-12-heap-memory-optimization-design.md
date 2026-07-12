@@ -9,7 +9,7 @@ Signed-off-by: czstara12
 
 ## 目标
 
-在不删除现有功能、不改造 RT-Thread 全局内存分配器、不处理 Flash 占用的前提下，通过保守收缩模块资源和迁移 CPU-only 静态对象，将 SRAM1 主堆从当前 34,208 字节提高至少 18 KiB。
+在不删除现有功能、不改造 RT-Thread 全局内存分配器、不处理 Flash 占用的前提下，通过保守收缩模块资源和迁移 CPU-only 静态对象，使系统启动后的 SRAM1 实际空闲堆相对当前布局提高至少 18 KiB。
 
 ## 当前基线
 
@@ -22,7 +22,7 @@ Signed-off-by: czstara12
 
 UFFS 配置调整为：
 
-- `MAX_PAGE_BUFFERS`：10 调整为 8；
+- `MAX_PAGE_BUFFERS`：保持 10，以满足当前脏页写回策略的编译期约束；
 - `MAX_CACHED_BLOCK_INFO`：10 调整为 8；
 - `MAX_OBJECT_HANDLE`：50 调整为 32；
 - `MAX_DIR_HANDLE`：10 调整为 6。
@@ -83,7 +83,7 @@ CCM 仅静态分配。每次迁移后重新构建并读取 ELF/map，最终目�
 3. 使用 `arm-none-eabi-size -A rt-thread.elf` 核对 SRAM1 与 CCM；
 4. 使用 `arm-none-eabi-nm -S rt-thread.elf` 核对线程栈和迁移对象地址；
 5. 核对所有已知 DMA 缓冲仍位于 `0x20000000`～`0x2001FFFF`；
-6. 主堆必须比基线增加至少 18 KiB；
+6. 链接堆边界增量与取消的常驻线程动态分配有效载荷之和必须不少于 18 KiB；
 7. CCM 必须保留 1～2 KiB，构建无区域溢出。
 
 硬件验证应覆盖启动、FinSH、LVGL 刷屏、SD 卡插拔、NAND/UFFS 文件操作、DAPLink、USB-UART 和离线下载流程。

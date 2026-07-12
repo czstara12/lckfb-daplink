@@ -22,6 +22,10 @@ static volatile rt_uint32_t idle_count;
 static rt_uint32_t idle_reference;
 static rt_uint32_t last_idle_count;
 static rt_uint8_t current_load;
+static struct rt_thread indicator_thread_control
+    __attribute__((section(".ccm.cpu"), aligned(8)));
+static rt_uint8_t indicator_thread_stack[LOAD_THREAD_STACK_SIZE]
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 static rt_thread_t indicator_thread;
 static rt_bool_t indicator_started;
 static rt_base_t indicator_level = PIN_LOW;
@@ -120,21 +124,26 @@ rt_err_t runtime_load_indicator_start(void)
         return ret;
     }
 
-    indicator_thread = rt_thread_create("loadled",
-                                        runtime_load_indicator_entry,
-                                        RT_NULL,
-                                        LOAD_THREAD_STACK_SIZE,
-                                        LOAD_THREAD_PRIORITY,
-                                        LOAD_THREAD_TICK);
-    if (indicator_thread == RT_NULL)
+    indicator_thread = &indicator_thread_control;
+    ret = rt_thread_init(indicator_thread,
+                         "loadled",
+                         runtime_load_indicator_entry,
+                         RT_NULL,
+                         indicator_thread_stack,
+                         sizeof(indicator_thread_stack),
+                         LOAD_THREAD_PRIORITY,
+                         LOAD_THREAD_TICK);
+    if (ret != RT_EOK)
     {
         rt_thread_idle_delhook(runtime_load_idle_hook);
-        return -RT_ENOMEM;
+        indicator_thread = RT_NULL;
+        return ret;
     }
 
     ret = rt_thread_startup(indicator_thread);
     if (ret != RT_EOK)
     {
+        rt_thread_detach(indicator_thread);
         rt_thread_idle_delhook(runtime_load_idle_hook);
         indicator_thread = RT_NULL;
         return ret;

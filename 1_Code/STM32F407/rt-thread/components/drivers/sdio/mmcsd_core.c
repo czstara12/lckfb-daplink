@@ -35,8 +35,10 @@
 #endif
 
 //static struct rt_semaphore mmcsd_sem;
-static struct rt_thread mmcsd_detect_thread;
-static rt_uint8_t mmcsd_stack[RT_MMCSD_STACK_SIZE];
+static struct rt_thread mmcsd_detect_thread
+    __attribute__((section(".ccm.cpu"), aligned(8)));
+static rt_uint8_t mmcsd_stack[RT_MMCSD_STACK_SIZE]
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 static struct rt_mailbox  mmcsd_detect_mb;
 static rt_uint32_t mmcsd_detect_mb_pool[4];
 static struct rt_mailbox mmcsd_hotpluge_mb;
@@ -778,4 +780,3 @@ int rt_mmcsd_core_init(void)
     return 0;
 }
 INIT_PREV_EXPORT(rt_mmcsd_core_init);
-
