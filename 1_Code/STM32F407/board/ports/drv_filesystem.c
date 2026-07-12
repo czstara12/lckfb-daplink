@@ -81,18 +81,20 @@ const struct romfs_dirent romfs_root =
     ROMFS_DIRENT_DIR, "/", (rt_uint8_t *)_romfs_root, sizeof(_romfs_root) / sizeof(_romfs_root[0])
 };
 
-static int filesystem_mount(void)
+/**
+ * @brief 挂载板载文件系统。
+ *
+ * @return 成功返回 RT_EOK。
+ */
+int filesystem_mount(void)
 {
-
 #ifdef BSP_USING_FS
     if (dfs_mount(RT_NULL, "/", "rom", 0, &(romfs_root)) != 0)
     {
         LOG_E("rom mount to '/' failed!");
     }
-
-    /* 确保块设备注册成功之后再挂载文件系统 */
-    rt_thread_delay(500);
 #endif
+
 #ifdef BSP_USING_FS_AUTO_MOUNT
     onboard_sdcard_mount();
 #endif /* BSP_USING_FS_AUTO_MOUNT */
@@ -103,4 +105,3 @@ static int filesystem_mount(void)
 
     return RT_EOK;
 }
-INIT_APP_EXPORT(filesystem_mount);

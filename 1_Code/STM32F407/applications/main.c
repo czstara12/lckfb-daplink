@@ -22,11 +22,19 @@
 
 #define GPIO_LED    GET_PIN(B, 2)
 
+/**
+ * @brief 挂载板载文件系统。
+ *
+ * @return 成功返回 RT_EOK。
+ */
+extern int filesystem_mount(void);
+
 int main(void)
 {
     rt_pin_mode(GPIO_LED, PIN_MODE_OUTPUT);
     bsp_led_init();
     runtime_load_indicator_start();
+    filesystem_mount();
 
     while (1)
     {
