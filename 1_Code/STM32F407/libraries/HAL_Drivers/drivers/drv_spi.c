@@ -80,6 +80,9 @@ static struct stm32_spi_config spi_config[] =
 
 static struct stm32_spi spi_bus_obj[sizeof(spi_config) / sizeof(spi_config[0])] = {0};
 
+#define SPI_DMA_DUMMY_TX_SIZE 2048
+static rt_uint8_t spi_dma_dummy_tx[SPI_DMA_DUMMY_TX_SIZE] __attribute__((aligned(8)));
+
 static rt_err_t stm32_spi_init(struct stm32_spi *spi_drv, struct rt_spi_configuration *cfg)
 {
     RT_ASSERT(spi_drv != RT_NULL);
@@ -280,7 +283,7 @@ static rt_err_t stm32_spi_init(struct stm32_spi *spi_drv, struct rt_spi_configur
 
 static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *message)
 {
-    #define DMA_TRANS_MIN_LEN  10 /* only buffer length >= DMA_TRANS_MIN_LEN will use DMA mode */
+    #define DMA_TRANS_MIN_LEN  32 /* only buffer length >= DMA_TRANS_MIN_LEN will use DMA mode */
 
     HAL_StatusTypeDef state = HAL_OK;
     rt_size_t message_length, already_send_length;
@@ -344,8 +347,11 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
 
         rt_uint32_t* dma_aligned_buffer = RT_NULL;
         rt_uint32_t* p_txrx_buffer = RT_NULL;
+        rt_bool_t dma_started = RT_FALSE;
 
-        if ((spi_drv->spi_dma_flag & SPI_USING_TX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
+        if ((spi_drv->spi_dma_flag & SPI_USING_TX_DMA_FLAG) &&
+            (send_buf != RT_NULL) &&
+            (send_length >= DMA_TRANS_MIN_LEN))
         {
 #if defined(SOC_SERIES_STM32H7) || defined(SOC_SERIES_STM32F7)
             if (RT_IS_ALIGN((rt_uint32_t)send_buf, 32) && send_buf != RT_NULL) /* aligned with 32 bytes? */
@@ -380,12 +386,14 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
         {
             if ((spi_drv->spi_dma_flag & SPI_USING_TX_DMA_FLAG) && (spi_drv->spi_dma_flag & SPI_USING_RX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
             {
-                state = HAL_SPI_TransmitReceive_DMA(spi_handle, (uint8_t *)p_txrx_buffer, (uint8_t *)p_txrx_buffer, send_length);
+                state = HAL_SPI_TransmitReceive_DMA(spi_handle, (uint8_t *)p_txrx_buffer, recv_buf, send_length);
+                dma_started = state == HAL_OK;
             }
             else if ((spi_drv->spi_dma_flag & SPI_USING_TX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
             {
                 /* same as Tx ONLY. It will not receive SPI data any more. */
                 state = HAL_SPI_Transmit_DMA(spi_handle, (uint8_t *)p_txrx_buffer, send_length);
+                dma_started = state == HAL_OK;
             }
             else if ((spi_drv->spi_dma_flag & SPI_USING_RX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
             {
@@ -403,6 +411,7 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
             if ((spi_drv->spi_dma_flag & SPI_USING_TX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
             {
                 state = HAL_SPI_Transmit_DMA(spi_handle, (uint8_t *)p_txrx_buffer, send_length);
+                dma_started = state == HAL_OK;
             }
             else
             {
@@ -418,9 +427,13 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
         else if(message->recv_buf)
         {
             rt_memset((uint8_t *)recv_buf, 0xff, send_length);
-            if ((spi_drv->spi_dma_flag & SPI_USING_RX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
+            if ((spi_drv->spi_dma_flag & SPI_USING_RX_DMA_FLAG) &&
+                (send_length >= DMA_TRANS_MIN_LEN) &&
+                (send_length <= SPI_DMA_DUMMY_TX_SIZE))
             {
-                state = HAL_SPI_Receive_DMA(spi_handle, (uint8_t *)p_txrx_buffer, send_length);
+                rt_memset(spi_dma_dummy_tx, 0xff, send_length);
+                state = HAL_SPI_TransmitReceive_DMA(spi_handle, spi_dma_dummy_tx, recv_buf, send_length);
+                dma_started = state == HAL_OK;
             }
             else
             {
@@ -450,7 +463,7 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
         /* For simplicity reasons, this example is just waiting till the end of the
            transfer, but application may perform other tasks while transfer operation
            is ongoing. */
-        if ((spi_drv->spi_dma_flag & (SPI_USING_TX_DMA_FLAG | SPI_USING_RX_DMA_FLAG)) && (send_length >= DMA_TRANS_MIN_LEN))
+        if (dma_started)
         {
             /* blocking the thread,and the other tasks can run */
             if (rt_completion_wait(&spi_drv->cpt, 1000) != RT_EOK)
@@ -546,8 +559,8 @@ static int rt_hw_spi_bus_init(void)
 #if defined(SOC_SERIES_STM32F2) || defined(SOC_SERIES_STM32F4) || defined(SOC_SERIES_STM32F7) || defined(SOC_SERIES_STM32MP1) || defined(SOC_SERIES_STM32H7)
             spi_bus_obj[i].dma.handle_rx.Init.FIFOMode            = DMA_FIFOMODE_DISABLE;
             spi_bus_obj[i].dma.handle_rx.Init.FIFOThreshold       = DMA_FIFO_THRESHOLD_FULL;
-            spi_bus_obj[i].dma.handle_rx.Init.MemBurst            = DMA_MBURST_INC4;
-            spi_bus_obj[i].dma.handle_rx.Init.PeriphBurst         = DMA_PBURST_INC4;
+            spi_bus_obj[i].dma.handle_rx.Init.MemBurst            = DMA_MBURST_SINGLE;
+            spi_bus_obj[i].dma.handle_rx.Init.PeriphBurst         = DMA_PBURST_SINGLE;
 #endif
 
             {
@@ -590,8 +603,8 @@ static int rt_hw_spi_bus_init(void)
 #if defined(SOC_SERIES_STM32F2) || defined(SOC_SERIES_STM32F4) || defined(SOC_SERIES_STM32F7) || defined(SOC_SERIES_STM32MP1) || defined(SOC_SERIES_STM32H7)
             spi_bus_obj[i].dma.handle_tx.Init.FIFOMode            = DMA_FIFOMODE_DISABLE;
             spi_bus_obj[i].dma.handle_tx.Init.FIFOThreshold       = DMA_FIFO_THRESHOLD_FULL;
-            spi_bus_obj[i].dma.handle_tx.Init.MemBurst            = DMA_MBURST_INC4;
-            spi_bus_obj[i].dma.handle_tx.Init.PeriphBurst         = DMA_PBURST_INC4;
+            spi_bus_obj[i].dma.handle_tx.Init.MemBurst            = DMA_MBURST_SINGLE;
+            spi_bus_obj[i].dma.handle_tx.Init.PeriphBurst         = DMA_PBURST_SINGLE;
 #endif
 
             {
@@ -1009,11 +1022,11 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
     rt_completion_done(&spi_drv->cpt);
 }
 
-//void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
-//{
-//    struct stm32_spi *spi_drv =  rt_container_of(hspi, struct stm32_spi, handle);
-//    rt_completion_done(&spi_drv->cpt);
-//}
+void stm32_spi_dma_tx_complete(SPI_HandleTypeDef *hspi)
+{
+    struct stm32_spi *spi_drv =  rt_container_of(hspi, struct stm32_spi, handle);
+    rt_completion_done(&spi_drv->cpt);
+}
 
 void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
 {

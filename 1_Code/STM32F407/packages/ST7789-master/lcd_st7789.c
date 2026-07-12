@@ -13,6 +13,7 @@
 #include "lcd_st7789.h"
 #include "bitband.h"
 #include <drv_common.h>
+#include <drv_spi.h>
 
 
 #define DBG_TAG "st7789"
@@ -370,9 +371,13 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 	if(hspi->Instance == SPI2)
 	{
 		extern void lcd_spi_dma_callback(void);
-        lcd_spi_dma_callback();
+		lcd_spi_dma_callback();
+	    GPIOB_OUTPUT(12) = 1;
 	}
-	GPIOB_OUTPUT(12) = 1;
+	else if(hspi->Instance == SPI1)
+	{
+		stm32_spi_dma_tx_complete(hspi);
+	}
 }
 
 void DMA1_Stream4_IRQHandler(void)

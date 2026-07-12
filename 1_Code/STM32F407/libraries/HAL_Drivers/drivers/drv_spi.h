@@ -24,6 +24,12 @@ extern "C" {
 
 rt_err_t rt_hw_spi_device_attach(const char *bus_name, const char *device_name, rt_base_t cs_pin);
 
+/**
+ * @brief 通知 STM32 SPI 驱动 DMA 发送已完成。
+ * @param hspi 完成传输的 HAL SPI 句柄。
+ */
+void stm32_spi_dma_tx_complete(SPI_HandleTypeDef *hspi);
+
 #ifdef __cplusplus
 }
 #endif
