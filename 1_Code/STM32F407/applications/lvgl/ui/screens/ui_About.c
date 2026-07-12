@@ -175,7 +175,8 @@ void ui_about_show_date(void)
 {
     char _temp_text_buf[30 ] =  {0};
     /* Create the mask of a text by drawing it to a canvas*/
-    static lv_opa_t mask_map[MASK_WIDTH * MASK_HEIGHT];
+    static lv_opa_t mask_map[MASK_WIDTH * MASK_HEIGHT]
+        __attribute__((section(".ccm.cpu"), aligned(8)));
 
     /*Create a "8 bit alpha" canvas and clear it*/
     lv_obj_t * canvas = lv_canvas_create(ui_About);

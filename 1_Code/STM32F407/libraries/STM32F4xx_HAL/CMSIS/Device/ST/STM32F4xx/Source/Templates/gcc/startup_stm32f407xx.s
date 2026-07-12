@@ -44,6 +44,9 @@ defined in linker script */
 .word  _sitcm
 .word  _stcm
 .word  _etcm
+/* CCM 中未初始化数据段的起止地址 */
+.word  _sccm_bss
+.word  _eccm_bss
 /* start address for the .bss section. defined in linker script */
 .word  _sbss
 /* end address for the .bss section. defined in linker script */
@@ -112,6 +115,20 @@ FillZerobss:
 LoopFillZerobss:
   cmp r2, r4
   bcc FillZerobss
+
+/* 清零 CCM 中的未初始化数据段 */
+  ldr r2, =_sccm_bss
+  ldr r4, =_eccm_bss
+  movs r3, #0
+  b LoopFillZeroCCMBss
+
+FillZeroCCMBss:
+  str  r3, [r2]
+  adds r2, r2, #4
+
+LoopFillZeroCCMBss:
+  cmp r2, r4
+  bcc FillZeroCCMBss
 
 /* Call the clock system intitialization function.*/
   bl  SystemInit   

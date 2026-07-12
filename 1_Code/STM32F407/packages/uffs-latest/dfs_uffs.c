@@ -34,15 +34,9 @@
 #define UFFS_NAND_PAGE_SIZE       2048
 #define UFFS_NAND_BLOCK_COUNT     1024
 
-#if defined(__ICCARM__)
-#pragma location = ".ccm.uffs"
-static rt_uint8_t uffs_static_buffer[
-    UFFS_STATIC_BUFF_SIZE(UFFS_NAND_PAGES_PER_BLOCK, UFFS_NAND_PAGE_SIZE, UFFS_NAND_BLOCK_COUNT)];
-#else
 static rt_uint8_t uffs_static_buffer[
     UFFS_STATIC_BUFF_SIZE(UFFS_NAND_PAGES_PER_BLOCK, UFFS_NAND_PAGE_SIZE, UFFS_NAND_BLOCK_COUNT)]
-    __attribute__((section(".ccm.uffs"), aligned(8)));
-#endif
+    __attribute__((aligned(8)));
 
 struct _nand_dev
 {
@@ -54,7 +48,8 @@ struct _nand_dev
     void *data;   /* when uffs use static buf, it will save ptr here */
 };
 /* make sure the following struct var had been initilased to 0! */
-static struct _nand_dev nand_part[UFFS_DEVICE_MAX] = {0};
+static struct _nand_dev nand_part[UFFS_DEVICE_MAX]
+    __attribute__((section(".ccm.cpu"), aligned(8)));
 
 static int uffs_result_to_dfs(int result)
 {

@@ -120,6 +120,16 @@ SECTIONS
         . = ALIGN(8);
     } >RAM2
 
+    .ccm.cpu (NOLOAD) :
+    {
+        . = ALIGN(8);
+        _sccm_bss = .;
+        *(.ccm.cpu)
+        *(.ccm.cpu.*)
+        . = ALIGN(8);
+        _eccm_bss = .;
+    } >RAM2
+
     .stack :
     {
         . = ALIGN(4);
