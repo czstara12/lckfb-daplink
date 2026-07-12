@@ -11,7 +11,6 @@ ui.c
 components/ui_comp_hook.c
 ui_helpers.c
 ui_events.c
-images/ui_img_743788411.c
 fonts/ui_font_jetbrainsMonoMedium16.c
 fonts/ui_font_jetbrainsMonoMedium20.c
 fonts/ui_font_jetbrainsMonoMedium25.c

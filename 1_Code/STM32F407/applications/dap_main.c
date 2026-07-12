@@ -302,9 +302,9 @@ volatile uint8_t config_uart_transfer = 0;
 #define UID_BASE        0x1FFF7A10UL           /*!< Unique device ID register base address */
 #define SERIAL_NUMBER_INDEX  214 // 序列号在数组中的起始索引
 
-static __attribute__((section (".TCM"))) USB_MEM_ALIGNX uint8_t uartrx_ringbuffer[CONFIG_UARTRX_RINGBUF_SIZE];
+static __attribute__((section(".ccm.cpu"))) USB_MEM_ALIGNX uint8_t uartrx_ringbuffer[CONFIG_UARTRX_RINGBUF_SIZE];
 //给LVGL中的串口监视器使用的
-static __attribute__((section (".TCM"))) USB_MEM_ALIGNX uint8_t uartrx_ringbuffer_for_lvgl[CONFIG_UARTRX_RINGBUF_SIZE_FOR_LVGL];
+static __attribute__((section(".ccm.cpu"))) USB_MEM_ALIGNX uint8_t uartrx_ringbuffer_for_lvgl[CONFIG_UARTRX_RINGBUF_SIZE_FOR_LVGL];
 static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t usbrx_ringbuffer[CONFIG_USBRX_RINGBUF_SIZE];
 static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t usb_tmpbuffer[DAP_PACKET_SIZE];
 

@@ -208,13 +208,15 @@ void ui_Menu_screen_init(void)
     lv_obj_set_align(ui_logoAndTextContainer2, LV_ALIGN_TOP_MID);
     lv_obj_clear_flag(ui_logoAndTextContainer2, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_LogoLite2 = lv_img_create(ui_logoAndTextContainer2);
-    lv_img_set_src(ui_LogoLite2, &ui_img_743788411);
-    lv_obj_set_width(ui_LogoLite2, LV_SIZE_CONTENT);   /// 79
-    lv_obj_set_height(ui_LogoLite2, LV_SIZE_CONTENT);    /// 57
+    ui_LogoLite2 = lv_obj_create(ui_logoAndTextContainer2);
+    lv_obj_remove_style_all(ui_LogoLite2);
+    lv_obj_set_size(ui_LogoLite2, 79, 57);
     lv_obj_set_align(ui_LogoLite2, LV_ALIGN_LEFT_MID);
-    lv_obj_add_flag(ui_LogoLite2, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_clear_flag(ui_LogoLite2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_opa(ui_LogoLite2, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_LogoLite2, lv_color_hex(0x0091E6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_LogoLite2, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_LogoLite2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(ui_LogoLite2, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_LogoTitle2 = lv_label_create(ui_logoAndTextContainer2);
     lv_obj_set_width(ui_LogoTitle2, LV_SIZE_CONTENT);   /// 1

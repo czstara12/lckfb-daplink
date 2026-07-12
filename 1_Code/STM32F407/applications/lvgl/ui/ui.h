@@ -269,10 +269,6 @@ extern lv_obj_t * ui_AboutHomeL;
 extern lv_obj_t * ui_AboutContainerPanel;
 
 
-LV_IMG_DECLARE(ui_img_743788411);    // assets/logo-lite.png
-
-
-
 LV_FONT_DECLARE(ui_font_jetbrainsMonoMedium16);
 LV_FONT_DECLARE(ui_font_jetbrainsMonoMedium20);
 LV_FONT_DECLARE(ui_font_jetbrainsMonoMedium25);

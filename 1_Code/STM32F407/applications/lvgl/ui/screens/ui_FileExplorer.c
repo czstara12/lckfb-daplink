@@ -332,7 +332,7 @@ static void List_Create(lv_obj_t* par)
     lv_style_set_border_color(&style, lv_color_make(0xFF, 0xFF, 0xFF));
     lv_style_set_text_color(&style, lv_color_make(0x00, 0x00, 0x00));
     lv_style_set_pad_all(&style, 5);
-	lv_style_set_text_font(&style, &lv_font_montserrat_12);
+	lv_style_set_text_font(&style, &lv_font_montserrat_14);
 	
     lv_obj_t* obj = lv_list_create(par);
 	lv_obj_add_style(obj, &style, LV_PART_MAIN);

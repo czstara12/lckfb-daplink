@@ -194,7 +194,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_x(ui_currentDevicePath, 90);
     lv_obj_set_y(ui_currentDevicePath, 0);
     lv_label_set_text(ui_currentDevicePath, "");
-    lv_obj_set_style_text_font(ui_currentDevicePath, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_currentDevicePath, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_currentDevicePath, lv_color_hex(0x978484), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_currentDevicePath, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_currentDevicePath, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -207,7 +207,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_y(ui_currentBinPath, -14);
     lv_obj_set_align(ui_currentBinPath, LV_ALIGN_LEFT_MID);
     lv_label_set_text(ui_currentBinPath, "");
-    lv_obj_set_style_text_font(ui_currentBinPath, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_currentBinPath, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_currentBinPath, lv_color_hex(0x978484), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_currentBinPath, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_currentBinPath, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -250,7 +250,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_align(ui_ODdownloadInfo, LV_ALIGN_BOTTOM_MID);
     lv_label_set_text(ui_ODdownloadInfo, "download info");
     lv_obj_set_style_text_align(ui_ODdownloadInfo, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_ODdownloadInfo, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_ODdownloadInfo, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ODreturnHome = lv_btn_create(ui_OfflineDownload);
     lv_obj_set_height(ui_ODreturnHome, 18);

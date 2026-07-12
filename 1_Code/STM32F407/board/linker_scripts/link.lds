@@ -7,7 +7,7 @@
 /* Program Entry, set to mark it as "used" and avoid gc */
 MEMORY
 {
-    CODE (rx) : ORIGIN = 0x08000000, LENGTH = 512k /* 512KB flash */
+    CODE (rx) : ORIGIN = 0x08008000, LENGTH = 480k /* 32KB bootloader + 480KB application */
     RAM1 (rw) : ORIGIN = 0x20000000, LENGTH =  128k /* 128K sram */
     RAM2 (rw) : ORIGIN = 0x10000000, LENGTH =   64k /* 64K sram */
     MCUlcdgrambysram (rw) : ORIGIN = 0x68000000, LENGTH = 512k

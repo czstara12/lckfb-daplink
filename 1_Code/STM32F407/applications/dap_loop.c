@@ -37,7 +37,7 @@ void soft_reset_target(void);
 static void ID_timeout(void);
 
 rt_align(RT_ALIGN_SIZE)
-__attribute__((section (".TCM"))) static char dap_thread_stack[1024];
+__attribute__((section(".ccm.cpu"))) static char dap_thread_stack[1024];
 
 static struct rt_thread dap_thread
     __attribute__((section(".ccm.cpu"), aligned(8)));
