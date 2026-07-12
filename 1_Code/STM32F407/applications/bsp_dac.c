@@ -20,7 +20,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 DAC_HandleTypeDef hdac;
-DMA_HandleTypeDef hdma_dac2;
+DMA_HandleTypeDef hdma_dac1;
 
 TIM_HandleTypeDef htim2;
 
@@ -91,11 +91,11 @@ static void MX_DAC_Init(void)
     Error_Handler();
   }
 
-  /** DAC channel OUT2 config
+  /** DAC channel OUT1 config
    */
   sConfig.DAC_Trigger = DAC_TRIGGER_T2_TRGO;
   sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
-  if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_2) != HAL_OK)
+  if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -151,7 +151,7 @@ static void MX_TIM2_Init(void)
 }
 
 /**
- -  @brief  DAC1-PA5引脚初始化
+ -  @brief  DAC1-PA4引脚初始化
  -  @note   None
  -  @param  None
  -  @retval None
@@ -171,9 +171,9 @@ static void dac_gpio_init(void)
 */
 static void dac_config(void)
 {
-  /* DMA1_Stream6_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 2, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+  /* DMA1_Stream5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 2, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
 
   dac_gpio_init();
 
@@ -224,8 +224,8 @@ void switch_waveform(WaveformType new_wave)
         break;
     }
 	HAL_TIM_Base_Start(&htim2);
-	HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
-    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)waveform_array, transfer_count, DAC_ALIGN_12B_R);
+	HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)waveform_array, transfer_count, DAC_ALIGN_12B_R);
 }
 
 void dac_output_data_set(uint16_t data)
@@ -299,17 +299,17 @@ void dac_timer_frequency_set(uint32_t _frequency)
 }
 
 /**
-  * @brief This function handles DMA1 stream6 global interrupt.
+  * @brief This function handles DMA1 stream5 global interrupt.
  */
-void DMA1_Stream6_IRQHandler(void)
+void DMA1_Stream5_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Stream6_IRQn 0 */
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
 
-  /* USER CODE END DMA1_Stream6_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_dac2);
-  /* USER CODE BEGIN DMA1_Stream6_IRQn 1 */
+  /* USER CODE END DMA1_Stream5_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_dac1);
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
 
-  /* USER CODE END DMA1_Stream6_IRQn 1 */
+  /* USER CODE END DMA1_Stream5_IRQn 1 */
 }
 
 /**

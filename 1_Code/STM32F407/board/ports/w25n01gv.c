@@ -1487,7 +1487,7 @@ static int rt_hw_w25n01gv_init(void)
     struct rt_spi_configuration cfg;
     uint8_t id[W25N01GV_JEDEC_ID_LEN] = {0};
 
-    if (rt_hw_spi_device_attach(W25N01GV_SPI_BUS_NAME, W25N01GV_SPI_DEVICE_NAME, GET_PIN(A, 4)) != RT_EOK)
+    if (rt_hw_spi_device_attach(W25N01GV_SPI_BUS_NAME, W25N01GV_SPI_DEVICE_NAME, GET_PIN(A, 1)) != RT_EOK)
     {
         rt_kprintf("W25N01GV: attach %s on %s failed\n", W25N01GV_SPI_DEVICE_NAME, W25N01GV_SPI_BUS_NAME);
         return -RT_ERROR;

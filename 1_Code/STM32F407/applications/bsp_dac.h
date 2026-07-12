@@ -34,15 +34,14 @@ typedef enum {
 
 #define DAC_TRIGGER_TRGO    DAC_TRIGGER_T1_TRGO
 
-/* defined the DAC pin: PA5 -*/
+/* defined the DAC pin: PA4 -*/
 #define DAC_GPIO_CLK      RCU_GPIOA
 #define DAC_GPIO_PORT     GPIOA
 #define DAC_GPIO_PUPD     GPIO_PUPD_NONE
-#define DAC_GPIO_PIN      GPIO_PIN_5
+#define DAC_GPIO_PIN      GPIO_PIN_4
 
 void switch_waveform(WaveformType new_wave);
 void dac_timer_frequency_set(uint32_t _frequency);
 void dac_output_data_set(uint16_t data);
 
 #endif //__BSP_DAC_H__
-
