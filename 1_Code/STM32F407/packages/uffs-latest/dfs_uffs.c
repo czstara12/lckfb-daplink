@@ -615,6 +615,13 @@ static int dfs_uffs_stat(struct dfs_filesystem *fs, const char *path, struct sta
     int result;
     struct uffs_stat s;
 
+    if (rt_strcmp(path, fs->path) == 0)
+    {
+        rt_memset(st, 0, sizeof(*st));
+        st->st_mode = S_IFDIR | S_IRUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+        return 0;
+    }
+
     result = uffs_stat(path, &s);
     if (result < 0)
         return uffs_result_to_dfs(uffs_get_error());

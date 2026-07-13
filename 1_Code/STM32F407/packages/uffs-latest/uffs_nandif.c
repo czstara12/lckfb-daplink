@@ -67,9 +67,11 @@ static int nand_read_page(uffs_Device *dev,
 
         rt_memset(spare, 0, UFFS_MAX_SPARE_SIZE);
 
-        rt_mtd_nand_read(RT_MTD_NAND_DEVICE(dev->_private),
-                         page, RT_NULL, 0,
-                         spare, dev->attr->spare_size);//dev->mem.spare_data_size
+        res = rt_mtd_nand_read(RT_MTD_NAND_DEVICE(dev->_private),
+                               page, RT_NULL, 0,
+                               spare, dev->attr->spare_size);//dev->mem.spare_data_size
+        if (res != RT_EOK)
+            return UFFS_FLASH_IO_ERR;
 
         res = spare[dev->attr->block_status_offs] == 0xFF ?
                                UFFS_FLASH_NO_ERR : UFFS_FLASH_BAD_BLK;
@@ -78,8 +80,10 @@ static int nand_read_page(uffs_Device *dev,
 #endif
     }
 
-    rt_mtd_nand_read(RT_MTD_NAND_DEVICE(dev->_private),
-                     page, data, data_len, spare, spare_len);
+    res = rt_mtd_nand_read(RT_MTD_NAND_DEVICE(dev->_private),
+                           page, data, data_len, spare, spare_len);
+    if (res != RT_EOK)
+        return UFFS_FLASH_IO_ERR;
 
     return UFFS_FLASH_NO_ERR;
 }

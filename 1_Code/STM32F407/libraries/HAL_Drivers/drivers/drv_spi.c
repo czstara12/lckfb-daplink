@@ -386,12 +386,14 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
         {
             if ((spi_drv->spi_dma_flag & SPI_USING_TX_DMA_FLAG) && (spi_drv->spi_dma_flag & SPI_USING_RX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
             {
+                rt_completion_init(&spi_drv->cpt);
                 state = HAL_SPI_TransmitReceive_DMA(spi_handle, (uint8_t *)p_txrx_buffer, recv_buf, send_length);
                 dma_started = state == HAL_OK;
             }
             else if ((spi_drv->spi_dma_flag & SPI_USING_TX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
             {
                 /* same as Tx ONLY. It will not receive SPI data any more. */
+                rt_completion_init(&spi_drv->cpt);
                 state = HAL_SPI_Transmit_DMA(spi_handle, (uint8_t *)p_txrx_buffer, send_length);
                 dma_started = state == HAL_OK;
             }
@@ -410,6 +412,7 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
         {
             if ((spi_drv->spi_dma_flag & SPI_USING_TX_DMA_FLAG) && (send_length >= DMA_TRANS_MIN_LEN))
             {
+                rt_completion_init(&spi_drv->cpt);
                 state = HAL_SPI_Transmit_DMA(spi_handle, (uint8_t *)p_txrx_buffer, send_length);
                 dma_started = state == HAL_OK;
             }
@@ -432,6 +435,7 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
                 (send_length <= SPI_DMA_DUMMY_TX_SIZE))
             {
                 rt_memset(spi_dma_dummy_tx, 0xff, send_length);
+                rt_completion_init(&spi_drv->cpt);
                 state = HAL_SPI_TransmitReceive_DMA(spi_handle, spi_dma_dummy_tx, recv_buf, send_length);
                 dma_started = state == HAL_OK;
             }
@@ -470,6 +474,7 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
             {
                 state = HAL_ERROR;
                 LOG_E("wait for DMA interrupt overtime!");
+                HAL_SPI_Abort(spi_handle);
                 break;
             }
         }
