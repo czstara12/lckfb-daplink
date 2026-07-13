@@ -65,4 +65,5 @@ rtconfig.BSP_LIBRARY_TYPE = stm32_library
 #objs.extend(SConscript(os.path.join(libraries_path_prefix, 'HAL_Drivers', 'SConscript'),variant_dir='build/libraries/'+'HAL_Drivers', duplicate=0))
 
 # make a building
+env.Depends(TARGET, 'board/linker_scripts/link.lds')
 DoBuilding(TARGET, objs)

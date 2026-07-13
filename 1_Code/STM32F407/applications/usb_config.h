@@ -27,8 +27,8 @@
 #define CONFIG_USB_ALIGN_SIZE 4
 #endif
 
-/* attribute data into no cache ram */
-#define USB_NOCACHE_RAM_SECTION __attribute__((section(".noncacheable")))
+/** STM32F407 无数据缓存，使用默认 RAM 段以保留编译器的初始化分类。 */
+#define USB_NOCACHE_RAM_SECTION
 
 /* ================= USB Device Stack Configuration ================ */
 

@@ -10,7 +10,6 @@ MEMORY
     CODE (rx) : ORIGIN = 0x08008000, LENGTH = 480k /* 32KB bootloader + 480KB application */
     RAM1 (rw) : ORIGIN = 0x20000000, LENGTH =  128k /* 128K sram */
     RAM2 (rw) : ORIGIN = 0x10000000, LENGTH =   64k /* 64K sram */
-    MCUlcdgrambysram (rw) : ORIGIN = 0x68000000, LENGTH = 512k
 }
 ENTRY(Reset_Handler)
 _system_stack_size = 0x400;
@@ -102,48 +101,11 @@ SECTIONS
         _edata = . ;
     } >RAM1
 
-    .TCM : AT (_sidata + SIZEOF(.data))
-    {
-        . = ALIGN(4);
-        _stcm = .;
-        *(.TCM)
-        *(.TCM.*)
-        . = ALIGN(4);
-        _etcm = .;
-    } >RAM2
-    _sitcm = LOADADDR(.TCM);
-
-    .ccm.uffs (NOLOAD) :
-    {
-        . = ALIGN(8);
-        *(.ccm.uffs)
-        . = ALIGN(8);
-    } >RAM2
-
-    .ccm.cpu (NOLOAD) :
-    {
-        . = ALIGN(8);
-        _sccm_bss = .;
-        *(.ccm.cpu)
-        *(.ccm.cpu.*)
-        . = ALIGN(8);
-        _eccm_bss = .;
-    } >RAM2
-
-    .stack :
-    {
-        . = ALIGN(4);
-        _sstack = .;
-        . = . + _system_stack_size;
-        . = ALIGN(4);
-        _estack = .;
-    } >RAM1
-
-    __bss_start = .;
-    .bss :
+    .bss (NOLOAD) :
     {
         . = ALIGN(4);
         /* This is used by the startup in order to initialize the .bss secion */
+        __bss_start = .;
         _sbss = .;
 
         *(.bss)
@@ -151,29 +113,40 @@ SECTIONS
         *(COMMON)
 
         *(.bss.init)
-    } > RAM1
 
-    .noncacheable (NOLOAD) :
-    {
-        . = ALIGN(32);
-        *(.noncacheable)
-        *(.noncacheable.*)
-        . = ALIGN(32);
-        /* 将启动清零范围扩展到 USB 缓冲区末尾 */
+        . = ALIGN(4);
         _ebss = .;
-    } >RAM1
-    __bss_end = .;
+        __bss_end = .;
+    } > RAM1
+    _end = __bss_end;
 
-    .MCUlcdgrambysram (NOLOAD) : ALIGN(4)
+    .ccm_data : AT (LOADADDR(.data) + SIZEOF(.data))
     {
         . = ALIGN(4);
-        *(.MCUlcdgrambysram)
-        *(.MCUlcdgrambysram.*)
+        _sccm_data = .;
+        *(.TCM)
+        *(.TCM.*)
         . = ALIGN(4);
-        __MCUlcdgrambysram_free__ = .;
-    } > MCUlcdgrambysram
+        _eccm_data = .;
+    } >RAM2
+    _siccm_data = LOADADDR(.ccm_data);
 
-    _end = .;
+    .ccm_bss (NOLOAD) :
+    {
+        . = ALIGN(8);
+        _sccm_bss = .;
+        *(.ccm)
+        *(.ccm.*)
+        . = ALIGN(8);
+        _eccm_bss = .;
+
+        /* MSP 向下增长，自动使用 CCM 的全部剩余空间。 */
+        _sstack = .;
+        _estack = ORIGIN(RAM2) + LENGTH(RAM2);
+    } >RAM2
+
+    ASSERT((_estack - _sstack) >= _system_stack_size,
+           "RAM2 overflow: less than minimum system stack size")
 
     /* Stabs debugging sections.  */
     .stab          0 : { *(.stab) }

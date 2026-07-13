@@ -43,7 +43,8 @@ rt_align(RT_ALIGN_SIZE)
 #else
 ALIGN(RT_ALIGN_SIZE)
 #endif
-__attribute__((section (".TCM"))) static rt_uint8_t lvgl_thread_stack[PKG_LVGL_THREAD_STACK_SIZE];
+__attribute__((section(".ccm.cpu"), aligned(8)))
+static rt_uint8_t lvgl_thread_stack[PKG_LVGL_THREAD_STACK_SIZE];
 //static rt_uint8_t lvgl_thread_stack[PKG_LVGL_THREAD_STACK_SIZE];
 
 #if LV_USE_LOG

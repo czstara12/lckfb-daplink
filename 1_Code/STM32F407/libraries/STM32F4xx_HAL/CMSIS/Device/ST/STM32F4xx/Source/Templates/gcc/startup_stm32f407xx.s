@@ -33,26 +33,6 @@
 .global  g_pfnVectors
 .global  Default_Handler
 
-/* start address for the initialization values of the .data section. 
-defined in linker script */
-.word  _sidata
-/* start address for the .data section. defined in linker script */  
-.word  _sdata
-/* end address for the .data section. defined in linker script */
-.word  _edata
-/* .TCM 段加载地址与运行地址，由链接脚本定义 */
-.word  _sitcm
-.word  _stcm
-.word  _etcm
-/* CCM 中未初始化数据段的起止地址 */
-.word  _sccm_bss
-.word  _eccm_bss
-/* start address for the .bss section. defined in linker script */
-.word  _sbss
-/* end address for the .bss section. defined in linker script */
-.word  _ebss
-/* stack used for SystemInit_ExtMemCtl; always internal RAM used */
-
 /**
  * @brief  This is the code that gets called when the processor first
  *          starts execution following a reset event. Only the absolutely
@@ -85,34 +65,34 @@ LoopCopyDataInit:
   cmp r4, r1
   bcc CopyDataInit
 
-/* 将 .TCM 段初值从 flash 拷贝到 SRAM */
-  ldr r0, =_stcm
-  ldr r1, =_etcm
-  ldr r2, =_sitcm
+/* 将 CCM 数据段初值从 flash 拷贝到 RAM2 */
+  ldr r0, =_sccm_data
+  ldr r1, =_eccm_data
+  ldr r2, =_siccm_data
   movs r3, #0
-  b LoopCopyTCMInit
+  b LoopCopyCCMDataInit
 
-CopyTCMInit:
+CopyCCMDataInit:
   ldr r4, [r2, r3]
   str r4, [r0, r3]
   adds r3, r3, #4
 
-LoopCopyTCMInit:
+LoopCopyCCMDataInit:
   adds r4, r0, r3
   cmp r4, r1
-  bcc CopyTCMInit
+  bcc CopyCCMDataInit
   
 /* Zero fill the bss segment. */
   ldr r2, =_sbss
   ldr r4, =_ebss
   movs r3, #0
-  b LoopFillZerobss
+  b LoopFillZeroBss
 
 FillZerobss:
   str  r3, [r2]
   adds r2, r2, #4
 
-LoopFillZerobss:
+LoopFillZeroBss:
   cmp r2, r4
   bcc FillZerobss
 
