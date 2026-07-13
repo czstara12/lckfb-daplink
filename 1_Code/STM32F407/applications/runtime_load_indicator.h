@@ -11,14 +11,22 @@
 #include <rtthread.h>
 
 /**
- * @brief 启动运行负载 LED 指示器。
+ * @brief 初始化运行负载 LED 指示器。
  *
- * 该接口会注册 RT-Thread idle hook，并启动后台线程按空闲计数估算 CPU 负载。
- * LED 闪烁频率会随负载升高而加快。
+ * 该接口会初始化 PB2，并注册 RT-Thread 调度钩子，用系统 CPU time 接口统计
+ * idle 线程和排除线程的运行时间。
  *
- * @return RT_EOK 表示启动成功，其他值表示启动失败或已经启动。
+ * @return RT_EOK 表示初始化成功，其他值表示已经初始化或系统 CPU time 不可用。
  */
 rt_err_t runtime_load_indicator_start(void);
+
+/**
+ * @brief 运行一次负载指示状态机。
+ *
+ * 应在主循环中周期调用。该接口会按 1 秒窗口更新负载，并根据负载调整 PB2
+ * 的翻转周期。
+ */
+void runtime_load_indicator_process(void);
 
 /**
  * @brief 获取最近一次估算的 CPU 运行负载。

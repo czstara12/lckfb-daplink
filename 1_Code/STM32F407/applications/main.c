@@ -29,6 +29,29 @@
  */
 extern int filesystem_mount(void);
 
+static void runtime_load_bar_update(void)
+{
+    rt_uint8_t load = runtime_load_indicator_get_load();
+    rt_uint8_t level = (load + 24U) / 25U;
+
+    if (level > LED_MAX_NUM)
+    {
+        level = LED_MAX_NUM;
+    }
+
+    for (led_type_def led = LED1; led < LED_MAX_NUM; led++)
+    {
+        if ((rt_uint8_t)led < level)
+        {
+            bsp_led_on(led);
+        }
+        else
+        {
+            bsp_led_off(led);
+        }
+    }
+}
+
 int main(void)
 {
     rt_pin_mode(GPIO_LED, PIN_MODE_OUTPUT);
@@ -38,7 +61,8 @@ int main(void)
 
     while (1)
     {
-        bsp_led_left_right_move();
+        runtime_load_indicator_process();
+        runtime_load_bar_update();
         rt_thread_mdelay(100);
     }
 }

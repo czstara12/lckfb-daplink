@@ -123,6 +123,8 @@
 #define RT_USING_SPI
 #define RT_USING_PIN
 #define RT_USING_KTIME
+#define RT_USING_CPUTIME
+#define RT_USING_CPUTIME_CORTEXM
 #define RT_USING_HWTIMER
 
 /* Using USB */
