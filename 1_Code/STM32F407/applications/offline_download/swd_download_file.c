@@ -28,8 +28,8 @@
 
 struct offline_download_info_t offline_download_info;
 
-char choose_device_path[LV_FILE_EXPLORER_PATH_MAX_LEN] = "/MCU/ST/STM32F4xx/STM32F4xx_512.FLM" ;
-char choose_firmware_bin_path[LV_FILE_EXPLORER_PATH_MAX_LEN] = "/firmware/f407_100ms.bin";
+char choose_device_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
+char choose_firmware_bin_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
 
 //判断当前是不是正在脱机下载中
 static int8_t on_offline_swd_downloading = 0;
@@ -293,6 +293,10 @@ char* get_offline_download_info_message(void)
 
 static int _offline_download_info_init(void)
 {
+    rt_snprintf(choose_device_path, sizeof(choose_device_path),
+                "%s", "/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
+    rt_snprintf(choose_firmware_bin_path, sizeof(choose_firmware_bin_path),
+                "%s", "/firmware/f407_100ms.bin");
     offline_download_info.success_download_count = 0;
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "wait for start");
     offline_download_info.progress = 0;

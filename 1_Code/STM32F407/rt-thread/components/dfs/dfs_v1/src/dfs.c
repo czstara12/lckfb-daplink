@@ -31,7 +31,7 @@ static struct rt_mutex fslock;
 static struct rt_mutex fdlock;
 
 #ifdef DFS_USING_WORKDIR
-char working_directory[DFS_PATH_MAX] = {"/"};
+char working_directory[DFS_PATH_MAX];
 #endif
 
 static struct dfs_fdtable _fdtab;
@@ -974,4 +974,3 @@ MSH_CMD_EXPORT(lsof, list open files);
 
 #endif
 /**@}*/
-
