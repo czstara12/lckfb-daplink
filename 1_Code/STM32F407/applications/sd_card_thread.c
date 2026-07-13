@@ -29,6 +29,7 @@
 #define THREAD_TIMESLICE 5
 
 #define SD_CARD_DET_PIN GET_PIN(D, 3)
+#define SD_CARD_MOUNT_PATH "/sdcard"
 
 static struct rt_thread sd_card_thread
     __attribute__((section(".ccm.cpu"), aligned(8)));
@@ -37,6 +38,11 @@ static rt_uint8_t sd_card_stack[THREAD_STACK_SIZE]
 
 extern int rt_hw_sdio_init(void);
 
+/**
+ * @brief 挂载板载 SD 卡文件系统。
+ *
+ * @return RT_EOK 表示挂载成功，RT_ERROR 表示设备不存在或挂载失败。
+ */
 int onboard_sdcard_mount(void)
 {
     static rt_device_t device;
@@ -52,24 +58,29 @@ int onboard_sdcard_mount(void)
 	
     if (device != RT_NULL)
     {
-        if (dfs_mount("sd0", "/", "elm", 0, 0) == RT_EOK)
+        if (dfs_mount("sd0", SD_CARD_MOUNT_PATH, "elm", 0, 0) == RT_EOK)
         {
-            LOG_I("SD card mount to '/'");
+            LOG_I("SD card mount to '%s'", SD_CARD_MOUNT_PATH);
             return RT_EOK;
         }
-        LOG_E("SD card mount to '/' failed!");
+        LOG_E("SD card mount to '%s' failed!", SD_CARD_MOUNT_PATH);
         return RT_ERROR;
     }
-	return 0;
+    return RT_ERROR;
 }
 
+/**
+ * @brief 卸载板载 SD 卡文件系统。
+ *
+ * @return RT_EOK 表示卸载成功，RT_ERROR 表示卸载失败。
+ */
 int onboard_sdcard_unmount(void)
 {
     static rt_device_t device;
 
     device = rt_device_find("sd0");
 
-    if (dfs_unmount("/") == RT_EOK)
+    if (dfs_unmount(SD_CARD_MOUNT_PATH) == RT_EOK)
     {
         LOG_I("SD card unmount success");
         rt_thread_mdelay(200);
