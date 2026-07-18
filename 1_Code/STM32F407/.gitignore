@@ -4,6 +4,7 @@
 *.elf
 *.bin
 *.hex
+*.uf2
 *.axf
 *.exe
 *.pdb
@@ -34,6 +35,8 @@ dist
 rt-studio-project
 cconfig.h
 GPUCache
+tools/lv_font_conv/node_modules/
+tools/lv_font_conv/.npm-cache/
 
 #cscope files
 cscope.*
