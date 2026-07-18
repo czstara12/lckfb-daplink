@@ -34,7 +34,6 @@ extern lv_indev_t *indev;
 extern char choose_device_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
 extern char choose_firmware_bin_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
 
-extern void ui_INIT_screen_del(void);
 extern void ui_VoltAmmeter_screen_del(void);
 extern void ui_DAPLINK_screen_del(void);
 extern void ui_OFFLINE_DOWNLOAD_screen_del(void);
@@ -407,8 +406,6 @@ void cb_loadedMenu(lv_event_t * e)
 {
 	// Your code here
 	lv_indev_set_group(indev, menu_group);
-    ui_INIT_screen_del();
-	
 	/* 查找设备 */
     pwm_dev = (struct rt_device_pwm *)rt_device_find(PWM_DEV_NAME);
 }

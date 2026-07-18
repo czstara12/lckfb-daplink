@@ -15,33 +15,18 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 
-void ZOOM_LOGO_Animation(lv_obj_t * TargetObject, int delay);
-void SHOW_SLOGAN_Animation(lv_obj_t * TargetObject, int delay);
 void Title_Down_Animation(lv_obj_t * TargetObject, int delay);
 void DAPLINK_HOME_UP_Animation(lv_obj_t * TargetObject, int delay);
 void pwmKeyboardup_Animation(lv_obj_t * TargetObject, int delay);
 void pwmKeyboarddown_Animation(lv_obj_t * TargetObject, int delay);
 void pwmInfoLeftToShow_Animation(lv_obj_t * TargetObject, int delay);
 void pwmInfoShowToRight_Animation(lv_obj_t * TargetObject, int delay);
-void ZOOM_LCSC_Animation(lv_obj_t * TargetObject, int delay);
-void LOGO_TITLE_DOWN_Animation(lv_obj_t * TargetObject, int delay);
-void LOGO_WEBSITE_LEFT_Animation(lv_obj_t * TargetObject, int delay);
 void DAC_KEYBOARD_UP_Animation(lv_obj_t * TargetObject, int delay);
 void DAC_KEYBOARD_DOWN_Animation(lv_obj_t * TargetObject, int delay);
 void DAC_PANEL_UP_Animation(lv_obj_t * TargetObject, int delay);
 void DAC_PANEL_DOWN_Animation(lv_obj_t * TargetObject, int delay);
 void ENLARGE_MENU_OBJ_Animation(lv_obj_t * TargetObject, int delay);
 void DISLARGE_MENU_OBJ_Animation(lv_obj_t * TargetObject, int delay);
-// SCREEN: ui_INIT
-void ui_INIT_screen_init(void);
-void ui_event_INIT(lv_event_t * e);
-extern lv_obj_t * ui_INIT;
-extern lv_obj_t * ui_infoTitle;
-extern lv_obj_t * ui_slogan;
-extern lv_obj_t * ui_logoAndTextContainer;
-extern lv_obj_t * ui_LogoLite;
-extern lv_obj_t * ui_LogoTitle;
-extern lv_obj_t * ui_LogoWebsite;
 // SCREEN: ui_Menu
 void ui_Menu_screen_init(void);
 void ui_event_Menu(lv_event_t * e);
@@ -68,11 +53,6 @@ extern lv_obj_t * ui_menuDACOutputL;
 void ui_event_menuSDCardB(lv_event_t * e);
 extern lv_obj_t * ui_menuSDCardB;
 extern lv_obj_t * ui_menuSDCardL;
-extern lv_obj_t * ui_logoAndTextContainer2;
-extern lv_obj_t * ui_LogoLite2;
-extern lv_obj_t * ui_LogoTitle2;
-extern lv_obj_t * ui_LogoWebsite2;
-
 void ui_event_menuAboutB(lv_event_t * e);
 extern lv_obj_t * ui_menuAboutB;
 extern lv_obj_t * ui_menuAboutL;

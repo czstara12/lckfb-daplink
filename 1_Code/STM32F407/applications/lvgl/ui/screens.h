@@ -17,8 +17,7 @@
 #include "rtthread.h"
 
 enum CURRENT_SCREEN {
-    SCREEN_INIT = 1,
-    SCREEN_MENU,
+    SCREEN_MENU = 1,
     SCREEN_DAPLINK,
     SCREEN_OFFLINE_DOWNLOAD,
     SCREEN_VOLT_AMMETER,

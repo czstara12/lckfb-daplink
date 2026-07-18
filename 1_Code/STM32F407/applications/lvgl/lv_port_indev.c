@@ -129,6 +129,7 @@ void lv_port_indev_init(void)
     indev_drv.read_cb = lv_port_indev_read_keypad;
 
     indev = lv_indev_drv_register(&indev_drv);
+    lv_indev_set_group(indev, menu_group);
 
     lv_group_set_editing(menu_group, false);   //导航模式
     lv_group_add_obj(menu_group,ui_menuDAPLINKB);

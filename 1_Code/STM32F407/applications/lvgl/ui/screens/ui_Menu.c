@@ -15,9 +15,9 @@ void ui_Menu_screen_init(void)
 
     ui_menuPanel = lv_obj_create(ui_Menu);
     lv_obj_set_width(ui_menuPanel, lv_pct(100));
-    lv_obj_set_height(ui_menuPanel, lv_pct(71));
+    lv_obj_set_height(ui_menuPanel, lv_pct(100));
     lv_obj_set_x(ui_menuPanel, 0);
-    lv_obj_set_y(ui_menuPanel, 29);
+    lv_obj_set_y(ui_menuPanel, 0);
     lv_obj_set_align(ui_menuPanel, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_menuPanel, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_menuPanel, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
@@ -198,47 +198,6 @@ void ui_Menu_screen_init(void)
     lv_obj_set_height(ui_menuSDCardL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuSDCardL, LV_ALIGN_CENTER);
     lv_label_set_text(ui_menuSDCardL, "文件浏览器");
-
-    ui_logoAndTextContainer2 = lv_obj_create(ui_Menu);
-    lv_obj_remove_style_all(ui_logoAndTextContainer2);
-    lv_obj_set_height(ui_logoAndTextContainer2, 57);
-    lv_obj_set_width(ui_logoAndTextContainer2, lv_pct(98));
-    lv_obj_set_x(ui_logoAndTextContainer2, 0);
-    lv_obj_set_y(ui_logoAndTextContainer2, 5);
-    lv_obj_set_align(ui_logoAndTextContainer2, LV_ALIGN_TOP_MID);
-    lv_obj_clear_flag(ui_logoAndTextContainer2, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_LogoLite2 = lv_obj_create(ui_logoAndTextContainer2);
-    lv_obj_remove_style_all(ui_LogoLite2);
-    lv_obj_set_size(ui_LogoLite2, 79, 57);
-    lv_obj_set_align(ui_LogoLite2, LV_ALIGN_LEFT_MID);
-    lv_obj_set_style_bg_opa(ui_LogoLite2, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_LogoLite2, lv_color_hex(0x0091E6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_LogoLite2, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_LogoLite2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_clear_flag(ui_LogoLite2, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_LogoTitle2 = lv_label_create(ui_logoAndTextContainer2);
-    lv_obj_set_width(ui_LogoTitle2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LogoTitle2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_LogoTitle2, -4);
-    lv_obj_set_y(ui_LogoTitle2, 0);
-    lv_obj_set_align(ui_LogoTitle2, LV_ALIGN_TOP_RIGHT);
-    lv_label_set_text(ui_LogoTitle2, "立创开发板");
-    lv_obj_set_style_text_color(ui_LogoTitle2, lv_color_hex(0x0091E6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_LogoTitle2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_LogoTitle2, &ui_font_PuHuiTi30, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_LogoWebsite2 = lv_label_create(ui_logoAndTextContainer2);
-    lv_obj_set_width(ui_LogoWebsite2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LogoWebsite2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_LogoWebsite2, -13);
-    lv_obj_set_y(ui_LogoWebsite2, -2);
-    lv_obj_set_align(ui_LogoWebsite2, LV_ALIGN_BOTTOM_RIGHT);
-    lv_label_set_text(ui_LogoWebsite2, "WWW.LCKFB.COM");
-    lv_obj_set_style_text_color(ui_LogoWebsite2, lv_color_hex(0x0091E6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_LogoWebsite2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_LogoWebsite2, &ui_font_jetbrainsMonoMedium16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_menuAboutB = lv_btn_create(ui_menuPanel);
     lv_obj_set_height(ui_menuAboutB, 40);
