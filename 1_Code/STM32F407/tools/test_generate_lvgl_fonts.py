@@ -22,9 +22,10 @@ class ScanSymbolsTest(unittest.TestCase):
             lv_label_set_text(other, "不应收录");
             """,
             'lv_label_set_text(ui_label, "动态补充");',
+            '_ui_label_set_property(ui_label, _UI_LABEL_PROPERTY_TEXT, "DISABLE");',
         ]
 
-        self.assertEqual(set("中文 A动态补充"), scan_symbols(sources)["ui_font_test"])
+        self.assertEqual(set("中文 A动态补充DISABLE"), scan_symbols(sources)["ui_font_test"])
 
     def test_reports_missing_generated_glyph(self):
         generated = '/* U+0041 "A" */'

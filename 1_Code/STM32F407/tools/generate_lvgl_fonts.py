@@ -19,23 +19,23 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 UI_DIR = ROOT / "applications/lvgl/ui"
 FONT_DIR = UI_DIR / "fonts"
-FONT_INPUT_DIR = ROOT / "packages/LVGL-v8.3.11/scripts/built_in_font"
+FONT_INPUT_DIR = ROOT / "tools/lv_font_conv/fonts"
 LOCAL_CONVERTER = ROOT / "tools/lv_font_conv/node_modules/.bin/lv_font_conv"
 
 # ponytail: 缓冲区动态文本无法静态反推；格式变化时在每项末尾补充运行时字符。
 FONT_SPECS = {
-    "ui_font_jetbrainsMonoMedium16": ("Montserrat-Medium.ttf", 16, 4, " 0123456789.-VAmW"),
+    "ui_font_jetbrainsMonoMedium16": ("JetBrainsMono-Medium.ttf", 16, 4, " 0123456789.-VAmW"),
     "ui_font_jetbrainsMonoMedium20": (
-        "Montserrat-Medium.ttf",
+        "JetBrainsMono-Medium.ttf",
         20,
         4,
         " 0123456789.,:ABCDEFJanFebMarAprMayJunJulAugSepOctNovDecVersionx",
     ),
-    "ui_font_jetbrainsMonoMedium25": ("Montserrat-Medium.ttf", 25, 4, " 0123456789.-%KHMhzVAmW"),
-    "ui_font_PuHuiTi": ("SimSun.woff", 21, 1, ""),
-    "ui_font_PuhuiTi20": ("SimSun.woff", 16, 1, ""),
-    "ui_font_PuHuiTi25": ("SimSun.woff", 25, 1, ""),
-    "ui_font_PuHuiTi30": ("SimSun.woff", 30, 1, ""),
+    "ui_font_jetbrainsMonoMedium25": ("JetBrainsMono-Medium.ttf", 25, 4, " 0123456789.-%KHMhzVAmW"),
+    "ui_font_PuHuiTi": ("Alibaba-PuHuiTi-Medium.ttf", 21, 1, ""),
+    "ui_font_PuhuiTi20": ("Alibaba-PuHuiTi-Medium.ttf", 16, 1, ""),
+    "ui_font_PuHuiTi25": ("Alibaba-PuHuiTi-Medium.ttf", 25, 1, ""),
+    "ui_font_PuHuiTi30": ("Alibaba-PuHuiTi-Medium.ttf", 30, 1, ""),
 }
 
 CREATE_RE = re.compile(r"\b(\w+)\s*=\s*lv_\w+_create\s*\(\s*(\w+)")
@@ -44,6 +44,11 @@ TEXT_RE = re.compile(
     r"\b(?:lv_label_set_text|lv_checkbox_set_text|lv_dropdown_set_options|"
     r"lv_roller_set_options|lv_textarea_set_placeholder_text|lv_tabview_add_tab)"
     r"\s*\(\s*(\w+)\s*,\s*((?:\"(?:\\.|[^\"\\])*\"\s*)+)",
+    re.DOTALL,
+)
+PROPERTY_TEXT_RE = re.compile(
+    r"\b_ui_label_set_property\s*\(\s*(\w+)\s*,\s*"
+    r"_UI_LABEL_PROPERTY_TEXT\s*,\s*((?:\"(?:\\.|[^\"\\])*\"\s*)+)",
     re.DOTALL,
 )
 STRING_RE = re.compile(r'"(?:\\.|[^"\\])*"', re.DOTALL)
@@ -120,7 +125,7 @@ def scan_symbols(sources):
         fonts = dict(global_fonts)
         fonts.update(FONT_RE.findall(source))
         symbols.update((font, symbols.get(font, set())) for font in fonts.values())
-        for obj, expression in TEXT_RE.findall(source):
+        for obj, expression in TEXT_RE.findall(source) + PROPERTY_TEXT_RE.findall(source):
             font = _resolve_font(obj, fonts, parents)
             if font:
                 symbols.setdefault(font, set()).update(_decode_strings(expression))
