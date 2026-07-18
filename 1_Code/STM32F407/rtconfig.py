@@ -1,4 +1,5 @@
 import os
+import sys
 
 # toolchains options
 ARCH='arm'
@@ -209,6 +210,8 @@ elif PLATFORM == 'llvm-arm':
     CXXFLAGS = CFLAGS 
 
     POST_ACTION = OBJCPY + ' -O binary $TARGET rtthread.bin\n' + SIZE + ' $TARGET \n'
+
+POST_ACTION += '\n"' + sys.executable + '" tools/bin2uf2.py rtthread.bin rtthread.uf2\n'
 
 def dist_handle(BSP_ROOT, dist_dir):
     import sys
