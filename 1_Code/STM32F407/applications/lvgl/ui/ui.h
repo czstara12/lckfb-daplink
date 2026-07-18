@@ -276,7 +276,6 @@ LV_FONT_DECLARE(ui_font_PuHuiTi);
 LV_FONT_DECLARE(ui_font_PuhuiTi20);
 LV_FONT_DECLARE(ui_font_PuHuiTi25);
 LV_FONT_DECLARE(ui_font_PuHuiTi30);
-LV_FONT_DECLARE(ui_font_PuHuiTi35);
 
 
 

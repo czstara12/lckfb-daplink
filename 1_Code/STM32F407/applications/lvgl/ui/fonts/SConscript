@@ -3,7 +3,8 @@ import os
 
 cwd = GetCurrentDir()
 group = []
-src = Glob('*.c')
+with open(os.path.join(cwd, '..', 'filelist.txt')) as filelist:
+    src = [os.path.join(cwd, '..', path.strip()) for path in filelist if path.startswith('fonts/')]
 CPPPATH = [cwd]
 
 list = os.listdir(cwd)

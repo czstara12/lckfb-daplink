@@ -18,4 +18,3 @@ fonts/ui_font_PuHuiTi.c
 fonts/ui_font_PuhuiTi20.c
 fonts/ui_font_PuHuiTi25.c
 fonts/ui_font_PuHuiTi30.c
-fonts/ui_font_PuHuiTi35.c

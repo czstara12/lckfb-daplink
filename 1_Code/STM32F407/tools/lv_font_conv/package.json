@@ -1,0 +1,12 @@
+{
+  "name": "lckfb-lvgl-font-tools",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "origin": "Generated for this repository's LVGL font optimization.",
+  "createdBy": "gpt-5",
+  "signedOffBy": "xcwynya",
+  "devDependencies": {
+    "lv_font_conv": "1.5.3"
+  }
+}
