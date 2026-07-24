@@ -9,14 +9,7 @@
 ///////////////////// VARIABLES ////////////////////
 void Title_Down_Animation(lv_obj_t * TargetObject, int delay);
 void DAPLINK_HOME_UP_Animation(lv_obj_t * TargetObject, int delay);
-void pwmKeyboardup_Animation(lv_obj_t * TargetObject, int delay);
-void pwmKeyboarddown_Animation(lv_obj_t * TargetObject, int delay);
 void pwmInfoLeftToShow_Animation(lv_obj_t * TargetObject, int delay);
-void pwmInfoShowToRight_Animation(lv_obj_t * TargetObject, int delay);
-void DAC_KEYBOARD_UP_Animation(lv_obj_t * TargetObject, int delay);
-void DAC_KEYBOARD_DOWN_Animation(lv_obj_t * TargetObject, int delay);
-void DAC_PANEL_UP_Animation(lv_obj_t * TargetObject, int delay);
-void DAC_PANEL_DOWN_Animation(lv_obj_t * TargetObject, int delay);
 void ENLARGE_MENU_OBJ_Animation(lv_obj_t * TargetObject, int delay);
 void DISLARGE_MENU_OBJ_Animation(lv_obj_t * TargetObject, int delay);
 
@@ -206,9 +199,6 @@ lv_obj_t * ui_PulseContainer;
 lv_obj_t * ui_PulseLabel;
 void ui_event_TextAreaPulse(lv_event_t * e);
 lv_obj_t * ui_TextAreaPulse;
-lv_obj_t * ui_pwmKeyboardContainer;
-void ui_event_PWMKeyboard(lv_event_t * e);
-lv_obj_t * ui_PWMKeyboard;
 lv_obj_t * ui_pwmInfoContainer;
 lv_obj_t * ui_PWMfrequencyLabelInfo;
 lv_obj_t * ui_PWMDutyCyclelabelInfo;
@@ -225,8 +215,6 @@ void ui_event_returnDACHomeB(lv_event_t * e);
 lv_obj_t * ui_returnDACHomeB;
 lv_obj_t * ui_returnDACHomeL;
 lv_obj_t * ui_DACContainer;
-void ui_event_KeyboardDAC(lv_event_t * e);
-lv_obj_t * ui_KeyboardDAC;
 lv_obj_t * ui_DACContainerPanel;
 lv_obj_t * ui_OutputWaveContainer;
 lv_obj_t * ui_OutputWaveLabel;
@@ -309,50 +297,6 @@ void DAPLINK_HOME_UP_Animation(lv_obj_t * TargetObject, int delay)
     lv_anim_start(&PropertyAnimation_0);
 
 }
-void pwmKeyboardup_Animation(lv_obj_t * TargetObject, int delay)
-{
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
-    PropertyAnimation_0_user_data->target = TargetObject;
-    PropertyAnimation_0_user_data->val = -1;
-    lv_anim_t PropertyAnimation_0;
-    lv_anim_init(&PropertyAnimation_0);
-    lv_anim_set_time(&PropertyAnimation_0, 300);
-    lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
-    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_y);
-    lv_anim_set_values(&PropertyAnimation_0, 106, 0);
-    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_overshoot);
-    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
-    lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
-    lv_anim_set_playback_time(&PropertyAnimation_0, 0);
-    lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_early_apply(&PropertyAnimation_0, false);
-    lv_anim_start(&PropertyAnimation_0);
-
-}
-void pwmKeyboarddown_Animation(lv_obj_t * TargetObject, int delay)
-{
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
-    PropertyAnimation_0_user_data->target = TargetObject;
-    PropertyAnimation_0_user_data->val = -1;
-    lv_anim_t PropertyAnimation_0;
-    lv_anim_init(&PropertyAnimation_0);
-    lv_anim_set_time(&PropertyAnimation_0, 300);
-    lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
-    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_y);
-    lv_anim_set_values(&PropertyAnimation_0, 0, 106);
-    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_overshoot);
-    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
-    lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
-    lv_anim_set_playback_time(&PropertyAnimation_0, 0);
-    lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_early_apply(&PropertyAnimation_0, false);
-    lv_anim_start(&PropertyAnimation_0);
-
-}
 void pwmInfoLeftToShow_Animation(lv_obj_t * TargetObject, int delay)
 {
     ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
@@ -364,116 +308,6 @@ void pwmInfoLeftToShow_Animation(lv_obj_t * TargetObject, int delay)
     lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
     lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_x);
     lv_anim_set_values(&PropertyAnimation_0, -240, 0);
-    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_overshoot);
-    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
-    lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
-    lv_anim_set_playback_time(&PropertyAnimation_0, 0);
-    lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_early_apply(&PropertyAnimation_0, false);
-    lv_anim_start(&PropertyAnimation_0);
-
-}
-void pwmInfoShowToRight_Animation(lv_obj_t * TargetObject, int delay)
-{
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
-    PropertyAnimation_0_user_data->target = TargetObject;
-    PropertyAnimation_0_user_data->val = -1;
-    lv_anim_t PropertyAnimation_0;
-    lv_anim_init(&PropertyAnimation_0);
-    lv_anim_set_time(&PropertyAnimation_0, 200);
-    lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
-    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_x);
-    lv_anim_set_values(&PropertyAnimation_0, 0, 240);
-    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_ease_out);
-    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
-    lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
-    lv_anim_set_playback_time(&PropertyAnimation_0, 0);
-    lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_early_apply(&PropertyAnimation_0, false);
-    lv_anim_start(&PropertyAnimation_0);
-
-}
-void DAC_KEYBOARD_UP_Animation(lv_obj_t * TargetObject, int delay)
-{
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
-    PropertyAnimation_0_user_data->target = TargetObject;
-    PropertyAnimation_0_user_data->val = -1;
-    lv_anim_t PropertyAnimation_0;
-    lv_anim_init(&PropertyAnimation_0);
-    lv_anim_set_time(&PropertyAnimation_0, 200);
-    lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
-    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_y);
-    lv_anim_set_values(&PropertyAnimation_0, 60, -26);
-    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_overshoot);
-    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
-    lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
-    lv_anim_set_playback_time(&PropertyAnimation_0, 0);
-    lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_early_apply(&PropertyAnimation_0, false);
-    lv_anim_start(&PropertyAnimation_0);
-
-}
-void DAC_KEYBOARD_DOWN_Animation(lv_obj_t * TargetObject, int delay)
-{
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
-    PropertyAnimation_0_user_data->target = TargetObject;
-    PropertyAnimation_0_user_data->val = -1;
-    lv_anim_t PropertyAnimation_0;
-    lv_anim_init(&PropertyAnimation_0);
-    lv_anim_set_time(&PropertyAnimation_0, 200);
-    lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
-    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_y);
-    lv_anim_set_values(&PropertyAnimation_0, -26, 60);
-    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_overshoot);
-    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
-    lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
-    lv_anim_set_playback_time(&PropertyAnimation_0, 0);
-    lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_early_apply(&PropertyAnimation_0, false);
-    lv_anim_start(&PropertyAnimation_0);
-
-}
-void DAC_PANEL_UP_Animation(lv_obj_t * TargetObject, int delay)
-{
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
-    PropertyAnimation_0_user_data->target = TargetObject;
-    PropertyAnimation_0_user_data->val = -1;
-    lv_anim_t PropertyAnimation_0;
-    lv_anim_init(&PropertyAnimation_0);
-    lv_anim_set_time(&PropertyAnimation_0, 200);
-    lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
-    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_height);
-    lv_anim_set_values(&PropertyAnimation_0, 190, 135);
-    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_overshoot);
-    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
-    lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
-    lv_anim_set_playback_time(&PropertyAnimation_0, 0);
-    lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
-    lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
-    lv_anim_set_early_apply(&PropertyAnimation_0, false);
-    lv_anim_start(&PropertyAnimation_0);
-
-}
-void DAC_PANEL_DOWN_Animation(lv_obj_t * TargetObject, int delay)
-{
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
-    PropertyAnimation_0_user_data->target = TargetObject;
-    PropertyAnimation_0_user_data->val = -1;
-    lv_anim_t PropertyAnimation_0;
-    lv_anim_init(&PropertyAnimation_0);
-    lv_anim_set_time(&PropertyAnimation_0, 200);
-    lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
-    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_height);
-    lv_anim_set_values(&PropertyAnimation_0, 135, 190);
     lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_overshoot);
     lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
     lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
@@ -936,11 +770,6 @@ void ui_event_TextAreaPeriod(lv_event_t * e)
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         cb_PWMperiodValueChange(e);
     }
-    if(event_code == LV_EVENT_KEY &&  lv_event_get_key(e) == LV_KEY_ENTER) {
-        _ui_keyboard_set_target(ui_PWMKeyboard,  ui_TextAreaPeriod);
-        pwmKeyboardup_Animation(ui_pwmKeyboardContainer, 0);
-        cb_textAreaPeriodKeyEnter(e);
-    }
 }
 void ui_event_TextAreaPulse(lv_event_t * e)
 {
@@ -948,25 +777,6 @@ void ui_event_TextAreaPulse(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         cb_PWMPulseValueChange(e);
-    }
-    if(event_code == LV_EVENT_KEY &&  lv_event_get_key(e) == LV_KEY_ENTER) {
-        _ui_keyboard_set_target(ui_PWMKeyboard,  ui_TextAreaPulse);
-        pwmKeyboardup_Animation(ui_pwmKeyboardContainer, 0);
-        cb_textAreaPulseKeyEnter(e);
-    }
-}
-void ui_event_PWMKeyboard(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        cb_PWMkeyboardValueChanged(e);
-    }
-    if(event_code == LV_EVENT_READY) {
-        cb_PWMkeyboardReady(e);
-    }
-    if(event_code == LV_EVENT_CANCEL) {
-        cb_PWMkeyboardCancel(e);
     }
 }
 void ui_event_DACoutput(lv_event_t * e)
@@ -992,17 +802,6 @@ void ui_event_returnDACHomeB(lv_event_t * e)
         clicked_DAC_to_menu(e);
     }
 }
-void ui_event_KeyboardDAC(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_READY) {
-        cb_DACkeyboardReady(e);
-    }
-    if(event_code == LV_EVENT_CANCEL) {
-        cb_DACkeyboardCancel(e);
-    }
-}
 void ui_event_OutputWaveDP(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -1015,12 +814,6 @@ void ui_event_TextAreaWaveFrequencyVoltage(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_KEY &&  lv_event_get_key(e) == LV_KEY_ENTER) {
-        DAC_PANEL_UP_Animation(ui_DACContainerPanel, 0);
-        DAC_KEYBOARD_UP_Animation(ui_KeyboardDAC, 0);
-        _ui_keyboard_set_target(ui_KeyboardDAC,  ui_TextAreaWaveFrequencyVoltage);
-        cb_DACFrequencyTextareaEnter(e);
-    }
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         cb_DACFrequencyTextareaValueChanged(e);
     }
@@ -1029,12 +822,6 @@ void ui_event_TextAreaDACVoltage(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_KEY &&  lv_event_get_key(e) == LV_KEY_ENTER) {
-        DAC_PANEL_UP_Animation(ui_DACContainerPanel, 0);
-        DAC_KEYBOARD_UP_Animation(ui_KeyboardDAC, 0);
-        _ui_keyboard_set_target(ui_KeyboardDAC,  ui_TextAreaDACVoltage);
-        cb_DACVoltageTextareaEnter(e);
-    }
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         cb_DACVoltageTextareaValueChanged(e);
     }
@@ -1045,12 +832,6 @@ void ui_event_DACSelfWave(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         cb_DACSelfWaveTextareaValueChanged(e);
-    }
-    if(event_code == LV_EVENT_KEY &&  lv_event_get_key(e) == LV_KEY_ENTER) {
-        DAC_PANEL_UP_Animation(ui_DACContainerPanel, 0);
-        DAC_KEYBOARD_UP_Animation(ui_KeyboardDAC, 0);
-        _ui_keyboard_set_target(ui_KeyboardDAC,  ui_DACSelfWave);
-        cb_DACSelfWaveTextareaEnter(e);
     }
 }
 

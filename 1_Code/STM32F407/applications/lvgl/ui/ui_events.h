@@ -43,23 +43,13 @@ void cb_UartMonitorParityValueChange(lv_event_t * e);
 void cb_PWMoutputScreenLoaded(lv_event_t * e);
 void clicked_PWMoutput_to_menu(lv_event_t * e);
 void cb_PWMperiodValueChange(lv_event_t * e);
-void cb_textAreaPeriodKeyEnter(lv_event_t * e);
 void cb_PWMPulseValueChange(lv_event_t * e);
-void cb_textAreaPulseKeyEnter(lv_event_t * e);
-void cb_PWMkeyboardValueChanged(lv_event_t * e);
-void cb_PWMkeyboardReady(lv_event_t * e);
-void cb_PWMkeyboardCancel(lv_event_t * e);
 void cb_DACoutputScreenLoaded(lv_event_t * e);
 void clicked_DAC_to_menu(lv_event_t * e);
-void cb_DACkeyboardReady(lv_event_t * e);
-void cb_DACkeyboardCancel(lv_event_t * e);
 void cb_DACWAVEDropdownChanged(lv_event_t * e);
-void cb_DACFrequencyTextareaEnter(lv_event_t * e);
 void cb_DACFrequencyTextareaValueChanged(lv_event_t * e);
-void cb_DACVoltageTextareaEnter(lv_event_t * e);
 void cb_DACVoltageTextareaValueChanged(lv_event_t * e);
 void cb_DACSelfWaveTextareaValueChanged(lv_event_t * e);
-void cb_DACSelfWaveTextareaEnter(lv_event_t * e);
 
 void cb_menutoAboutscreen(lv_event_t * e);
 	

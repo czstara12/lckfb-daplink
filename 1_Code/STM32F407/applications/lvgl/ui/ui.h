@@ -17,14 +17,7 @@ extern "C" {
 
 void Title_Down_Animation(lv_obj_t * TargetObject, int delay);
 void DAPLINK_HOME_UP_Animation(lv_obj_t * TargetObject, int delay);
-void pwmKeyboardup_Animation(lv_obj_t * TargetObject, int delay);
-void pwmKeyboarddown_Animation(lv_obj_t * TargetObject, int delay);
 void pwmInfoLeftToShow_Animation(lv_obj_t * TargetObject, int delay);
-void pwmInfoShowToRight_Animation(lv_obj_t * TargetObject, int delay);
-void DAC_KEYBOARD_UP_Animation(lv_obj_t * TargetObject, int delay);
-void DAC_KEYBOARD_DOWN_Animation(lv_obj_t * TargetObject, int delay);
-void DAC_PANEL_UP_Animation(lv_obj_t * TargetObject, int delay);
-void DAC_PANEL_DOWN_Animation(lv_obj_t * TargetObject, int delay);
 void ENLARGE_MENU_OBJ_Animation(lv_obj_t * TargetObject, int delay);
 void DISLARGE_MENU_OBJ_Animation(lv_obj_t * TargetObject, int delay);
 // SCREEN: ui_Menu
@@ -202,9 +195,6 @@ extern lv_obj_t * ui_PulseContainer;
 extern lv_obj_t * ui_PulseLabel;
 void ui_event_TextAreaPulse(lv_event_t * e);
 extern lv_obj_t * ui_TextAreaPulse;
-extern lv_obj_t * ui_pwmKeyboardContainer;
-void ui_event_PWMKeyboard(lv_event_t * e);
-extern lv_obj_t * ui_PWMKeyboard;
 extern lv_obj_t * ui_pwmInfoContainer;
 extern lv_obj_t * ui_PWMfrequencyLabelInfo;
 extern lv_obj_t * ui_PWMDutyCyclelabelInfo;
@@ -219,8 +209,6 @@ void ui_event_returnDACHomeB(lv_event_t * e);
 extern lv_obj_t * ui_returnDACHomeB;
 extern lv_obj_t * ui_returnDACHomeL;
 extern lv_obj_t * ui_DACContainer;
-void ui_event_KeyboardDAC(lv_event_t * e);
-extern lv_obj_t * ui_KeyboardDAC;
 extern lv_obj_t * ui_DACContainerPanel;
 extern lv_obj_t * ui_OutputWaveContainer;
 extern lv_obj_t * ui_OutputWaveLabel;

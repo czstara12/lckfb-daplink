@@ -7,7 +7,6 @@
 #include "screens.h"
 
 extern lv_group_t *dac_output_group_main;
-extern lv_group_t *dac_output_group_keyboard;
 
 void ui_DACoutput_add_group(void)
 {
@@ -20,12 +19,6 @@ void ui_DACoutput_add_group(void)
     lv_group_set_editing(dac_output_group_main, false);   //导航模式
 }
 
-void ui_DACoutput_keyboard_add_group(void)
-{
-    lv_group_add_obj(dac_output_group_keyboard, ui_KeyboardDAC);
-    lv_group_set_editing(dac_output_group_keyboard, false);
-}
-
 void ui_DACoutput_screen_init(void)
 {
     current_screen_set(SCREEN_DAC_OUTPUT);
@@ -35,12 +28,6 @@ void ui_DACoutput_screen_init(void)
         dac_output_group_main = lv_group_create();
         lv_group_set_editing(dac_output_group_main, false);   //导航模式
     }
-    if(dac_output_group_keyboard == NULL)
-    {
-        dac_output_group_keyboard = lv_group_create();
-        lv_group_set_editing(dac_output_group_keyboard, false);
-    }
-
     ui_DACoutput = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_DACoutput, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
@@ -91,14 +78,6 @@ void ui_DACoutput_screen_init(void)
     lv_obj_set_flex_flow(ui_DACContainer, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_DACContainer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_obj_clear_flag(ui_DACContainer, LV_OBJ_FLAG_CLICKABLE);      /// Flags
-
-    ui_KeyboardDAC = lv_keyboard_create(ui_DACoutput);
-    lv_keyboard_set_mode(ui_KeyboardDAC, LV_KEYBOARD_MODE_NUMBER);
-    lv_obj_set_height(ui_KeyboardDAC, 50);
-    lv_obj_set_width(ui_KeyboardDAC, lv_pct(100));
-    lv_obj_set_x(ui_KeyboardDAC, 0);
-    lv_obj_set_y(ui_KeyboardDAC, 60);
-    lv_obj_set_align(ui_KeyboardDAC, LV_ALIGN_BOTTOM_MID);
 
     ui_DACContainerPanel = lv_obj_create(ui_DACoutput);
     lv_obj_set_height(ui_DACContainerPanel, 190);
@@ -257,7 +236,6 @@ void ui_DACoutput_screen_init(void)
 
 
     lv_obj_add_event_cb(ui_returnDACHomeB, ui_event_returnDACHomeB, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_KeyboardDAC, ui_event_KeyboardDAC, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_OutputWaveDP, ui_event_OutputWaveDP, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_TextAreaWaveFrequencyVoltage, ui_event_TextAreaWaveFrequencyVoltage, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_TextAreaDACVoltage, ui_event_TextAreaDACVoltage, LV_EVENT_ALL, NULL);
@@ -265,7 +243,6 @@ void ui_DACoutput_screen_init(void)
     lv_obj_add_event_cb(ui_DACoutput, ui_event_DACoutput, LV_EVENT_ALL, NULL);
 
     ui_DACoutput_add_group();
-    ui_DACoutput_keyboard_add_group();
 
 }
 

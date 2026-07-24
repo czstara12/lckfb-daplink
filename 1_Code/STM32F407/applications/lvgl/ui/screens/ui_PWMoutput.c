@@ -8,7 +8,6 @@
 
 
 extern lv_group_t *pwm_output_group_main;
-extern lv_group_t *pwm_output_group_keyboard;
 
 void ui_PWMoutput_add_group(void)
 {
@@ -17,12 +16,6 @@ void ui_PWMoutput_add_group(void)
     lv_group_add_obj(pwm_output_group_main, ui_returnPWMHomeB);
 
     lv_group_set_editing(pwm_output_group_main, false);   //导航模式
-}
-
-void ui_PWMoutput_keyboard_add_group(void)
-{
-    lv_group_add_obj(pwm_output_group_keyboard, ui_PWMKeyboard);
-    lv_group_set_editing(pwm_output_group_main, false);
 }
 
 void ui_PWMoutput_screen_init(void)
@@ -34,12 +27,6 @@ void ui_PWMoutput_screen_init(void)
         pwm_output_group_main = lv_group_create();
         lv_group_set_editing(pwm_output_group_main, false);   //导航模式
     }
-    if(pwm_output_group_keyboard == NULL)
-    {
-        pwm_output_group_keyboard = lv_group_create();
-        lv_group_set_editing(pwm_output_group_keyboard, false);
-    }
-
     ui_PWMoutput = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_PWMoutput, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
@@ -164,21 +151,6 @@ void ui_PWMoutput_screen_init(void)
 
 
 
-    ui_pwmKeyboardContainer = lv_obj_create(ui_PWMContainer);
-    lv_obj_remove_style_all(ui_pwmKeyboardContainer);
-    lv_obj_set_height(ui_pwmKeyboardContainer, 80);
-    lv_obj_set_width(ui_pwmKeyboardContainer, lv_pct(100));
-    lv_obj_set_x(ui_pwmKeyboardContainer, 0);
-    lv_obj_set_y(ui_pwmKeyboardContainer, 106);
-    lv_obj_set_align(ui_pwmKeyboardContainer, LV_ALIGN_BOTTOM_MID);
-    lv_obj_clear_flag(ui_pwmKeyboardContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_PWMKeyboard = lv_keyboard_create(ui_pwmKeyboardContainer);
-    lv_keyboard_set_mode(ui_PWMKeyboard, LV_KEYBOARD_MODE_NUMBER);
-    lv_obj_set_height(ui_PWMKeyboard, 80);
-    lv_obj_set_width(ui_PWMKeyboard, lv_pct(100));
-    lv_obj_set_align(ui_PWMKeyboard, LV_ALIGN_CENTER);
-
     ui_pwmInfoContainer = lv_obj_create(ui_PWMContainer);
     lv_obj_remove_style_all(ui_pwmInfoContainer);
     lv_obj_set_height(ui_pwmInfoContainer, 60);
@@ -223,12 +195,9 @@ void ui_PWMoutput_screen_init(void)
     lv_obj_add_event_cb(ui_returnPWMHomeB, ui_event_returnPWMHomeB, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_TextAreaPeriod, ui_event_TextAreaPeriod, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_TextAreaPulse, ui_event_TextAreaPulse, LV_EVENT_ALL, NULL);
-    lv_keyboard_set_textarea(ui_PWMKeyboard, ui_TextAreaPeriod);
-    lv_obj_add_event_cb(ui_PWMKeyboard, ui_event_PWMKeyboard, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PWMoutput, ui_event_PWMoutput, LV_EVENT_ALL, NULL);
 
 	ui_PWMoutput_add_group();
-    ui_PWMoutput_keyboard_add_group();
 }
 
 void ui_PWMoutput_screen_del(void)

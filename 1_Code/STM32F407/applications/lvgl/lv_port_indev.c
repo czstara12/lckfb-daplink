@@ -18,8 +18,6 @@
 #include <rtdevice.h>
 #endif /* RT_USING_NANO */
 
-extern uint8_t is_current_in_keyboard_edit;
-
 #ifndef PIN_KEY_CENTER
 #define PIN_KEY_CENTER GET_PIN(A, 15)
 #endif
@@ -45,26 +43,12 @@ void lv_port_indev_read_keypad(struct _lv_indev_drv_t *indev_drv, lv_indev_data_
     uint8_t keyPressFlag=false;
     do{
         if (rt_pin_read(PIN_KEY_UP) == PIN_LOW){
-            if (is_current_in_keyboard_edit)
-            {
-                data->key = LV_KEY_UP;
-            }
-            else
-            {
-                data->key = LV_KEY_PREV;
-            }
+            data->key = LV_KEY_PREV;
             keyPressFlag = true;
             break;
         }
         if (rt_pin_read(PIN_KEY_DOWN) == PIN_LOW){
-            if (is_current_in_keyboard_edit)
-            {
-                data->key = LV_KEY_DOWN;
-            }
-            else
-            {
-                data->key = LV_KEY_NEXT;
-            }
+            data->key = LV_KEY_NEXT;
             keyPressFlag = true;
             break;
         }
@@ -99,9 +83,7 @@ lv_group_t *offline_download_group = NULL;
 lv_group_t *volt_ammeter_group_main = NULL;
 lv_group_t *uart_monitor_group_main = NULL;
 lv_group_t *pwm_output_group_main = NULL;
-lv_group_t *pwm_output_group_keyboard = NULL;
 lv_group_t *dac_output_group_main = NULL;
-lv_group_t *dac_output_group_keyboard = NULL;
 
 lv_group_t *about_group_main = NULL;
 

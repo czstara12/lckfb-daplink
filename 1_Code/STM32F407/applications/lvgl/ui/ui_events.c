@@ -22,9 +22,7 @@ extern lv_group_t *offline_download_group;
 extern lv_group_t *volt_ammeter_group_main;
 extern lv_group_t *uart_monitor_group_main;
 extern lv_group_t *pwm_output_group_main;
-extern lv_group_t *pwm_output_group_keyboard;
 extern lv_group_t *dac_output_group_main;
-extern lv_group_t *dac_output_group_keyboard;
 extern lv_group_t * about_group_main;
 
 rt_err_t rt_pwm_get(struct rt_device_pwm *device, struct rt_pwm_configuration *cfg);
@@ -41,8 +39,6 @@ extern void ui_UartMonitor_screen_del(void);
 extern void ui_PWMoutput_screen_del(void);
 extern void ui_DACoutput_screen_del(void);
 extern void ui_ABOUT_screen_del(void);
-
-uint8_t is_current_in_keyboard_edit = 0;
 
 //代表当前选择的文件路径是返回到哪里，0表示未初始化，1表示返回到芯片型号选择，2表示返回到选择固件。
 uint8_t current_path_return = 0;
@@ -670,58 +666,6 @@ void clicked_PWMoutput_to_menu(lv_event_t * e)
     current_screen_set(SCREEN_MENU);
 }
 
-void cb_PWMkeyboardValueChanged(lv_event_t * e)
-{
-	// Your code here
-}
-
-void cb_PWMkeyboardReady(lv_event_t * e)
-{
-	// Your code here
-    is_current_in_keyboard_edit = 0;
-    lv_indev_set_group(indev, pwm_output_group_main);
-    pwmInfoLeftToShow_Animation(ui_pwmInfoContainer, 0);
-    pwmKeyboarddown_Animation(ui_pwmKeyboardContainer, 100);
-}
-
-void cb_PWMkeyboardCancel(lv_event_t * e)
-{
-	// Your code here
-    is_current_in_keyboard_edit = 0;
-    lv_indev_set_group(indev, pwm_output_group_main);
-    pwmInfoLeftToShow_Animation(ui_pwmInfoContainer, 0);
-    pwmKeyboarddown_Animation(ui_pwmKeyboardContainer, 100);
-}
-
-void cb_textAreaPeriodKeyEnter(lv_event_t * e)
-{
-	// Your code here
-    lv_keyboard_t * _keyboard = (lv_keyboard_t *)ui_PWMKeyboard;
-    _keyboard->btnm.btn_id_sel = 0;
-
-    pwmInfoShowToRight_Animation(ui_pwmInfoContainer, 0);
-
-    is_current_in_keyboard_edit = 1;
-    lv_indev_set_group(indev, pwm_output_group_keyboard);
-    lv_group_focus_obj(ui_PWMKeyboard);
-    lv_group_set_editing(pwm_output_group_main, true);   //编辑模式
-
-}
-
-void cb_textAreaPulseKeyEnter(lv_event_t * e)
-{
-	// Your code here
-    lv_keyboard_t * _keyboard = (lv_keyboard_t *)ui_PWMKeyboard;
-    _keyboard->btnm.btn_id_sel = 0;
-
-    pwmInfoShowToRight_Animation(ui_pwmInfoContainer, 0);
-
-    is_current_in_keyboard_edit = 1;
-    lv_indev_set_group(indev, pwm_output_group_keyboard);
-    lv_group_focus_obj(ui_PWMKeyboard);
-    lv_group_set_editing(pwm_output_group_main, true);   //编辑模式
-}
-
 void cb_PWMoutputScreenLoaded(lv_event_t * e)
 {
 	// Your code here
@@ -745,24 +689,6 @@ void cb_PWMoutputScreenLoaded(lv_event_t * e)
 void cb_DACoutputScreenLoaded(lv_event_t * e)
 {
 	// Your code here
-}
-
-void cb_DACkeyboardReady(lv_event_t * e)
-{
-	// Your code here
-    is_current_in_keyboard_edit = 0;
-    lv_indev_set_group(indev, dac_output_group_main);
-    DAC_KEYBOARD_DOWN_Animation(ui_KeyboardDAC, 0);
-    DAC_PANEL_DOWN_Animation(ui_DACContainerPanel, 0);
-}
-
-void cb_DACkeyboardCancel(lv_event_t * e)
-{
-	// Your code here
-    is_current_in_keyboard_edit = 0;
-    lv_indev_set_group(indev, dac_output_group_main);
-    DAC_KEYBOARD_DOWN_Animation(ui_KeyboardDAC, 0);
-    DAC_PANEL_DOWN_Animation(ui_DACContainerPanel, 0);
 }
 
 //#include "bsp_dac.h"
@@ -859,50 +785,6 @@ void cb_DACSelfWaveTextareaValueChanged(lv_event_t * e)
     }
 
     rt_free(buffer);
-}
-
-void cb_DACFrequencyTextareaEnter(lv_event_t * e)
-{
-	// Your code here
-    lv_keyboard_t * _keyboard = (lv_keyboard_t *)ui_KeyboardDAC;
-    _keyboard->btnm.btn_id_sel = 0;
-
-    lv_group_focus_obj(ui_TextAreaWaveFrequencyVoltage);
-
-    is_current_in_keyboard_edit = 1;
-    lv_indev_set_group(indev, dac_output_group_keyboard);
-    lv_group_focus_obj(ui_KeyboardDAC);
-    lv_group_set_editing(dac_output_group_main, true);   //编辑模式
-}
-
-void cb_DACVoltageTextareaEnter(lv_event_t * e)
-{
-	// Your code here
-    lv_keyboard_t * _keyboard = (lv_keyboard_t *)ui_KeyboardDAC;
-    _keyboard->btnm.btn_id_sel = 0;
-
-    lv_group_focus_obj(ui_TextAreaDACVoltage);
-
-    is_current_in_keyboard_edit = 1;
-    lv_indev_set_group(indev, dac_output_group_keyboard);
-    lv_group_focus_obj(ui_KeyboardDAC);
-    lv_group_set_editing(dac_output_group_main, true);   //编辑模式
-}
-
-void cb_DACSelfWaveTextareaEnter(lv_event_t * e)
-{
-	// Your code here
-    lv_keyboard_t * _keyboard = (lv_keyboard_t *)ui_KeyboardDAC;
-    _keyboard->btnm.btn_id_sel = 0;
-
-    lv_textarea_del_char(ui_DACSelfWave);
-
-    lv_group_focus_obj(ui_DACSelfWave);
-
-    is_current_in_keyboard_edit = 1;
-    lv_indev_set_group(indev, dac_output_group_keyboard);
-    lv_group_focus_obj(ui_KeyboardDAC);
-    lv_group_set_editing(dac_output_group_main, true);   //编辑模式
 }
 
 void cb_DAPLINKScreenLoad(lv_event_t * e)

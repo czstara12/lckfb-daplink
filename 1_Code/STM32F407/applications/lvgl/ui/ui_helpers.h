@@ -50,8 +50,6 @@ void _ui_bar_increment(lv_obj_t * target, int val, int anm);
 
 void _ui_slider_increment(lv_obj_t * target, int val, int anm);
 
-void _ui_keyboard_set_target(lv_obj_t * keyboard, lv_obj_t * textarea);
-
 #define _UI_MODIFY_FLAG_ADD 0
 #define _UI_MODIFY_FLAG_REMOVE 1
 #define _UI_MODIFY_FLAG_TOGGLE 2
