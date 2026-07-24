@@ -134,8 +134,7 @@ struct uffs_dirSt {
 	} while(0)
 
 
-static int _dir_pool_data[sizeof(uffs_DIR) * MAX_DIR_HANDLE / sizeof(int)]
-	__attribute__((section(".ccm.cpu"), aligned(8)));
+static int _dir_pool_data[sizeof(uffs_DIR) * MAX_DIR_HANDLE / sizeof(int)];
 static uffs_Pool _dir_pool;
 static int _uffs_errno = 0;
 

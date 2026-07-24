@@ -24,8 +24,7 @@ struct dfs_vnode_mgr
     rt_list_t head[DFS_VNODE_HASH_NR];
 };
 
-static struct dfs_vnode_mgr dfs_fm
-    __attribute__((section(".ccm.cpu"), aligned(8)));
+static struct dfs_vnode_mgr dfs_fm;
 
 void dfs_fm_lock(void)
 {

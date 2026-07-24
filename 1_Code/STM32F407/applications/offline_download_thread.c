@@ -27,10 +27,9 @@
 
 
 rt_align(RT_ALIGN_SIZE)
-static char __ALIGN_BEGIN __attribute__((section(".ccm.cpu"))) offline_download_stack[4096];
+static char __ALIGN_BEGIN offline_download_stack[4096];
 
-static struct rt_thread offline_download
-    __attribute__((section(".ccm.cpu"), aligned(8)));
+static struct rt_thread offline_download;
 
 
 extern char choose_device_path[LV_FILE_EXPLORER_PATH_MAX_LEN];

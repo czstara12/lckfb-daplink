@@ -84,8 +84,41 @@ SECTIONS
     .data : AT (_sidata)
     {
         . = ALIGN(4);
-        /* This is used by the startup in order to initialize the .data secion */
         _sdata = . ;
+
+        *(.ram1.data)
+        *(.ram1.data.*)
+
+        . = ALIGN(4);
+        _edata = . ;
+    } >RAM1
+
+    .bss (NOLOAD) :
+    {
+        . = ALIGN(8);
+        __bss_start = .;
+        _sbss = .;
+
+        *(.ram1.bss)
+        *(.ram1.bss.*)
+
+        /* 大块静态缓冲区和 DMA 缓冲区显式保留在 RAM1。 */
+        *(.bss.buf_1.*)
+        *(.bss.cache_buf)
+        *(.bss.uart3_recv_buff)
+        *(.bss.gt_adc_val)
+        *(.bss.spi_dma_dummy_tx)
+        *(.bss.w25n01gv_page_buf)
+        . = ALIGN(8);
+        _ebss = .;
+        __bss_end = .;
+        _end = .;
+    } >RAM1
+
+    .ccm_data : AT (LOADADDR(.data) + SIZEOF(.data))
+    {
+        . = ALIGN(4);
+        _sccm_data = .;
 
         *(.data)
         *(.data.*)
@@ -97,36 +130,6 @@ SECTIONS
         PROVIDE(__dtors_end__ = .);
 
         . = ALIGN(4);
-        /* This is used by the startup in order to initialize the .data secion */
-        _edata = . ;
-    } >RAM1
-
-    .bss (NOLOAD) :
-    {
-        . = ALIGN(4);
-        /* This is used by the startup in order to initialize the .bss secion */
-        __bss_start = .;
-        _sbss = .;
-
-        *(.bss)
-        *(.bss.*)
-        *(COMMON)
-
-        *(.bss.init)
-
-        . = ALIGN(4);
-        _ebss = .;
-        __bss_end = .;
-    } > RAM1
-    _end = __bss_end;
-
-    .ccm_data : AT (LOADADDR(.data) + SIZEOF(.data))
-    {
-        . = ALIGN(4);
-        _sccm_data = .;
-        *(.TCM)
-        *(.TCM.*)
-        . = ALIGN(4);
         _eccm_data = .;
     } >RAM2
     _siccm_data = LOADADDR(.ccm_data);
@@ -135,8 +138,12 @@ SECTIONS
     {
         . = ALIGN(8);
         _sccm_bss = .;
-        *(.ccm)
-        *(.ccm.*)
+
+        *(.bss)
+        *(.bss.*)
+        *(COMMON)
+        *(.bss.init)
+
         . = ALIGN(8);
         _eccm_bss = .;
 

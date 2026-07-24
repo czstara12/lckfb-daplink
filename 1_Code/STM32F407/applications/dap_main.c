@@ -57,7 +57,7 @@
 
 #define USBD_WINUSB_DESC_SET_LEN (WINUSB_DESCRIPTOR_SET_HEADER_SIZE + USBD_WEBUSB_ENABLE * FUNCTION_SUBSET_LEN + USBD_BULK_ENABLE * FUNCTION_SUBSET_LEN)
 
-__ALIGN_BEGIN __attribute__((section (".TCM"))) uint8_t USBD_WinUSBDescriptorSetDescriptor[] = {
+__ALIGN_BEGIN __attribute__((section(".ram1.data"))) uint8_t USBD_WinUSBDescriptorSetDescriptor[] = {
     WBVAL(WINUSB_DESCRIPTOR_SET_HEADER_SIZE), /* wLength */
     WBVAL(WINUSB_SET_HEADER_DESCRIPTOR_TYPE), /* wDescriptorType */
     0x00, 0x00, 0x03, 0x06, /* >= Win 8.1 */  /* dwWindowsVersion*/
@@ -125,7 +125,7 @@ __ALIGN_BEGIN __attribute__((section (".TCM"))) uint8_t USBD_WinUSBDescriptorSet
                                USBD_WEBUSB_DESC_LEN * USBD_WEBUSB_ENABLE + \
                                USBD_WINUSB_DESC_LEN * USBD_WINUSB_ENABLE)
 
-__ALIGN_BEGIN __attribute__((section (".TCM"))) uint8_t USBD_BinaryObjectStoreDescriptor[] = {
+__ALIGN_BEGIN __attribute__((section(".ram1.data"))) uint8_t USBD_BinaryObjectStoreDescriptor[] = {
     0x05,                         /* bLength */
     0x0f,                         /* bDescriptorType */
     WBVAL(USBD_BOS_WTOTALLENGTH), /* wTotalLength */
@@ -159,7 +159,7 @@ __ALIGN_BEGIN __attribute__((section (".TCM"))) uint8_t USBD_BinaryObjectStoreDe
 #endif
 };
 
-static __attribute__((section (".TCM"))) uint8_t cmsisdap_descriptor[] = {
+static __attribute__((section(".ram1.data"))) uint8_t cmsisdap_descriptor[] = {
     USB_DEVICE_DESCRIPTOR_INIT(USB_2_1, 0xEF, 0x02, 0x01, USBD_VID, USBD_PID, 0x0100, 0x01),
     /* Configuration 0 */
     USB_CONFIG_DESCRIPTOR_INIT(USB_CONFIG_SIZE, INTF_NUM, 0x01, USB_CONFIG_BUS_POWERED, USBD_MAX_POWER),
@@ -302,9 +302,9 @@ volatile uint8_t config_uart_transfer = 0;
 #define UID_BASE        0x1FFF7A10UL           /*!< Unique device ID register base address */
 #define SERIAL_NUMBER_INDEX  214 // 序列号在数组中的起始索引
 
-static __attribute__((section(".ccm.cpu"))) USB_MEM_ALIGNX uint8_t uartrx_ringbuffer[CONFIG_UARTRX_RINGBUF_SIZE];
+static __attribute__((section(".ram1.bss"))) USB_MEM_ALIGNX uint8_t uartrx_ringbuffer[CONFIG_UARTRX_RINGBUF_SIZE];
 //给LVGL中的串口监视器使用的
-static __attribute__((section(".ccm.cpu"))) USB_MEM_ALIGNX uint8_t uartrx_ringbuffer_for_lvgl[CONFIG_UARTRX_RINGBUF_SIZE_FOR_LVGL];
+static USB_MEM_ALIGNX uint8_t uartrx_ringbuffer_for_lvgl[CONFIG_UARTRX_RINGBUF_SIZE_FOR_LVGL];
 static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t usbrx_ringbuffer[CONFIG_USBRX_RINGBUF_SIZE];
 static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t usb_tmpbuffer[DAP_PACKET_SIZE];
 
@@ -318,7 +318,7 @@ chry_ringbuffer_t g_uartrx_for_lvgl;
 
 chry_ringbuffer_t g_usbrx;
 
-__attribute__ ((aligned (4))) static uint8_t _usbtx_buffer[CONFIG_UARTRX_RINGBUF_SIZE];
+__attribute__ ((aligned (4))) static USB_NOCACHE_RAM_SECTION uint8_t _usbtx_buffer[CONFIG_UARTRX_RINGBUF_SIZE];
 
 void usbd_event_handler(uint8_t event)
 {

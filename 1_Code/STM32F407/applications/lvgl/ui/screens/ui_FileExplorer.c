@@ -18,8 +18,7 @@
 
 //参考文件：https://github.com/RT-Thread-Studio/sdk-bsp-stm32f407-spark/blob/main/projects/06_demo_factory/applications/lvgl/UIDemo/Page/Page_SDCard.c
 
-char current_path[LV_FILE_EXPLORER_PATH_MAX_LEN]
-    __attribute__((section(".ccm.cpu"), aligned(8)));
+char current_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
 const char * root_path = "S:";
 
 lv_obj_t* list1;

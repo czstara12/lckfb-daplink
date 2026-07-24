@@ -165,10 +165,8 @@ int entry(void)
 #endif
 
 rt_align(RT_ALIGN_SIZE)
-static rt_uint8_t main_thread_stack[RT_MAIN_THREAD_STACK_SIZE]
-    __attribute__((section(".ccm.cpu"), aligned(8)));
-static struct rt_thread main_thread
-    __attribute__((section(".ccm.cpu"), aligned(8)));
+static rt_uint8_t main_thread_stack[RT_MAIN_THREAD_STACK_SIZE];
+static struct rt_thread main_thread;
 
 /**
  * @brief  The system main thread. In this thread will call the rt_components_init()

@@ -27,8 +27,8 @@
 #define CONFIG_USB_ALIGN_SIZE 4
 #endif
 
-/** STM32F407 无数据缓存，使用默认 RAM 段以保留编译器的初始化分类。 */
-#define USB_NOCACHE_RAM_SECTION
+/** USB DMA 缓冲区必须放入 DMA 可访问的 RAM1。 */
+#define USB_NOCACHE_RAM_SECTION __attribute__((section(".ram1.bss")))
 
 /* ================= USB Device Stack Configuration ================ */
 

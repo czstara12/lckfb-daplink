@@ -25,11 +25,11 @@
 static int ReadDataFromFile(char* FName, uint32_t offset, void* buf, uint32_t size);
 static int FLM_Prase(char* FName, void* pBuffer, uint32_t* Size, uint32_t* Init, uint32_t* UnInit, uint32_t* EraseChip, uint32_t* EraseSector, uint32_t* ProgramPage);
 
-static uint32_t RAM[2560] __attribute__((section(".ccm.cpu"), aligned(8)));
+static uint32_t RAM[2560];
 uint32_t static Addr[5] = {0x000003C9,0x00000405,0x00000081,0x00000089,0x000003D9};
 //uint32_t static Addr[5] = {0};
 
-FlashDevice_T target_device __attribute__((section(".ccm.cpu"), aligned(8)));
+FlashDevice_T target_device;
 	
 int parse_flm_file(int argc, char* argv[])
 {

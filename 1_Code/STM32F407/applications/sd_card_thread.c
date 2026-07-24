@@ -31,10 +31,8 @@
 #define SD_CARD_DET_PIN GET_PIN(D, 3)
 #define SD_CARD_MOUNT_PATH "/sdcard"
 
-static struct rt_thread sd_card_thread
-    __attribute__((section(".ccm.cpu"), aligned(8)));
-static rt_uint8_t sd_card_stack[THREAD_STACK_SIZE]
-    __attribute__((section(".ccm.cpu"), aligned(8)));
+static struct rt_thread sd_card_thread;
+static rt_uint8_t sd_card_stack[THREAD_STACK_SIZE];
 
 extern int rt_hw_sdio_init(void);
 

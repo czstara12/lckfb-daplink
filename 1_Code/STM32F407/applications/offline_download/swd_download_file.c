@@ -86,8 +86,8 @@ program_target_t flash_algo = {
 //uint32_t Flash_Page_Size = 4 * 1024;
 uint32_t Flash_Start_Addr = 0x00000000;
 
-static uint8_t file_read_buf[4*1024] __attribute__((section(".ccm.cpu"), aligned(8)));
-static uint8_t target_mcu_flash_read_buf[4*1024] __attribute__((section(".ccm.cpu"), aligned(8)));
+static uint8_t file_read_buf[4*1024] __attribute__((section(".ram1.bss")));
+static uint8_t target_mcu_flash_read_buf[4*1024] __attribute__((section(".ram1.bss")));
 
 int8_t swd_download_update_flash_algo(char *_file_path)
 {

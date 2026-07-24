@@ -33,11 +33,9 @@
 #endif /* DFS_USING_POSIX */
 
 /* finsh thread */
-static struct rt_thread finsh_thread
-    __attribute__((section(".ccm.cpu"), aligned(8)));
+static struct rt_thread finsh_thread;
 rt_align(RT_ALIGN_SIZE)
-static char finsh_thread_stack[FINSH_THREAD_STACK_SIZE]
-    __attribute__((section(".ccm.cpu"), aligned(8)));
+static char finsh_thread_stack[FINSH_THREAD_STACK_SIZE];
 #ifndef RT_USING_HEAP
     struct finsh_shell _shell;
 #endif
