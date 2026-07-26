@@ -15,6 +15,8 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 
+#define UI_PWM_DIGIT_COUNT 6U
+
 void Title_Down_Animation(lv_obj_t * TargetObject, int delay);
 void DAPLINK_HOME_UP_Animation(lv_obj_t * TargetObject, int delay);
 void pwmInfoLeftToShow_Animation(lv_obj_t * TargetObject, int delay);
@@ -189,12 +191,10 @@ extern lv_obj_t * ui_returnPWMHomeL;
 extern lv_obj_t * ui_PWMContainer;
 extern lv_obj_t * ui_PeriodContainer;
 extern lv_obj_t * ui_PeriodLabel;
-void ui_event_TextAreaPeriod(lv_event_t * e);
-extern lv_obj_t * ui_TextAreaPeriod;
+extern lv_obj_t * ui_PWMPeriodRollers[UI_PWM_DIGIT_COUNT];
 extern lv_obj_t * ui_PulseContainer;
 extern lv_obj_t * ui_PulseLabel;
-void ui_event_TextAreaPulse(lv_event_t * e);
-extern lv_obj_t * ui_TextAreaPulse;
+extern lv_obj_t * ui_PWMPulseRollers[UI_PWM_DIGIT_COUNT];
 extern lv_obj_t * ui_pwmInfoContainer;
 extern lv_obj_t * ui_PWMfrequencyLabelInfo;
 extern lv_obj_t * ui_PWMDutyCyclelabelInfo;

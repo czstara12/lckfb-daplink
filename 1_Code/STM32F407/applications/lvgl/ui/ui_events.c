@@ -25,8 +25,6 @@ extern lv_group_t *pwm_output_group_main;
 extern lv_group_t *dac_output_group_main;
 extern lv_group_t * about_group_main;
 
-rt_err_t rt_pwm_get(struct rt_device_pwm *device, struct rt_pwm_configuration *cfg);
-
 extern lv_indev_t *indev;
 
 extern char choose_device_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
@@ -588,44 +586,25 @@ void cb_menutoAboutscreen(lv_event_t * e)
 #include "stdio.h"
 #include "drivers/rt_drv_pwm.h"
 
-void cb_PWMperiodValueChange(lv_event_t * e)
+static rt_uint32_t pwm_rollers_get_value(lv_obj_t ** rollers)
 {
-	// Your code here
-    rt_uint32_t pwm_period;
-    struct rt_pwm_configuration pwm_config;
+    rt_uint32_t value = 0;
+    uint8_t i;
 
-    lv_obj_t *ta = lv_event_get_target(e);
-    LV_LOG_USER("PWM period changed : %s", lv_textarea_get_text(ta));
-
-    sscanf(lv_textarea_get_text(ta), "%d", &pwm_period);
-    LV_LOG_USER("PWM period formate : %d", pwm_period);
-
-    if (pwm_dev == RT_NULL)
+    for(i = 0; i < UI_PWM_DIGIT_COUNT; i++)
     {
-        rt_kprintf("get pwm device run failed! can't find %s device!!\n", PWM_DEV_NAME);
-        return;
+        value = value * 10U + lv_roller_get_selected(rollers[i]);
     }
 
-    rt_pwm_get(pwm_dev, &pwm_config);
-
-    pwm_config.period = pwm_period;
-    pwm_config.pulse = pwm_config.period / 2;
-
-    /* 设置PWM周期和脉冲宽度默认值 */
-    rt_pwm_set(pwm_dev, PWM_DEV_CHANNEL, pwm_config.period, pwm_config.pulse);
+    return value;
 }
 
-void cb_PWMPulseValueChange(lv_event_t * e)
+void cb_PWMRollerValueChanged(lv_event_t * e)
 {
-	// Your code here
-    rt_uint32_t pwm_pulse;
-    struct rt_pwm_configuration pwm_config;
+    rt_uint32_t period;
+    rt_uint32_t pulse;
 
-    lv_obj_t *ta = lv_event_get_target(e);
-    LV_LOG_USER("PWM pulse changed : %s", lv_textarea_get_text(ta));
-
-    sscanf(lv_textarea_get_text(ta), "%d", &pwm_pulse);
-    LV_LOG_USER("PWM pulse formate : %d", pwm_pulse);
+    (void)e;
 
     if (pwm_dev == RT_NULL)
     {
@@ -633,13 +612,14 @@ void cb_PWMPulseValueChange(lv_event_t * e)
         return;
     }
 
-    rt_pwm_get(pwm_dev, &pwm_config);
+    period = pwm_rollers_get_value(ui_PWMPeriodRollers);
+    pulse = pwm_rollers_get_value(ui_PWMPulseRollers);
+    if(period == 0U || pulse > period)
+    {
+        return;
+    }
 
-
-    pwm_config.pulse = pwm_pulse;
-
-    /* 设置PWM周期和脉冲宽度默认值 */
-    rt_pwm_set(pwm_dev, PWM_DEV_CHANNEL, pwm_config.period, pwm_config.pulse);
+    rt_pwm_set(pwm_dev, PWM_DEV_CHANNEL, period, pulse);
 }
 
 void clicked_DAC_to_menu(lv_event_t * e)

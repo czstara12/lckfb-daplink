@@ -42,8 +42,12 @@ void cb_UartMonitorBaudValueChange(lv_event_t * e);
 void cb_UartMonitorParityValueChange(lv_event_t * e);
 void cb_PWMoutputScreenLoaded(lv_event_t * e);
 void clicked_PWMoutput_to_menu(lv_event_t * e);
-void cb_PWMperiodValueChange(lv_event_t * e);
-void cb_PWMPulseValueChange(lv_event_t * e);
+/**
+ * @brief 根据十进制数字轮盘更新 PWM 周期和脉宽。
+ *
+ * @param e LVGL 数值变化事件。
+ */
+void cb_PWMRollerValueChanged(lv_event_t * e);
 void cb_DACoutputScreenLoaded(lv_event_t * e);
 void clicked_DAC_to_menu(lv_event_t * e);
 void cb_DACWAVEDropdownChanged(lv_event_t * e);

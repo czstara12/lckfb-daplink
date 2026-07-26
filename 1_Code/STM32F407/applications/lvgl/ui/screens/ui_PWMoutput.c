@@ -9,13 +9,55 @@
 
 extern lv_group_t *pwm_output_group_main;
 
+static void ui_pwm_create_rollers(lv_obj_t * parent, lv_obj_t ** rollers, uint32_t value)
+{
+    uint32_t divisor = 100000U;
+    uint8_t i;
+
+    for(i = 0; i < UI_PWM_DIGIT_COUNT; i++)
+    {
+        rollers[i] = lv_roller_create(parent);
+        lv_roller_set_options(rollers[i], "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
+        lv_roller_set_visible_row_count(rollers[i], 1);
+        lv_roller_set_selected(rollers[i], (value / divisor) % 10U, LV_ANIM_OFF);
+        lv_obj_set_width(rollers[i], 20);
+        lv_obj_set_x(rollers[i], 20 * ((int32_t)i - (int32_t)UI_PWM_DIGIT_COUNT + 1));
+        lv_obj_set_align(rollers[i], LV_ALIGN_RIGHT_MID);
+        lv_obj_set_style_text_font(rollers[i], &ui_font_jetbrainsMonoMedium20, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_color(rollers[i], lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_color(rollers[i], lv_color_hex(0x000000), LV_PART_SELECTED | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_opa(rollers[i], LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_opa(rollers[i], LV_OPA_COVER, LV_PART_SELECTED | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_left(rollers[i], 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_right(rollers[i], 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(rollers[i], LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_border_width(rollers[i], 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(rollers[i], LV_OPA_TRANSP, LV_PART_SELECTED | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(rollers[i], lv_color_hex(0x0091E6), LV_PART_SELECTED | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_bg_opa(rollers[i], LV_OPA_COVER, LV_PART_SELECTED | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_outline_color(rollers[i], lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_outline_opa(rollers[i], 255, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_outline_width(rollers[i], 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_outline_pad(rollers[i], 1, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+        lv_obj_add_event_cb(rollers[i], cb_PWMRollerValueChanged, LV_EVENT_VALUE_CHANGED, NULL);
+        divisor /= 10U;
+    }
+}
+
 void ui_PWMoutput_add_group(void)
 {
-    lv_group_add_obj(pwm_output_group_main, ui_TextAreaPeriod);
-    lv_group_add_obj(pwm_output_group_main, ui_TextAreaPulse);
-    lv_group_add_obj(pwm_output_group_main, ui_returnPWMHomeB);
+    uint8_t i;
 
-    lv_group_set_editing(pwm_output_group_main, false);   //导航模式
+    for(i = 0; i < UI_PWM_DIGIT_COUNT; i++)
+    {
+        lv_group_add_obj(pwm_output_group_main, ui_PWMPeriodRollers[i]);
+    }
+    for(i = 0; i < UI_PWM_DIGIT_COUNT; i++)
+    {
+        lv_group_add_obj(pwm_output_group_main, ui_PWMPulseRollers[i]);
+    }
+    lv_group_add_obj(pwm_output_group_main, ui_returnPWMHomeB);
+    lv_group_focus_obj(ui_PWMPeriodRollers[0]);
 }
 
 void ui_PWMoutput_screen_init(void)
@@ -96,23 +138,7 @@ void ui_PWMoutput_screen_init(void)
     lv_obj_set_style_text_align(ui_PeriodLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PeriodLabel, &ui_font_jetbrainsMonoMedium16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_TextAreaPeriod = lv_textarea_create(ui_PeriodContainer);
-    lv_obj_set_width(ui_TextAreaPeriod, 140);
-    lv_obj_set_height(ui_TextAreaPeriod, LV_SIZE_CONTENT);    /// 40
-    lv_obj_set_x(ui_TextAreaPeriod, -4);
-    lv_obj_set_y(ui_TextAreaPeriod, 0);
-    lv_obj_set_align(ui_TextAreaPeriod, LV_ALIGN_RIGHT_MID);
-    if("1234567890" == "") lv_textarea_set_accepted_chars(ui_TextAreaPeriod, NULL);
-    else lv_textarea_set_accepted_chars(ui_TextAreaPeriod, "1234567890");
-    lv_textarea_set_max_length(ui_TextAreaPeriod, 10);
-    lv_textarea_set_placeholder_text(ui_TextAreaPeriod, "period (unit ns)");
-    lv_textarea_set_one_line(ui_TextAreaPeriod, true);
-    lv_obj_set_style_outline_color(ui_TextAreaPeriod, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_opa(ui_TextAreaPeriod, 255, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_width(ui_TextAreaPeriod, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_pad(ui_TextAreaPeriod, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-
-
+    ui_pwm_create_rollers(ui_PeriodContainer, ui_PWMPeriodRollers, 1000U);
 
     ui_PulseContainer = lv_obj_create(ui_PWMContainer);
     lv_obj_remove_style_all(ui_PulseContainer);
@@ -133,23 +159,7 @@ void ui_PWMoutput_screen_init(void)
     lv_obj_set_style_text_align(ui_PulseLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PulseLabel, &ui_font_jetbrainsMonoMedium16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_TextAreaPulse = lv_textarea_create(ui_PulseContainer);
-    lv_obj_set_width(ui_TextAreaPulse, 140);
-    lv_obj_set_height(ui_TextAreaPulse, LV_SIZE_CONTENT);    /// 40
-    lv_obj_set_x(ui_TextAreaPulse, -4);
-    lv_obj_set_y(ui_TextAreaPulse, 0);
-    lv_obj_set_align(ui_TextAreaPulse, LV_ALIGN_RIGHT_MID);
-    if("1234567890" == "") lv_textarea_set_accepted_chars(ui_TextAreaPulse, NULL);
-    else lv_textarea_set_accepted_chars(ui_TextAreaPulse, "1234567890");
-    lv_textarea_set_max_length(ui_TextAreaPulse, 10);
-    lv_textarea_set_placeholder_text(ui_TextAreaPulse, "pulse (unit ns)");
-    lv_textarea_set_one_line(ui_TextAreaPulse, true);
-    lv_obj_set_style_outline_color(ui_TextAreaPulse, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_opa(ui_TextAreaPulse, 255, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_width(ui_TextAreaPulse, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_pad(ui_TextAreaPulse, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-
-
+    ui_pwm_create_rollers(ui_PulseContainer, ui_PWMPulseRollers, 500U);
 
     ui_pwmInfoContainer = lv_obj_create(ui_PWMContainer);
     lv_obj_remove_style_all(ui_pwmInfoContainer);
@@ -193,8 +203,6 @@ void ui_PWMoutput_screen_init(void)
     lv_obj_set_style_text_font(ui_PWMDutyCyclelabel, &ui_font_jetbrainsMonoMedium25, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_returnPWMHomeB, ui_event_returnPWMHomeB, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_TextAreaPeriod, ui_event_TextAreaPeriod, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_TextAreaPulse, ui_event_TextAreaPulse, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PWMoutput, ui_event_PWMoutput, LV_EVENT_ALL, NULL);
 
 	ui_PWMoutput_add_group();

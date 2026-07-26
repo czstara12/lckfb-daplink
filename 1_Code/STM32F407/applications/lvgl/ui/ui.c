@@ -193,12 +193,10 @@ lv_obj_t * ui_returnPWMHomeL;
 lv_obj_t * ui_PWMContainer;
 lv_obj_t * ui_PeriodContainer;
 lv_obj_t * ui_PeriodLabel;
-void ui_event_TextAreaPeriod(lv_event_t * e);
-lv_obj_t * ui_TextAreaPeriod;
+lv_obj_t * ui_PWMPeriodRollers[UI_PWM_DIGIT_COUNT];
 lv_obj_t * ui_PulseContainer;
 lv_obj_t * ui_PulseLabel;
-void ui_event_TextAreaPulse(lv_event_t * e);
-lv_obj_t * ui_TextAreaPulse;
+lv_obj_t * ui_PWMPulseRollers[UI_PWM_DIGIT_COUNT];
 lv_obj_t * ui_pwmInfoContainer;
 lv_obj_t * ui_PWMfrequencyLabelInfo;
 lv_obj_t * ui_PWMDutyCyclelabelInfo;
@@ -761,22 +759,6 @@ void ui_event_returnPWMHomeB(lv_event_t * e)
     }
     if(event_code == LV_EVENT_CLICKED) {
         clicked_PWMoutput_to_menu(e);
-    }
-}
-void ui_event_TextAreaPeriod(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        cb_PWMperiodValueChange(e);
-    }
-}
-void ui_event_TextAreaPulse(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        cb_PWMPulseValueChange(e);
     }
 }
 void ui_event_DACoutput(lv_event_t * e)
