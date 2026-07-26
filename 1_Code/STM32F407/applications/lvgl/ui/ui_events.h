@@ -50,10 +50,18 @@ void clicked_PWMoutput_to_menu(lv_event_t * e);
 void cb_PWMRollerValueChanged(lv_event_t * e);
 void cb_DACoutputScreenLoaded(lv_event_t * e);
 void clicked_DAC_to_menu(lv_event_t * e);
-void cb_DACWAVEDropdownChanged(lv_event_t * e);
-void cb_DACFrequencyTextareaValueChanged(lv_event_t * e);
-void cb_DACVoltageTextareaValueChanged(lv_event_t * e);
-void cb_DACSelfWaveTextareaValueChanged(lv_event_t * e);
+/**
+ * @brief 根据轮盘选项切换 DAC 输出波形。
+ *
+ * @param e LVGL 数值变化事件。
+ */
+void cb_DACWaveRollerChanged(lv_event_t * e);
+/**
+ * @brief 根据十进制数字轮盘更新 DAC 输出频率。
+ *
+ * @param e LVGL 数值变化事件。
+ */
+void cb_DACFrequencyRollerChanged(lv_event_t * e);
 
 void cb_menutoAboutscreen(lv_event_t * e);
 	

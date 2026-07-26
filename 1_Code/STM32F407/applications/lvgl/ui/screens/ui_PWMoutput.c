@@ -18,12 +18,12 @@ static void ui_pwm_create_rollers(lv_obj_t * parent, lv_obj_t ** rollers, uint32
     {
         rollers[i] = lv_roller_create(parent);
         lv_roller_set_options(rollers[i], "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
-        lv_roller_set_visible_row_count(rollers[i], 1);
         lv_roller_set_selected(rollers[i], (value / divisor) % 10U, LV_ANIM_OFF);
         lv_obj_set_width(rollers[i], 20);
         lv_obj_set_x(rollers[i], 20 * ((int32_t)i - (int32_t)UI_PWM_DIGIT_COUNT + 1));
         lv_obj_set_align(rollers[i], LV_ALIGN_RIGHT_MID);
         lv_obj_set_style_text_font(rollers[i], &ui_font_jetbrainsMonoMedium20, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_roller_set_visible_row_count(rollers[i], 1);
         lv_obj_set_style_text_color(rollers[i], lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_color(rollers[i], lv_color_hex(0x000000), LV_PART_SELECTED | LV_STATE_DEFAULT);
         lv_obj_set_style_text_opa(rollers[i], LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);

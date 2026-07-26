@@ -212,24 +212,13 @@ lv_obj_t * ui_DACtitle;
 void ui_event_returnDACHomeB(lv_event_t * e);
 lv_obj_t * ui_returnDACHomeB;
 lv_obj_t * ui_returnDACHomeL;
-lv_obj_t * ui_DACContainer;
 lv_obj_t * ui_DACContainerPanel;
 lv_obj_t * ui_OutputWaveContainer;
 lv_obj_t * ui_OutputWaveLabel;
-void ui_event_OutputWaveDP(lv_event_t * e);
-lv_obj_t * ui_OutputWaveDP;
+lv_obj_t * ui_DACWaveRoller;
 lv_obj_t * ui_OutputWaveFrequencyContainer;
 lv_obj_t * ui_OutputWaveFrequencyLabel;
-void ui_event_TextAreaWaveFrequencyVoltage(lv_event_t * e);
-lv_obj_t * ui_TextAreaWaveFrequencyVoltage;
-lv_obj_t * ui_OutputVoltageContainer;
-lv_obj_t * ui_OutputVoltageLabel;
-void ui_event_TextAreaDACVoltage(lv_event_t * e);
-lv_obj_t * ui_TextAreaDACVoltage;
-lv_obj_t * ui_OutputSelfWaveContainer;
-lv_obj_t * ui_OutputSelfWaveLabel;
-void ui_event_DACSelfWave(lv_event_t * e);
-lv_obj_t * ui_DACSelfWave;
+lv_obj_t * ui_DACFrequencyRollers[UI_DAC_FREQUENCY_DIGIT_COUNT];
 lv_obj_t * ui____initial_actions0;
 
 
@@ -784,39 +773,6 @@ void ui_event_returnDACHomeB(lv_event_t * e)
         clicked_DAC_to_menu(e);
     }
 }
-void ui_event_OutputWaveDP(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        cb_DACWAVEDropdownChanged(e);
-    }
-}
-void ui_event_TextAreaWaveFrequencyVoltage(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        cb_DACFrequencyTextareaValueChanged(e);
-    }
-}
-void ui_event_TextAreaDACVoltage(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        cb_DACVoltageTextareaValueChanged(e);
-    }
-}
-void ui_event_DACSelfWave(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        cb_DACSelfWaveTextareaValueChanged(e);
-    }
-}
-
 ///////////////////// SCREENS ////////////////////
 
 void ui_init(void)

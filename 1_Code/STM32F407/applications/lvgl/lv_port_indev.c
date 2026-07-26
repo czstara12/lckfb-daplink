@@ -42,24 +42,26 @@
 void lv_port_indev_read_keypad(struct _lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
 {
     uint8_t keyPressFlag=false;
+    bool roller_screen = current_screen_get() == SCREEN_PWM_OUTPUT ||
+                         current_screen_get() == SCREEN_DAC_OUTPUT;
     do{
         if (rt_pin_read(PIN_KEY_UP) == PIN_LOW){
-            data->key = current_screen_get() == SCREEN_PWM_OUTPUT ? LV_KEY_DOWN : LV_KEY_PREV;
+            data->key = roller_screen ? LV_KEY_DOWN : LV_KEY_PREV;
             keyPressFlag = true;
             break;
         }
         if (rt_pin_read(PIN_KEY_DOWN) == PIN_LOW){
-            data->key = current_screen_get() == SCREEN_PWM_OUTPUT ? LV_KEY_UP : LV_KEY_NEXT;
+            data->key = roller_screen ? LV_KEY_UP : LV_KEY_NEXT;
             keyPressFlag = true;
             break;
         }
         if(rt_pin_read(PIN_KEY_LEFT) == PIN_LOW){
-            data->key = current_screen_get() == SCREEN_PWM_OUTPUT ? LV_KEY_PREV : LV_KEY_LEFT;
+            data->key = roller_screen ? LV_KEY_PREV : LV_KEY_LEFT;
             keyPressFlag = true;
             break;
         }
         if(rt_pin_read(PIN_KEY_RIGHT) == PIN_LOW){
-            data->key = current_screen_get() == SCREEN_PWM_OUTPUT ? LV_KEY_NEXT : LV_KEY_RIGHT;
+            data->key = roller_screen ? LV_KEY_NEXT : LV_KEY_RIGHT;
             keyPressFlag = true;
             break;
         }

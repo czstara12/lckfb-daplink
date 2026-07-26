@@ -671,100 +671,26 @@ void cb_DACoutputScreenLoaded(lv_event_t * e)
 	// Your code here
 }
 
-//#include "bsp_dac.h"
-void cb_DACWAVEDropdownChanged(lv_event_t * e)
+void cb_DACWaveRollerChanged(lv_event_t * e)
 {
-	// Your code here
-    lv_obj_t *obj = lv_event_get_target(e);
-    switch (lv_dropdown_get_selected(obj))
-    {
-    case 0:
-        switch_waveform(SINE_WAVE);
-        break;
-    case 1:
-        switch_waveform(SQUARE_WAVE);
-        break;
-    case 2:
-        switch_waveform(TRIANGLE_WAVE);
-        break;
-    case 3:
-        switch_waveform(TRAPEZOID_WAVE);
-        break;
-    case 4:
-        switch_waveform(RISING_SAWTOOTH_WAVE);
-        break;
-    case 5:
-        switch_waveform(FALLING_SAWTOOTH_WAVE);
-        break;
-    case 6:
-        switch_waveform(SELF_DEFINE_WAVE);
-        break;
-    default:
-        switch_waveform(SINE_WAVE);
-        break;
-    }
+    switch_waveform((WaveformType)lv_roller_get_selected(lv_event_get_target(e)));
 }
 
-void cb_DACFrequencyTextareaValueChanged(lv_event_t * e)
+void cb_DACFrequencyRollerChanged(lv_event_t * e)
 {
-	// Your code here
-    rt_uint32_t dac_frequency;
+    rt_uint32_t frequency = 0;
+    uint8_t i;
 
-    lv_obj_t *ta = lv_event_get_target(e);
-
-    sscanf(lv_textarea_get_text(ta), "%d", &dac_frequency);
-    LV_LOG_USER("dac frequency formate : %d", dac_frequency);
-
-    dac_timer_frequency_set(dac_frequency);
-
-}
-
-void cb_DACVoltageTextareaValueChanged(lv_event_t * e)
-{
-	// Your code here
-    float dac_voltage_value;
-
-    lv_obj_t *ta = lv_event_get_target(e);
-
-//    sscanf(lv_textarea_get_text(ta), "%d", &dac_voltage_value);
-	dac_voltage_value = strtod(lv_textarea_get_text(ta),NULL);
-    LV_LOG_USER("dac 12bit data : %f", dac_voltage_value);
-
-    dac_output_data_set(dac_voltage_value/3.3f*4095);
-}
-
-extern uint16_t SelfWave12bit[32];
-
-void cb_DACSelfWaveTextareaValueChanged(lv_event_t * e)
-{
-	// Your code here
-    static char* p_str = NULL;
-    lv_obj_t *ta = lv_event_get_target(e);
-    uint16_t self_wave_data_cnt;
-
-    self_wave_data_cnt = 0;
-
-    char* buffer = rt_malloc(2048);  // 动态分配内存
-    if (buffer == NULL)                 // 检查内存分配是否成功
+    (void)e;
+    for(i = 0; i < UI_DAC_FREQUENCY_DIGIT_COUNT; i++)
     {
-        LV_LOG_USER("rt_malloc fail!");
+        frequency = frequency * 10U + lv_roller_get_selected(ui_DACFrequencyRollers[i]);
     }
 
-    rt_memset(buffer, 0, 2048);
-
-    rt_strcpy(buffer,lv_textarea_get_text(ta));
-
-    p_str = strtok(buffer, ".");
-
-    sscanf(p_str, "%d", &SelfWave12bit[self_wave_data_cnt++]);
-
-    while (p_str != NULL)
+    if(frequency > 0U)
     {
-        p_str = strtok(NULL, ".");
-        sscanf(p_str, "%d", &SelfWave12bit[self_wave_data_cnt++]);
+        dac_timer_frequency_set(frequency);
     }
-
-    rt_free(buffer);
 }
 
 void cb_DAPLINKScreenLoad(lv_event_t * e)

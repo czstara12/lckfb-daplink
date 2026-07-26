@@ -16,6 +16,7 @@ extern "C" {
 #include "ui_events.h"
 
 #define UI_PWM_DIGIT_COUNT 6U
+#define UI_DAC_FREQUENCY_DIGIT_COUNT 6U
 
 void Title_Down_Animation(lv_obj_t * TargetObject, int delay);
 void DAPLINK_HOME_UP_Animation(lv_obj_t * TargetObject, int delay);
@@ -208,24 +209,13 @@ extern lv_obj_t * ui_DACtitle;
 void ui_event_returnDACHomeB(lv_event_t * e);
 extern lv_obj_t * ui_returnDACHomeB;
 extern lv_obj_t * ui_returnDACHomeL;
-extern lv_obj_t * ui_DACContainer;
 extern lv_obj_t * ui_DACContainerPanel;
 extern lv_obj_t * ui_OutputWaveContainer;
 extern lv_obj_t * ui_OutputWaveLabel;
-void ui_event_OutputWaveDP(lv_event_t * e);
-extern lv_obj_t * ui_OutputWaveDP;
+extern lv_obj_t * ui_DACWaveRoller;
 extern lv_obj_t * ui_OutputWaveFrequencyContainer;
 extern lv_obj_t * ui_OutputWaveFrequencyLabel;
-void ui_event_TextAreaWaveFrequencyVoltage(lv_event_t * e);
-extern lv_obj_t * ui_TextAreaWaveFrequencyVoltage;
-extern lv_obj_t * ui_OutputVoltageContainer;
-extern lv_obj_t * ui_OutputVoltageLabel;
-void ui_event_TextAreaDACVoltage(lv_event_t * e);
-extern lv_obj_t * ui_TextAreaDACVoltage;
-extern lv_obj_t * ui_OutputSelfWaveContainer;
-extern lv_obj_t * ui_OutputSelfWaveLabel;
-void ui_event_DACSelfWave(lv_event_t * e);
-extern lv_obj_t * ui_DACSelfWave;
+extern lv_obj_t * ui_DACFrequencyRollers[UI_DAC_FREQUENCY_DIGIT_COUNT];
 extern lv_obj_t * ui____initial_actions0;
 // SCREEN: ui_About
 void ui_event_AboutreturnHomeB(lv_event_t * e);

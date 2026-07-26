@@ -8,15 +8,63 @@
 
 extern lv_group_t *dac_output_group_main;
 
+static void ui_dac_create_frequency_rollers(lv_obj_t * parent, uint32_t value)
+{
+    uint32_t divisor = 100000U;
+    uint8_t i;
+
+    for(i = 0; i < UI_DAC_FREQUENCY_DIGIT_COUNT; i++)
+    {
+        ui_DACFrequencyRollers[i] = lv_roller_create(parent);
+        lv_roller_set_options(ui_DACFrequencyRollers[i], "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
+        lv_roller_set_selected(ui_DACFrequencyRollers[i], (value / divisor) % 10U, LV_ANIM_OFF);
+        lv_obj_set_width(ui_DACFrequencyRollers[i], 20);
+        lv_obj_set_x(ui_DACFrequencyRollers[i],
+                     20 * ((int32_t)i - (int32_t)UI_DAC_FREQUENCY_DIGIT_COUNT + 1) + 50);
+        lv_obj_set_y(ui_DACFrequencyRollers[i], -2);
+        lv_obj_set_align(ui_DACFrequencyRollers[i], LV_ALIGN_BOTTOM_MID);
+        lv_obj_set_style_text_font(ui_DACFrequencyRollers[i], &ui_font_jetbrainsMonoMedium20,
+                                   LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_roller_set_visible_row_count(ui_DACFrequencyRollers[i], 1);
+        lv_obj_set_style_text_color(ui_DACFrequencyRollers[i], lv_color_hex(0x000000),
+                                    LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_color(ui_DACFrequencyRollers[i], lv_color_hex(0x000000),
+                                    LV_PART_SELECTED | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_opa(ui_DACFrequencyRollers[i], LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_opa(ui_DACFrequencyRollers[i], LV_OPA_COVER, LV_PART_SELECTED | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_left(ui_DACFrequencyRollers[i], 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_right(ui_DACFrequencyRollers[i], 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(ui_DACFrequencyRollers[i], LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_border_width(ui_DACFrequencyRollers[i], 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(ui_DACFrequencyRollers[i], LV_OPA_TRANSP,
+                                LV_PART_SELECTED | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(ui_DACFrequencyRollers[i], lv_color_hex(0x0091E6),
+                                  LV_PART_SELECTED | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_bg_opa(ui_DACFrequencyRollers[i], LV_OPA_COVER,
+                                LV_PART_SELECTED | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_outline_color(ui_DACFrequencyRollers[i], lv_color_hex(0x000000),
+                                       LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_outline_opa(ui_DACFrequencyRollers[i], LV_OPA_COVER,
+                                     LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_outline_width(ui_DACFrequencyRollers[i], 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+        lv_obj_set_style_outline_pad(ui_DACFrequencyRollers[i], 1, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+        lv_obj_add_event_cb(ui_DACFrequencyRollers[i], cb_DACFrequencyRollerChanged,
+                            LV_EVENT_VALUE_CHANGED, NULL);
+        divisor /= 10U;
+    }
+}
+
 void ui_DACoutput_add_group(void)
 {
-    lv_group_add_obj(dac_output_group_main, ui_OutputWaveDP);
-    lv_group_add_obj(dac_output_group_main, ui_TextAreaWaveFrequencyVoltage);
-    lv_group_add_obj(dac_output_group_main, ui_TextAreaDACVoltage);
-    lv_group_add_obj(dac_output_group_main, ui_DACSelfWave);
-	lv_group_add_obj(dac_output_group_main, ui_returnDACHomeB);
+    uint8_t i;
 
-    lv_group_set_editing(dac_output_group_main, false);   //导航模式
+    lv_group_add_obj(dac_output_group_main, ui_DACWaveRoller);
+    for(i = 0; i < UI_DAC_FREQUENCY_DIGIT_COUNT; i++)
+    {
+        lv_group_add_obj(dac_output_group_main, ui_DACFrequencyRollers[i]);
+    }
+    lv_group_add_obj(dac_output_group_main, ui_returnDACHomeB);
+    lv_group_focus_obj(ui_DACWaveRoller);
 }
 
 void ui_DACoutput_screen_init(void)
@@ -26,224 +74,116 @@ void ui_DACoutput_screen_init(void)
     if(dac_output_group_main == NULL)
     {
         dac_output_group_main = lv_group_create();
-        lv_group_set_editing(dac_output_group_main, false);   //导航模式
     }
+
     ui_DACoutput = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_DACoutput, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_clear_flag(ui_DACoutput, LV_OBJ_FLAG_SCROLLABLE);
 
     ui_DACtitle = lv_label_create(ui_DACoutput);
     lv_obj_set_width(ui_DACtitle, 240);
-    lv_obj_set_height(ui_DACtitle, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_height(ui_DACtitle, LV_SIZE_CONTENT);
     lv_obj_set_align(ui_DACtitle, LV_ALIGN_TOP_MID);
     lv_label_set_text(ui_DACtitle, "DAC 输出");
     lv_obj_set_style_text_color(ui_DACtitle, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_DACtitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_DACtitle, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_DACtitle, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_DACtitle, &ui_font_PuHuiTi25, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_DACtitle, lv_color_hex(0x0091E6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_DACtitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_DACtitle, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_returnDACHomeB = lv_btn_create(ui_DACoutput);
     lv_obj_set_height(ui_returnDACHomeB, 18);
     lv_obj_set_width(ui_returnDACHomeB, lv_pct(96));
-    lv_obj_set_x(ui_returnDACHomeB, 0);
     lv_obj_set_y(ui_returnDACHomeB, -4);
     lv_obj_set_align(ui_returnDACHomeB, LV_ALIGN_BOTTOM_MID);
-    lv_obj_add_flag(ui_returnDACHomeB, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_returnDACHomeB, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_clear_flag(ui_returnDACHomeB, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_radius(ui_returnDACHomeB, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_returnDACHomeB, lv_color_hex(0x0073FF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_returnDACHomeB, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_returnDACHomeB, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_opa(ui_returnDACHomeB, 255, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+    lv_obj_set_style_bg_opa(ui_returnDACHomeB, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_color(ui_returnDACHomeB, lv_color_hex(0x000000),
+                                   LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+    lv_obj_set_style_outline_opa(ui_returnDACHomeB, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
     lv_obj_set_style_outline_width(ui_returnDACHomeB, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
     lv_obj_set_style_outline_pad(ui_returnDACHomeB, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
 
     ui_returnDACHomeL = lv_label_create(ui_returnDACHomeB);
     lv_obj_set_width(ui_returnDACHomeL, lv_pct(100));
-    lv_obj_set_height(ui_returnDACHomeL, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_height(ui_returnDACHomeL, LV_SIZE_CONTENT);
     lv_obj_set_align(ui_returnDACHomeL, LV_ALIGN_CENTER);
     lv_label_set_text(ui_returnDACHomeL, "Home");
-    lv_label_set_recolor(ui_returnDACHomeL, "true");
     lv_obj_set_style_text_align(ui_returnDACHomeL, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_returnDACHomeL, &ui_font_jetbrainsMonoMedium20, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_DACContainer = lv_obj_create(ui_DACoutput);
-    lv_obj_remove_style_all(ui_DACContainer);
-    lv_obj_set_height(ui_DACContainer, 135);
-    lv_obj_set_width(ui_DACContainer, lv_pct(100));
-    lv_obj_set_x(ui_DACContainer, 0);
-    lv_obj_set_y(ui_DACContainer, 28);
-    lv_obj_set_align(ui_DACContainer, LV_ALIGN_TOP_MID);
-    lv_obj_set_flex_flow(ui_DACContainer, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_DACContainer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-    lv_obj_clear_flag(ui_DACContainer, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+    lv_obj_set_style_text_font(ui_returnDACHomeL, &ui_font_jetbrainsMonoMedium20,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_DACContainerPanel = lv_obj_create(ui_DACoutput);
-    lv_obj_set_height(ui_DACContainerPanel, 190);
+    lv_obj_remove_style_all(ui_DACContainerPanel);
+    lv_obj_set_height(ui_DACContainerPanel, 175);
     lv_obj_set_width(ui_DACContainerPanel, lv_pct(100));
-    lv_obj_set_x(ui_DACContainerPanel, 0);
-    lv_obj_set_y(ui_DACContainerPanel, 25);
+    lv_obj_set_y(ui_DACContainerPanel, 32);
     lv_obj_set_align(ui_DACContainerPanel, LV_ALIGN_TOP_MID);
     lv_obj_set_flex_flow(ui_DACContainerPanel, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_DACContainerPanel, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_END);
-    lv_obj_set_style_radius(ui_DACContainerPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_flex_align(ui_DACContainerPanel, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_DACContainerPanel, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);
 
     ui_OutputWaveContainer = lv_obj_create(ui_DACContainerPanel);
     lv_obj_remove_style_all(ui_OutputWaveContainer);
-    lv_obj_set_height(ui_OutputWaveContainer, 70);
+    lv_obj_set_height(ui_OutputWaveContainer, 100);
     lv_obj_set_width(ui_OutputWaveContainer, lv_pct(100));
-    lv_obj_set_align(ui_OutputWaveContainer, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_OutputWaveContainer, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_OutputWaveContainer, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_OutputWaveContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_clear_flag(ui_OutputWaveContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);
 
     ui_OutputWaveLabel = lv_label_create(ui_OutputWaveContainer);
     lv_obj_set_width(ui_OutputWaveLabel, lv_pct(80));
-    lv_obj_set_height(ui_OutputWaveLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_OutputWaveLabel, LV_ALIGN_CENTER);
+    lv_obj_set_height(ui_OutputWaveLabel, LV_SIZE_CONTENT);
+    lv_obj_set_align(ui_OutputWaveLabel, LV_ALIGN_TOP_MID);
     lv_label_set_text(ui_OutputWaveLabel, "输出波形");
     lv_obj_set_style_text_align(ui_OutputWaveLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_OutputWaveLabel, &ui_font_PuHuiTi25, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_OutputWaveLabel, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_OutputWaveLabel, lv_color_hex(0x10E634), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_OutputWaveLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_OutputWaveDP = lv_dropdown_create(ui_OutputWaveContainer);
-    lv_dropdown_set_options(ui_OutputWaveDP,
-                            "正弦波\n方波\n三角波\n梯形波\n上升斜坡锯齿波\n下降斜坡锯齿波\n自定义任意波形");
-    lv_obj_set_width(ui_OutputWaveDP, lv_pct(80));
-    lv_obj_set_height(ui_OutputWaveDP, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_OutputWaveDP, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_OutputWaveDP, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_set_style_text_font(ui_OutputWaveDP, &ui_font_PuhuiTi20, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_OutputWaveDP, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_opa(ui_OutputWaveDP, 255, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_width(ui_OutputWaveDP, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_pad(ui_OutputWaveDP, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-
-    lv_obj_set_style_text_font(ui_OutputWaveDP, &lv_font_montserrat_14, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-
-    lv_obj_set_style_text_font(lv_dropdown_get_list(ui_OutputWaveDP), &ui_font_PuhuiTi20,  LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_DACWaveRoller = lv_roller_create(ui_OutputWaveContainer);
+    lv_roller_set_options(ui_DACWaveRoller,
+                          "正弦波\n方波\n三角波\n梯形波\n上升斜坡锯齿波\n下降斜坡锯齿波",
+                          LV_ROLLER_MODE_INFINITE);
+    lv_obj_set_width(ui_DACWaveRoller, lv_pct(90));
+    lv_obj_set_align(ui_DACWaveRoller, LV_ALIGN_BOTTOM_MID);
+    lv_obj_set_style_text_font(ui_DACWaveRoller, &ui_font_PuhuiTi20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_DACWaveRoller, &ui_font_PuhuiTi20, LV_PART_SELECTED | LV_STATE_DEFAULT);
+    lv_roller_set_visible_row_count(ui_DACWaveRoller, 2);
+    lv_obj_set_style_outline_color(ui_DACWaveRoller, lv_color_hex(0x000000),
+                                   LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+    lv_obj_set_style_outline_opa(ui_DACWaveRoller, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+    lv_obj_set_style_outline_width(ui_DACWaveRoller, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+    lv_obj_add_event_cb(ui_DACWaveRoller, cb_DACWaveRollerChanged, LV_EVENT_VALUE_CHANGED, NULL);
 
     ui_OutputWaveFrequencyContainer = lv_obj_create(ui_DACContainerPanel);
     lv_obj_remove_style_all(ui_OutputWaveFrequencyContainer);
-    lv_obj_set_height(ui_OutputWaveFrequencyContainer, 70);
+    lv_obj_set_height(ui_OutputWaveFrequencyContainer, 65);
     lv_obj_set_width(ui_OutputWaveFrequencyContainer, lv_pct(100));
-    lv_obj_set_align(ui_OutputWaveFrequencyContainer, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_OutputWaveFrequencyContainer, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_OutputWaveFrequencyContainer, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_CENTER,
-                          LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_OutputWaveFrequencyContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_clear_flag(ui_OutputWaveFrequencyContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);
 
     ui_OutputWaveFrequencyLabel = lv_label_create(ui_OutputWaveFrequencyContainer);
     lv_obj_set_width(ui_OutputWaveFrequencyLabel, lv_pct(80));
-    lv_obj_set_height(ui_OutputWaveFrequencyLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_OutputWaveFrequencyLabel, LV_ALIGN_CENTER);
+    lv_obj_set_height(ui_OutputWaveFrequencyLabel, LV_SIZE_CONTENT);
+    lv_obj_set_align(ui_OutputWaveFrequencyLabel, LV_ALIGN_TOP_MID);
     lv_label_set_text(ui_OutputWaveFrequencyLabel, "输出频率");
-    lv_obj_set_style_text_align(ui_OutputWaveFrequencyLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_OutputWaveFrequencyLabel, &ui_font_PuHuiTi25, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_OutputWaveFrequencyLabel, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_OutputWaveFrequencyLabel, lv_color_hex(0x10E634), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_OutputWaveFrequencyLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui_OutputWaveFrequencyLabel, LV_TEXT_ALIGN_CENTER,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_OutputWaveFrequencyLabel, &ui_font_PuHuiTi25,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_TextAreaWaveFrequencyVoltage = lv_textarea_create(ui_OutputWaveFrequencyContainer);
-    lv_obj_set_width(ui_TextAreaWaveFrequencyVoltage, lv_pct(80));
-    lv_obj_set_height(ui_TextAreaWaveFrequencyVoltage, LV_SIZE_CONTENT);    /// 80
-    lv_obj_set_align(ui_TextAreaWaveFrequencyVoltage, LV_ALIGN_CENTER);
-    if("1234567890." == "") lv_textarea_set_accepted_chars(ui_TextAreaWaveFrequencyVoltage, NULL);
-    else lv_textarea_set_accepted_chars(ui_TextAreaWaveFrequencyVoltage, "1234567890.");
-    lv_textarea_set_max_length(ui_TextAreaWaveFrequencyVoltage, 10);
-    lv_textarea_set_placeholder_text(ui_TextAreaWaveFrequencyVoltage, "Frequency(unit Hz)");
-    lv_textarea_set_one_line(ui_TextAreaWaveFrequencyVoltage, true);
-    lv_obj_set_style_outline_color(ui_TextAreaWaveFrequencyVoltage, lv_color_hex(0x000000),
-                                   LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_opa(ui_TextAreaWaveFrequencyVoltage, 255, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_width(ui_TextAreaWaveFrequencyVoltage, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_pad(ui_TextAreaWaveFrequencyVoltage, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
+    ui_dac_create_frequency_rollers(ui_OutputWaveFrequencyContainer, 1000U);
 
-
-
-    ui_OutputVoltageContainer = lv_obj_create(ui_DACContainerPanel);
-    lv_obj_remove_style_all(ui_OutputVoltageContainer);
-    lv_obj_set_height(ui_OutputVoltageContainer, 70);
-    lv_obj_set_width(ui_OutputVoltageContainer, lv_pct(100));
-    lv_obj_set_align(ui_OutputVoltageContainer, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_OutputVoltageContainer, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_OutputVoltageContainer, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_CENTER,
-                          LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_OutputVoltageContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_OutputVoltageLabel = lv_label_create(ui_OutputVoltageContainer);
-    lv_obj_set_width(ui_OutputVoltageLabel, lv_pct(80));
-    lv_obj_set_height(ui_OutputVoltageLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_OutputVoltageLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_OutputVoltageLabel, "输出电压");
-    lv_obj_set_style_text_align(ui_OutputVoltageLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_OutputVoltageLabel, &ui_font_PuHuiTi25, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_OutputVoltageLabel, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_OutputVoltageLabel, lv_color_hex(0x10E634), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_OutputVoltageLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_TextAreaDACVoltage = lv_textarea_create(ui_OutputVoltageContainer);
-    lv_obj_set_width(ui_TextAreaDACVoltage, lv_pct(80));
-    lv_obj_set_height(ui_TextAreaDACVoltage, LV_SIZE_CONTENT);    /// 80
-    lv_obj_set_align(ui_TextAreaDACVoltage, LV_ALIGN_CENTER);
-    if("1234567890." == "") lv_textarea_set_accepted_chars(ui_TextAreaDACVoltage, NULL);
-    else lv_textarea_set_accepted_chars(ui_TextAreaDACVoltage, "1234567890.");
-    lv_textarea_set_max_length(ui_TextAreaDACVoltage, 10);
-    lv_textarea_set_placeholder_text(ui_TextAreaDACVoltage, "Voltage(unit V)");
-    lv_textarea_set_one_line(ui_TextAreaDACVoltage, true);
-    lv_obj_set_style_outline_color(ui_TextAreaDACVoltage, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_opa(ui_TextAreaDACVoltage, 255, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_width(ui_TextAreaDACVoltage, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_pad(ui_TextAreaDACVoltage, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-
-
-
-    ui_OutputSelfWaveContainer = lv_obj_create(ui_DACContainerPanel);
-    lv_obj_remove_style_all(ui_OutputSelfWaveContainer);
-    lv_obj_set_height(ui_OutputSelfWaveContainer, 130);
-    lv_obj_set_width(ui_OutputSelfWaveContainer, lv_pct(100));
-    lv_obj_set_align(ui_OutputSelfWaveContainer, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_OutputSelfWaveContainer, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_OutputSelfWaveContainer, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_CENTER,
-                          LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_OutputSelfWaveContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_OutputSelfWaveLabel = lv_label_create(ui_OutputSelfWaveContainer);
-    lv_obj_set_width(ui_OutputSelfWaveLabel, lv_pct(100));
-    lv_obj_set_height(ui_OutputSelfWaveLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_OutputSelfWaveLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_OutputSelfWaveLabel, "任意波形数据");
-    lv_obj_set_style_text_align(ui_OutputSelfWaveLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_OutputSelfWaveLabel, &ui_font_PuHuiTi25, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_OutputSelfWaveLabel, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_OutputSelfWaveLabel, lv_color_hex(0x10E634), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_OutputSelfWaveLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_DACSelfWave = lv_textarea_create(ui_OutputSelfWaveContainer);
-    lv_obj_set_height(ui_DACSelfWave, 90);
-    lv_obj_set_width(ui_DACSelfWave, lv_pct(100));
-    lv_obj_set_align(ui_DACSelfWave, LV_ALIGN_CENTER);
-    lv_textarea_set_max_length(ui_DACSelfWave, 500);
-    lv_textarea_set_placeholder_text(ui_DACSelfWave, "Please enter 32 12-bit data. Use. for interval.MAX 4095");
-    lv_obj_set_style_outline_color(ui_DACSelfWave, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_opa(ui_DACSelfWave, 255, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_width(ui_DACSelfWave, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-    lv_obj_set_style_outline_pad(ui_DACSelfWave, 2, LV_PART_MAIN | LV_STATE_FOCUS_KEY);
-
-
+    lv_obj_t * frequency_unit = lv_label_create(ui_OutputWaveFrequencyContainer);
+    lv_label_set_text(frequency_unit, "Hz");
+    lv_obj_set_x(frequency_unit, 78);
+    lv_obj_set_y(frequency_unit, -5);
+    lv_obj_set_align(frequency_unit, LV_ALIGN_BOTTOM_MID);
+    lv_obj_set_style_text_font(frequency_unit, &lv_font_montserrat_14,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_returnDACHomeB, ui_event_returnDACHomeB, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_OutputWaveDP, ui_event_OutputWaveDP, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_TextAreaWaveFrequencyVoltage, ui_event_TextAreaWaveFrequencyVoltage, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_TextAreaDACVoltage, ui_event_TextAreaDACVoltage, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_DACSelfWave, ui_event_DACSelfWave, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_DACoutput, ui_event_DACoutput, LV_EVENT_ALL, NULL);
 
     ui_DACoutput_add_group();
-
 }
 
 void ui_DACoutput_screen_del(void)
