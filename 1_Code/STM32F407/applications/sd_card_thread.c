@@ -34,8 +34,6 @@
 static struct rt_thread sd_card_thread;
 static rt_uint8_t sd_card_stack[THREAD_STACK_SIZE];
 
-extern int rt_hw_sdio_init(void);
-
 /**
  * @brief 挂载板载 SD 卡文件系统。
  *
@@ -43,27 +41,34 @@ extern int rt_hw_sdio_init(void);
  */
 int onboard_sdcard_mount(void)
 {
-    static rt_device_t device;
+    rt_device_t device;
+    rt_uint8_t retry;
 
     device = rt_device_find("sd0");
 
-	if(device == RT_NULL)
-	{
-		rt_hw_sdio_init();
-		rt_thread_mdelay(200);
-		device = rt_device_find("sd0");
-	}
-	
-    if (device != RT_NULL)
+    if (device == RT_NULL)
     {
-        if (dfs_mount("sd0", SD_CARD_MOUNT_PATH, "elm", 0, 0) == RT_EOK)
+        stm32_mmcsd_change();
+        for (retry = 0; retry < 10 && device == RT_NULL; retry++)
         {
-            LOG_I("SD card mount to '%s'", SD_CARD_MOUNT_PATH);
-            return RT_EOK;
+            rt_thread_mdelay(50);
+            device = rt_device_find("sd0");
         }
-        LOG_E("SD card mount to '%s' failed!", SD_CARD_MOUNT_PATH);
+    }
+
+    if (device == RT_NULL)
+    {
         return RT_ERROR;
     }
+
+    if (dfs_filesystem_get_mounted_path(device) != RT_NULL ||
+        dfs_mount("sd0", SD_CARD_MOUNT_PATH, "elm", 0, 0) == RT_EOK)
+    {
+        LOG_I("SD card mount to '%s'", SD_CARD_MOUNT_PATH);
+        return RT_EOK;
+    }
+
+    LOG_E("SD card mount to '%s' failed!", SD_CARD_MOUNT_PATH);
     return RT_ERROR;
 }
 
@@ -74,14 +79,16 @@ int onboard_sdcard_mount(void)
  */
 int onboard_sdcard_unmount(void)
 {
-    static rt_device_t device;
+    rt_device_t device = rt_device_find("sd0");
 
-    device = rt_device_find("sd0");
+    if (device == RT_NULL || dfs_filesystem_get_mounted_path(device) == RT_NULL)
+    {
+        return RT_EOK;
+    }
 
     if (dfs_unmount(SD_CARD_MOUNT_PATH) == RT_EOK)
     {
         LOG_I("SD card unmount success");
-        rt_thread_mdelay(200);
         return RT_EOK;
     }
     LOG_E("SD card unmount failed!");
@@ -91,14 +98,17 @@ int onboard_sdcard_unmount(void)
 static void sd_card_thread_entry(void *param)
 {
     static rt_int8_t _sd_card_state = PIN_HIGH;
+    rt_int8_t current_state;
+
     // 初始化SD卡检测引脚
     rt_pin_mode(SD_CARD_DET_PIN, PIN_MODE_INPUT_PULLUP);
-	
-	rt_thread_mdelay(500);
-	
+
+    rt_thread_mdelay(500);
+
     while (1)
     {
-        if ((rt_pin_read(SD_CARD_DET_PIN) == PIN_LOW)&&(_sd_card_state == PIN_HIGH))
+        current_state = rt_pin_read(SD_CARD_DET_PIN);
+        if ((current_state == PIN_LOW) && (_sd_card_state == PIN_HIGH))
         {
             LOG_I("SD card insert!");
             if (onboard_sdcard_mount() != RT_EOK)
@@ -106,16 +116,16 @@ static void sd_card_thread_entry(void *param)
                 LOG_E("onboard_sdcard_mount failed!");
             }
         }
-        if ((rt_pin_read(SD_CARD_DET_PIN) == PIN_HIGH)&&(_sd_card_state == PIN_LOW))
+        else if ((current_state == PIN_HIGH) && (_sd_card_state == PIN_LOW))
         {
             LOG_I("SD card remove!");
-			stm32_mmcsd_change();
             if (onboard_sdcard_unmount() != RT_EOK)
             {
                 LOG_E("onboard_sdcard_unmount failed!");
             }
+            stm32_mmcsd_change();
         }
-        _sd_card_state = rt_pin_read(SD_CARD_DET_PIN);
+        _sd_card_state = current_state;
         rt_thread_mdelay(200);
     }
 }
