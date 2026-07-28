@@ -127,6 +127,7 @@ void ui_About_screen_init(void)
     lv_obj_set_style_radius(ui_AboutContainerPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_AboutHomeB, ui_event_AboutreturnHomeB, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_About, ui_event_AboutreturnHomeB, LV_EVENT_SCREEN_UNLOADED, NULL);
 
     ui_about_show_soft_version();
     ui_about_show_hard_version();

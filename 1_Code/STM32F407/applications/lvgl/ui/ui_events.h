@@ -37,6 +37,12 @@ void cb_voltammeterPower3V3ButtonChanged(lv_event_t * e);
 void cb_voltammeterPowerPDButtonChanged(lv_event_t * e);
 void cb_voltammeterPowerPDDropdownChanged(lv_event_t * e);
 void cb_clickedVoltAmmeterToMenu(lv_event_t * e);
+/**
+ * @brief 从 About 页面返回主菜单。
+ *
+ * @param e LVGL 点击事件。
+ */
+void cb_clickedAboutToMenu(lv_event_t * e);
 void cb_clickedUartMonitorToMenu(lv_event_t * e);
 void cb_UartMonitorBaudValueChange(lv_event_t * e);
 void cb_UartMonitorParityValueChange(lv_event_t * e);

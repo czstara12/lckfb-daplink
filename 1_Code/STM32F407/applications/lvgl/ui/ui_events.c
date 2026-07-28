@@ -30,14 +30,6 @@ extern lv_indev_t *indev;
 extern char choose_device_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
 extern char choose_firmware_bin_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
 
-extern void ui_VoltAmmeter_screen_del(void);
-extern void ui_DAPLINK_screen_del(void);
-extern void ui_OFFLINE_DOWNLOAD_screen_del(void);
-extern void ui_UartMonitor_screen_del(void);
-extern void ui_PWMoutput_screen_del(void);
-extern void ui_DACoutput_screen_del(void);
-extern void ui_ABOUT_screen_del(void);
-
 //代表当前选择的文件路径是返回到哪里，0表示未初始化，1表示返回到芯片型号选择，2表示返回到选择固件。
 uint8_t current_path_return = 0;
 
@@ -45,7 +37,6 @@ void clicked_daplink_to_menu(lv_event_t * e)
 {
 	// Your code here
 	lv_indev_set_group(indev, menu_group);
-    ui_DAPLINK_screen_del();
 	current_screen_set(SCREEN_MENU);
 }
 
@@ -105,7 +96,6 @@ void clicked_OfflineDownload_to_menu(lv_event_t * e)
 {
 	// Your code here
     lv_indev_set_group(indev, menu_group);
-    ui_OFFLINE_DOWNLOAD_screen_del();
     current_screen_set(SCREEN_MENU);
 }
 
@@ -384,7 +374,6 @@ void cb_clickedVoltAmmeterToMenu(lv_event_t * e)
 {
 	// Your code here
 	lv_indev_set_group(indev, menu_group);
-    ui_VoltAmmeter_screen_del();
     current_screen_set(SCREEN_MENU);
 }
 
@@ -392,7 +381,6 @@ void cb_clickedAboutToMenu(lv_event_t * e)
 {
 	// Your code here
 	lv_indev_set_group(indev, menu_group);
-    ui_ABOUT_screen_del();
     current_screen_set(SCREEN_MENU);
 }
 
@@ -426,7 +414,6 @@ void cb_clickedUartMonitorToMenu(lv_event_t * e)
 {
 	// Your code here
     lv_indev_set_group(indev, menu_group);
-    ui_UartMonitor_screen_del();
     current_screen_set(SCREEN_MENU);
 }
 
@@ -626,15 +613,6 @@ void clicked_DAC_to_menu(lv_event_t * e)
 {
 	// Your code here
     lv_indev_set_group(indev, menu_group);
-    ui_DACoutput_screen_del();
-    current_screen_set(SCREEN_MENU);
-}
-
-void clicked_About_to_menu(lv_event_t * e)
-{
-	// Your code here
-    lv_indev_set_group(indev, menu_group);
-    ui_ABOUT_screen_del();
     current_screen_set(SCREEN_MENU);
 }
 
@@ -642,7 +620,6 @@ void clicked_PWMoutput_to_menu(lv_event_t * e)
 {
 	// Your code here
     lv_indev_set_group(indev, menu_group);
-    ui_PWMoutput_screen_del();
     current_screen_set(SCREEN_MENU);
 }
 

@@ -12,6 +12,14 @@ void DAPLINK_HOME_UP_Animation(lv_obj_t * TargetObject, int delay);
 void pwmInfoLeftToShow_Animation(lv_obj_t * TargetObject, int delay);
 void ENLARGE_MENU_OBJ_Animation(lv_obj_t * TargetObject, int delay);
 void DISLARGE_MENU_OBJ_Animation(lv_obj_t * TargetObject, int delay);
+void ui_DAPLINK_screen_del(void);
+void ui_OFFLINE_DOWNLOAD_screen_del(void);
+void ui_VoltAmmeter_screen_del(void);
+void ui_FileExplorer_screen_del(void);
+void ui_UartMonitor_screen_del(void);
+void ui_PWMoutput_screen_del(void);
+void ui_DACoutput_screen_del(void);
+void ui_ABOUT_screen_del(void);
 
 
 // SCREEN: ui_Menu
@@ -497,6 +505,9 @@ void ui_event_DAPLINK(lv_event_t * e)
     if(event_code == LV_EVENT_SCREEN_LOADED) {
         cb_DAPLINKScreenLoad(e);
     }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ui_DAPLINK_screen_del();
+    }
 }
 void ui_event_Power5V0CheckBox(lv_event_t * e)
 {
@@ -548,6 +559,9 @@ void ui_event_FileExplorer(lv_event_t * e)
     if(event_code == LV_EVENT_SCREEN_LOAD_START) {
         cb_FileExplorerScreenLoad(e);
     }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ui_FileExplorer_screen_del();
+    }
 }
 void ui_event_OfflineDownload(lv_event_t * e)
 {
@@ -559,6 +573,9 @@ void ui_event_OfflineDownload(lv_event_t * e)
     if(event_code == LV_EVENT_SCREEN_LOAD_START) {
         Title_Down_Animation(ui_OfflineDownloadTitle, 200);
         DAPLINK_HOME_UP_Animation(ui_ODreturnHome, 200);
+    }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ui_OFFLINE_DOWNLOAD_screen_del();
     }
 }
 void ui_event_chooseDeviceB(lv_event_t * e)
@@ -608,6 +625,9 @@ void ui_event_VoltAmmeter(lv_event_t * e)
     if(event_code == LV_EVENT_SCREEN_LOAD_START) {
         Title_Down_Animation(ui_VoltAmmeterTitle, 200);
         DAPLINK_HOME_UP_Animation(ui_VAreturnHomeB, 200);
+    }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ui_VoltAmmeter_screen_del();
     }
 }
 void ui_event_VATabview(lv_event_t * e)
@@ -687,7 +707,10 @@ void ui_event_AboutreturnHomeB(lv_event_t * e)
         _ui_screen_change(&ui_Menu, LV_SCR_LOAD_ANIM_FADE_ON, 300, 0, &ui_Menu_screen_init);
     }
     if(event_code == LV_EVENT_CLICKED) {
-        cb_clickedVoltAmmeterToMenu(e);
+        cb_clickedAboutToMenu(e);
+    }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ui_ABOUT_screen_del();
     }
 }
 void ui_event_UartMonitor(lv_event_t * e)
@@ -697,6 +720,9 @@ void ui_event_UartMonitor(lv_event_t * e)
     if(event_code == LV_EVENT_SCREEN_LOAD_START) {
         DAPLINK_HOME_UP_Animation(ui_UMreturnHomeB, 200);
         Title_Down_Animation(ui_UartMonitorTitle, 200);
+    }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ui_UartMonitor_screen_del();
     }
 }
 void ui_event_UMreturnHomeB(lv_event_t * e)
@@ -738,6 +764,9 @@ void ui_event_PWMoutput(lv_event_t * e)
         Title_Down_Animation(ui_PWMtitle, 200);
         DAPLINK_HOME_UP_Animation(ui_returnPWMHomeB, 200);
     }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ui_PWMoutput_screen_del();
+    }
 }
 void ui_event_returnPWMHomeB(lv_event_t * e)
 {
@@ -760,6 +789,9 @@ void ui_event_DACoutput(lv_event_t * e)
     }
     if(event_code == LV_EVENT_SCREEN_LOADED) {
         cb_DACoutputScreenLoaded(e);
+    }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ui_DACoutput_screen_del();
     }
 }
 void ui_event_returnDACHomeB(lv_event_t * e)

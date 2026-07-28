@@ -276,8 +276,7 @@ void file_explorerevent_handler(lv_event_t *e)
        {
            current_screen_set(SCREEN_MENU);
            _ui_screen_change(&ui_Menu, LV_SCR_LOAD_ANIM_FADE_ON, 300, 0, &ui_Menu_screen_init);
-           showDir(root_path);
-           ui_FileExplorer_screen_del();
+           return;
        }
     }
 
@@ -300,8 +299,6 @@ void file_explorerevent_handler(lv_event_t *e)
             lv_label_set_text(ui_currentDevicePath, choose_device_path);
             current_screen_set(SCREEN_OFFLINE_DOWNLOAD);
             lv_disp_load_scr(ui_OfflineDownload);
-			showDir(root_path);
-            ui_FileExplorer_screen_del();
             return;
         }
         else if (current_path_return == 2)
@@ -314,8 +311,6 @@ void file_explorerevent_handler(lv_event_t *e)
             lv_label_set_text(ui_currentBinPath, choose_firmware_bin_path);
             current_screen_set(SCREEN_OFFLINE_DOWNLOAD);
             lv_disp_load_scr(ui_OfflineDownload);
-			showDir(root_path);
-            ui_FileExplorer_screen_del();
             return;
         }
     }
@@ -380,6 +375,7 @@ void ui_FileExplorer_screen_init(void)
 	
     ui_FileExplorer = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_FileExplorer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_add_event_cb(ui_FileExplorer, ui_event_FileExplorer, LV_EVENT_ALL, NULL);
 
     ui_FileExplorerTitle = lv_label_create(ui_FileExplorer);
     lv_obj_set_width(ui_FileExplorerTitle, 240);
