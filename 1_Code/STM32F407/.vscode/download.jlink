@@ -1,0 +1,5 @@
+r
+loadfile rtthread.hex
+r
+g
+q

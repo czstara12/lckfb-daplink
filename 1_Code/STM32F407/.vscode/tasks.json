@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "编译固件",
+            "type": "process",
+            "command": "scons",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$gcc",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "下载固件",
+            "type": "process",
+            "command": "JLinkExe",
+            "windows": {
+                "command": "JLink.exe"
+            },
+            "args": [
+                "-NoGui",
+                "1",
+                "-ExitOnError",
+                "1",
+                "-Device",
+                "STM32F407VE",
+                "-If",
+                "SWD",
+                "-Speed",
+                "4000",
+                "-AutoConnect",
+                "1",
+                "-CommanderScript",
+                "${workspaceFolder}/.vscode/download.jlink"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "编译并下载",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "编译固件",
+                "下载固件"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

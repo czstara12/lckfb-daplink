@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Cortex-M：J-Link 调试",
+            "type": "cortex-debug",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/rt-thread.elf",
+            "servertype": "jlink",
+            "device": "STM32F407VE",
+            "interface": "swd",
+            "serverArgs": [
+                "-speed",
+                "4000"
+            ],
+            "runToEntryPoint": "main",
+            "preLaunchTask": "编译固件"
+        }
+    ]
+}
