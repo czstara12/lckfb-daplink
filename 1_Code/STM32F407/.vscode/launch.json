@@ -8,11 +8,11 @@
             "cwd": "${workspaceFolder}",
             "executable": "${workspaceFolder}/rt-thread.elf",
             "servertype": "jlink",
-            "device": "STM32F407VE",
+            "device": "STM32F407VG",
             "interface": "swd",
             "serverArgs": [
                 "-speed",
-                "4000"
+                "15000"
             ],
             "runToEntryPoint": "main",
             "preLaunchTask": "编译固件"

@@ -7,7 +7,7 @@
 /* Program Entry, set to mark it as "used" and avoid gc */
 MEMORY
 {
-    CODE (rx) : ORIGIN = 0x08008000, LENGTH = 480k /* 32KB bootloader + 480KB application */
+    CODE (rx) : ORIGIN = 0x08008000, LENGTH = 992k /* 32KB bootloader + 992KB application */
     RAM1 (rw) : ORIGIN = 0x20000000, LENGTH =  128k /* 128K sram */
     RAM2 (rw) : ORIGIN = 0x10000000, LENGTH =   64k /* 64K sram */
 }

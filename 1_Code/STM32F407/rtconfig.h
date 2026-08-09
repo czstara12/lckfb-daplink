@@ -43,6 +43,7 @@
 #define RT_USING_SMALL_MEM_AS_HEAP
 #define RT_USING_HEAP
 #define RT_USING_DEVICE
+#define RT_USING_DEVICE_OPS
 #define RT_USING_CONSOLE
 #define RT_CONSOLEBUF_SIZE 128
 #define RT_CONSOLE_DEVICE_NAME "uart1"
@@ -116,6 +117,7 @@
 #define CPUTIME_TIMER_FREQ 0
 #define RT_USING_PWM
 #define RT_USING_MTD_NAND
+#define RT_USING_RTC
 #define RT_USING_SDIO
 #define RT_SDIO_STACK_SIZE 512
 #define RT_SDIO_THREAD_PRIORITY 15
@@ -209,6 +211,25 @@
 
 /* XML: Extensible Markup Language */
 
+#define PKG_USING_MICROPYTHON
+
+/* Hardware Module */
+
+
+/* System Module */
+
+
+/* Tools Module */
+
+
+/* Network Module */
+
+
+/* User Extended Module */
+
+#define PKG_MICROPYTHON_HEAP_SIZE 8192
+#define PKG_USING_MICROPYTHON_V11300
+#define PKG_MICROPYTHON_VER_NUM 0x11300
 
 /* multimedia packages */
 

@@ -39,7 +39,7 @@
                 "-ExitOnError",
                 "1",
                 "-Device",
-                "STM32F407VE",
+                "STM32F407VG",
                 "-If",
                 "SWD",
                 "-Speed",
