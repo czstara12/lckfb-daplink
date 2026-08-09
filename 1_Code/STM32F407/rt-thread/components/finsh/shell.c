@@ -33,10 +33,10 @@
 #endif /* DFS_USING_POSIX */
 
 /* finsh thread */
-static struct rt_thread finsh_thread;
-rt_align(RT_ALIGN_SIZE)
-static char finsh_thread_stack[FINSH_THREAD_STACK_SIZE];
 #ifndef RT_USING_HEAP
+    static struct rt_thread finsh_thread;
+    rt_align(RT_ALIGN_SIZE)
+    static char finsh_thread_stack[FINSH_THREAD_STACK_SIZE];
     struct finsh_shell _shell;
 #endif
 
@@ -803,16 +803,18 @@ int finsh_system_init(void)
         rt_kprintf("no memory for shell\n");
         return -1;
     }
+    tid = rt_thread_create(FINSH_THREAD_NAME,
+                           finsh_thread_entry, RT_NULL,
+                           FINSH_THREAD_STACK_SIZE, FINSH_THREAD_PRIORITY, 10);
 #else
     shell = &_shell;
-#endif /* RT_USING_HEAP */
-
     tid = &finsh_thread;
     result = rt_thread_init(&finsh_thread,
                             FINSH_THREAD_NAME,
                             finsh_thread_entry, RT_NULL,
                             &finsh_thread_stack[0], sizeof(finsh_thread_stack),
                             FINSH_THREAD_PRIORITY, 10);
+#endif /* RT_USING_HEAP */
 
     rt_sem_init(&(shell->rx_sem), "shrx", 0, 0);
     finsh_set_prompt_mode(1);
@@ -824,3 +826,4 @@ int finsh_system_init(void)
 INIT_APP_EXPORT(finsh_system_init);
 
 #endif /* RT_USING_FINSH */
+

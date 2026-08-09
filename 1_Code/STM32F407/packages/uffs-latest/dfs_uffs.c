@@ -41,7 +41,7 @@ struct _nand_dev
     void *data;   /* when uffs use static buf, it will save ptr here */
 };
 /* make sure the following struct var had been initilased to 0! */
-static struct _nand_dev nand_part[UFFS_DEVICE_MAX];
+static struct _nand_dev nand_part[UFFS_DEVICE_MAX] = {0};
 
 static int uffs_result_to_dfs(int result)
 {
@@ -206,14 +206,11 @@ static int dfs_uffs_unmount(struct dfs_filesystem *fs)
     return -ENOENT;
 }
 
-static int dfs_uffs_mkfs(rt_device_t dev_id, const char *fs_name)
+static int dfs_uffs_mkfs(rt_device_t dev_id)
 {
     rt_base_t index;
     rt_uint32_t block;
     struct rt_mtd_nand_device *mtd;
-    rt_bool_t mounted = RT_FALSE;
-
-    RT_UNUSED(fs_name);
 
     /*1. find the device index */
     for (index = 0; index < UFFS_DEVICE_MAX; index++)
@@ -222,17 +219,15 @@ static int dfs_uffs_mkfs(rt_device_t dev_id, const char *fs_name)
             break;
     }
 
-    mtd = RT_MTD_NAND_DEVICE(dev_id);
-    if (mtd == RT_NULL)
-        return -ENODEV;
+    if (index == UFFS_DEVICE_MAX)
+    {
+        /* can't find device driver */
+        return -ENOENT;
+    }
 
     /*2. then unmount the partition */
-    if (index != UFFS_DEVICE_MAX)
-    {
-        mounted = RT_TRUE;
-        uffs_UnMount(nand_part[index].mount_path);
-        mtd = nand_part[index].dev;
-    }
+    uffs_UnMount(nand_part[index].mount_path);
+    mtd = nand_part[index].dev;
 
     /*3. erase all blocks on the partition */
     block = mtd->block_start;
@@ -249,7 +244,7 @@ static int dfs_uffs_mkfs(rt_device_t dev_id, const char *fs_name)
     }
 
     /*4. remount it */
-    if (mounted && init_uffs_fs(&nand_part[index]) < 0)
+    if (init_uffs_fs(&nand_part[index]) < 0)
     {
         return uffs_result_to_dfs(uffs_get_error());
     }
@@ -280,7 +275,7 @@ static int dfs_uffs_statfs(struct dfs_filesystem *fs,
     return 0;
 }
 
-static int dfs_uffs_open(struct dfs_file *file)
+static int dfs_uffs_open(struct dfs_fd *file)
 {
     int fd;
     int oflag, mode;
@@ -293,7 +288,7 @@ static int dfs_uffs_open(struct dfs_file *file)
 
         if (oflag & O_CREAT)   /* create a dir*/
         {
-            if (uffs_mkdir(file->vnode->path) < 0)
+            if (uffs_mkdir(file->path) < 0)
                 return uffs_result_to_dfs(uffs_get_error());
         }
         /* open dir */
@@ -301,8 +296,8 @@ static int dfs_uffs_open(struct dfs_file *file)
         if (file_path == RT_NULL)
             return -ENOMEM;
 
-        if (file->vnode->path[0] == '/' && !(file->vnode->path[1] == 0))
-            rt_snprintf(file_path, FILE_PATH_MAX, "%s/", file->vnode->path);
+        if (file->path[0] == '/' && !(file->path[1] == 0))
+            rt_snprintf(file_path, FILE_PATH_MAX, "%s/", file->path);
         else
         {
             file_path[0] = '/';
@@ -335,7 +330,7 @@ static int dfs_uffs_open(struct dfs_file *file)
     /* Creates a new file. The function fails if the file is already existing. */
     if (oflag & O_EXCL) mode |= UO_EXCL;
 
-    fd = uffs_open(file->vnode->path, mode);
+    fd = uffs_open(file->path, mode);
     if (fd < 0)
     {
         return uffs_result_to_dfs(uffs_get_error());
@@ -346,7 +341,7 @@ static int dfs_uffs_open(struct dfs_file *file)
 
     file->data = (void *)fd;
     file->pos  = uffs_seek(fd, 0, USEEK_CUR);
-    file->vnode->size = uffs_seek(fd, 0, USEEK_END);
+    file->size = uffs_seek(fd, 0, USEEK_END);
     uffs_seek(fd, file->pos, USEEK_SET);
 
     if (oflag & O_APPEND)
@@ -356,7 +351,7 @@ static int dfs_uffs_open(struct dfs_file *file)
     return 0;
 }
 
-static int dfs_uffs_close(struct dfs_file *file)
+static int dfs_uffs_close(struct dfs_fd *file)
 {
     int oflag;
     int fd;
@@ -379,12 +374,12 @@ static int dfs_uffs_close(struct dfs_file *file)
     return uffs_result_to_dfs(uffs_get_error());
 }
 
-static int dfs_uffs_ioctl(struct dfs_file *file, int cmd, void *args)
+static int dfs_uffs_ioctl(struct dfs_fd *file, int cmd, void *args)
 {
     return -ENOSYS;
 }
 
-static ssize_t dfs_uffs_read(struct dfs_file *file, void *buf, size_t len)
+static int dfs_uffs_read(struct dfs_fd *file, void *buf, size_t len)
 {
     int fd;
     int char_read;
@@ -399,9 +394,9 @@ static ssize_t dfs_uffs_read(struct dfs_file *file, void *buf, size_t len)
     return char_read;
 }
 
-static ssize_t dfs_uffs_write(struct dfs_file *file,
-                              const void *buf,
-                              size_t len)
+static int dfs_uffs_write(struct dfs_fd *file,
+                          const void *buf,
+                          size_t len)
 {
     int fd;
     int char_write;
@@ -417,7 +412,7 @@ static ssize_t dfs_uffs_write(struct dfs_file *file,
     return char_write;
 }
 
-static int dfs_uffs_flush(struct dfs_file *file)
+static int dfs_uffs_flush(struct dfs_fd *file)
 {
     int fd;
     int result;
@@ -444,13 +439,13 @@ int uffs_seekdir(uffs_DIR *dir, long offset)
 }
 
 
-static off_t dfs_uffs_seek(struct dfs_file *file,
-                           off_t offset)
+static int dfs_uffs_seek(struct dfs_fd *file,
+                         rt_off_t offset)
 {
     int result;
 
     /* set offset as current offset */
-    if (file->vnode->type == FT_DIRECTORY)
+    if (file->type == FT_DIRECTORY)
     {
         uffs_rewinddir((uffs_DIR *)(file->data));
         result = uffs_seekdir((uffs_DIR *)(file->data), offset / sizeof(struct dirent));
@@ -460,14 +455,11 @@ static off_t dfs_uffs_seek(struct dfs_file *file,
             return offset;
         }
     }
-    else if (file->vnode->type == FT_REGULAR)
+    else if (file->type == FT_REGULAR)
     {
         result = uffs_seek((int)(file->data), offset, USEEK_SET);
         if (result >= 0)
-        {
-            file->pos = offset;
             return offset;
-        }
     }
 
     return uffs_result_to_dfs(uffs_get_error());
@@ -475,7 +467,7 @@ static off_t dfs_uffs_seek(struct dfs_file *file,
 
 /* return the size of struct dirent*/
 static int dfs_uffs_getdents(
-    struct dfs_file *file,
+    struct dfs_fd *file,
     struct dirent *dirp,
     uint32_t count)
 {
@@ -512,8 +504,8 @@ static int dfs_uffs_getdents(
             return (uffs_result_to_dfs(uffs_get_error()));
         }
 
-        if (file->vnode->path[0] == '/' && !(file->vnode->path[1] == 0))
-            rt_snprintf(file_path, FILE_PATH_MAX, "%s/%s", file->vnode->path, uffs_d->d_name);
+        if (file->path[0] == '/' && !(file->path[1] == 0))
+            rt_snprintf(file_path, FILE_PATH_MAX, "%s/%s", file->path, uffs_d->d_name);
         else
             rt_strncpy(file_path, uffs_d->d_name, FILE_PATH_MAX);
 
@@ -603,13 +595,6 @@ static int dfs_uffs_stat(struct dfs_filesystem *fs, const char *path, struct sta
     int result;
     struct uffs_stat s;
 
-    if (rt_strcmp(path, fs->path) == 0)
-    {
-        rt_memset(st, 0, sizeof(*st));
-        st->st_mode = S_IFDIR | S_IRUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-        return 0;
-    }
-
     result = uffs_stat(path, &s);
     if (result < 0)
         return uffs_result_to_dfs(uffs_get_error());
@@ -619,8 +604,7 @@ static int dfs_uffs_stat(struct dfs_filesystem *fs, const char *path, struct sta
     st->st_dev  = 0;
     st->st_mode = s.st_mode;
     st->st_size = s.st_size;
-    st->st_mtim.tv_sec = s.st_mtime;
-    st->st_mtim.tv_nsec = 0;
+    st->st_mtime = s.st_mtime;
 
     return 0;
 }
@@ -673,3 +657,4 @@ int dfs_uffs_init(void)
     return -RT_ERROR;
 }
 INIT_COMPONENT_EXPORT(dfs_uffs_init);
+

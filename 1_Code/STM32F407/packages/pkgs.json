@@ -5,6 +5,16 @@
   "ver": "v8.3.11"
  },
  {
+  "name": "PERF_COUNTER",
+  "path": "/packages/system/perf_counter",
+  "ver": "v2.2.4.1"
+ },
+ {
+  "name": "UFFS",
+  "path": "/packages/system/uffs",
+  "ver": "latest"
+ },
+ {
   "name": "FLEXIBLE_BUTTON",
   "path": "/packages/misc/FlexibleButton",
   "ver": "v1.0.0"

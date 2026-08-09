@@ -45,16 +45,6 @@ extern "C"{
 
 #include "uffs/uffs.h"
 
-#ifdef st_atime
-#undef st_atime
-#endif
-#ifdef st_mtime
-#undef st_mtime
-#endif
-#ifdef st_ctime
-#undef st_ctime
-#endif
-
 /**
  * \brief definitions for uffs_stat::st_mode
  */
@@ -156,5 +146,6 @@ void uffs_flush_all(const char *mount_point);
 }
 #endif
 #endif
+
 
 

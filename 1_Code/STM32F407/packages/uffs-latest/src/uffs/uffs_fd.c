@@ -743,3 +743,4 @@ void uffs_flush_all(const char *mount_point)
 		uffs_GlobalFsLockUnlock();
 	}
 }
+

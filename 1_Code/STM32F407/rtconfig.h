@@ -102,7 +102,6 @@
 #define RT_DFS_ELM_MUTEX_TIMEOUT 3000
 #define RT_USING_DFS_DEVFS
 #define RT_USING_DFS_ROMFS
-#define RT_USING_DFS_UFFS
 
 /* Device Drivers */
 
@@ -112,6 +111,9 @@
 #define RT_USING_SERIAL_V1
 #define RT_SERIAL_USING_DMA
 #define RT_SERIAL_RB_BUFSZ 64
+#define RT_USING_CPUTIME
+#define RT_USING_CPUTIME_CORTEXM
+#define CPUTIME_TIMER_FREQ 0
 #define RT_USING_PWM
 #define RT_USING_MTD_NAND
 #define RT_USING_SDIO
@@ -123,8 +125,6 @@
 #define RT_USING_SPI
 #define RT_USING_PIN
 #define RT_USING_KTIME
-#define RT_USING_CPUTIME
-#define RT_USING_CPUTIME_CORTEXM
 #define RT_USING_HWTIMER
 
 /* Using USB */
@@ -143,6 +143,7 @@
 
 /* POSIX (Portable Operating System Interface) layer */
 
+#define RT_USING_POSIX_FS
 #define RT_USING_POSIX_DELAY
 
 /* Interprocess Communication (IPC) */
@@ -172,9 +173,6 @@
 #define ULOG_OUTPUT_LEVEL
 #define ULOG_OUTPUT_TAG
 #define ULOG_BACKEND_USING_CONSOLE
-
-/* RT-Thread Utestcases */
-
 
 /* RT-Thread online packages */
 
@@ -231,13 +229,6 @@
 
 /* system packages */
 
-#define PKG_USING_DFS_UFFS
-#define RT_USING_DFS_UFFS
-#define RT_UFFS_ECC_MODE_1
-#define RT_UFFS_ECC_MODE 1
-#define PKG_USING_DFS_UFFS_LATEST_VERSION
-#define RT_UFFS_USE_CHECK_MARK_FUNCITON
-
 /* enhanced kernel services */
 
 
@@ -249,6 +240,13 @@
 
 /* Micrium: Micrium software products porting for RT-Thread */
 
+#define PKG_USING_PERF_COUNTER
+#define PKG_USING_PERF_COUNTER_V2241
+#define PKG_USING_DFS_UFFS
+#define RT_USING_DFS_UFFS
+#define RT_UFFS_ECC_MODE_1
+#define RT_UFFS_ECC_MODE 1
+#define PKG_USING_DFS_UFFS_LATEST_VERSION
 
 /* peripheral libraries and drivers */
 

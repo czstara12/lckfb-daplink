@@ -164,9 +164,12 @@ int entry(void)
 }
 #endif
 
+#ifndef RT_USING_HEAP
+/* if there is not enable heap, we should use static thread and stack. */
 rt_align(RT_ALIGN_SIZE)
 static rt_uint8_t main_thread_stack[RT_MAIN_THREAD_STACK_SIZE];
-static struct rt_thread main_thread;
+struct rt_thread main_thread;
+#endif /* RT_USING_HEAP */
 
 /**
  * @brief  The system main thread. In this thread will call the rt_components_init()
@@ -205,13 +208,23 @@ static void main_thread_entry(void *parameter)
  */
 void rt_application_init(void)
 {
-    rt_err_t result;
     rt_thread_t tid;
+
+#ifdef RT_USING_HEAP
+    tid = rt_thread_create("main", main_thread_entry, RT_NULL,
+                           RT_MAIN_THREAD_STACK_SIZE, RT_MAIN_THREAD_PRIORITY, 20);
+    RT_ASSERT(tid != RT_NULL);
+#else
+    rt_err_t result;
 
     tid = &main_thread;
     result = rt_thread_init(tid, "main", main_thread_entry, RT_NULL,
                             main_thread_stack, sizeof(main_thread_stack), RT_MAIN_THREAD_PRIORITY, 20);
     RT_ASSERT(result == RT_EOK);
+
+    /* if not define RT_USING_HEAP, using to eliminate the warning */
+    (void)result;
+#endif /* RT_USING_HEAP */
 
     rt_thread_startup(tid);
 }

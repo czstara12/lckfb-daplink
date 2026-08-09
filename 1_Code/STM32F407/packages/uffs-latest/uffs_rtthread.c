@@ -115,6 +115,7 @@ unsigned int uffs_GetCurDateTime(void)
 static void * sys_malloc(struct uffs_DeviceSt *dev, unsigned int size)
 {
 	dev = dev;
+	uffs_Perror(UFFS_MSG_NORMAL, "system memory alloc %d bytes", size);
 	return rt_malloc(size);
 }
 
