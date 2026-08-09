@@ -56,6 +56,11 @@ Export('SDK_LIB')
 # prepare building environment
 objs = PrepareBuilding(env, RTT_ROOT, has_libcpu=False)
 
+# BSP 使用本地 DFS v1 端口，UFFS 包仅提供文件系统核心。
+if GetDepend('BSP_USING_FLASH_UFFS'):
+    objs = [obj for obj in Flatten(objs)
+            if not str(obj).endswith(os.path.join('packages', 'uffs-latest', 'dfs_uffs.c'))]
+
 stm32_library = 'STM32F4xx_HAL'
 rtconfig.BSP_LIBRARY_TYPE = stm32_library
 

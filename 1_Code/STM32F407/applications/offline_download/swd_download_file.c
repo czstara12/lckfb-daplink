@@ -11,9 +11,12 @@
  */
 
 #include <rtthread.h>
-#include <dfs_posix.h> 
+#include <dfs_posix.h>
+#include <unistd.h>
 
+#define error_t daplink_error_t
 #include "SWD_flash.h"
+#undef error_t
 #include "swd_host.h"
 #include "debug_cm.h"
 //#include "lv_conf.h"
