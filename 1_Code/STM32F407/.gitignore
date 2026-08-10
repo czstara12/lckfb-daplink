@@ -52,3 +52,5 @@ tags
 CMakeLists.txt
 cmake-build-debug
 *.mk
+
+rt-thread/tools/kconfig-frontends/kconfig-mconf
