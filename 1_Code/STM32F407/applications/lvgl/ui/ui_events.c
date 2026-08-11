@@ -571,7 +571,7 @@ void cb_menutoAboutscreen(lv_event_t * e)
 }
 
 #include "stdio.h"
-#include "drivers/rt_drv_pwm.h"
+#include "drivers/dev_pwm.h"
 
 static rt_uint32_t pwm_rollers_get_value(lv_obj_t ** rollers)
 {

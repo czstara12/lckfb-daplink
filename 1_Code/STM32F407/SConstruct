@@ -5,16 +5,7 @@ import rtconfig
 if GetOption("num_jobs") == 1:
     SetOption("num_jobs", os.cpu_count())
 
-if os.getenv('RTT_ROOT'):
-    RTT_ROOT = os.getenv('RTT_ROOT')
-else:
-    RTT_ROOT = os.path.normpath(os.getcwd() + '/../../..')
-
-# set RTT_ROOT
-if not os.getenv("RTT_ROOT"): 
-    RTT_ROOT="rt-thread"
-
-RTT_ROOT="rt-thread"
+RTT_ROOT = os.path.expanduser(os.getenv('RTT_ROOT', '~/rt-thread'))
 
 sys.path = sys.path + [os.path.join(RTT_ROOT, 'tools')]
 try:

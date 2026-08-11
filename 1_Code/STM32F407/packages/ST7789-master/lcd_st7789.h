@@ -17,7 +17,7 @@ extern "C"
 #include <stdint.h>
 #include <rtthread.h>
 #include <rtdevice.h>
-#include "drivers/spi.h"
+#include "drivers/dev_spi.h"
 
 /* 0-0 angle|1-90 angle|2-180 angle|3-270 angle */
 #define USE_DIRECTION   0

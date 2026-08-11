@@ -25,7 +25,7 @@
  */
 
 #include <rtthread.h>
-#include <drivers/pin.h>
+#include <drivers/dev_pin.h>
 
 #define MP_HAL_PIN_FMT                 "%s"
 
@@ -48,4 +48,3 @@ extern void mp_hal_stdout_tx_strn_stream(const char *str, size_t len);
 #define mp_hal_pin_input(p)      mp_hal_pin_open_set(p, PIN_MODE_INPUT)
 #define mp_hal_pin_name(p)       mp_hal_pin_get_name(p)
 #define mp_hal_pin_high(p)       mp_hal_pin_write(p, 1)
-

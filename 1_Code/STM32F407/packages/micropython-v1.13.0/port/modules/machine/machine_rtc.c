@@ -38,7 +38,7 @@
 #ifdef MICROPYTHON_USING_MACHINE_RTC
 
 #include <rtthread.h>
-#include <drivers/rtc.h>
+#include <drivers/dev_rtc.h>
 #include <time.h>
 
 #define MP_YEAR_BASE   1900

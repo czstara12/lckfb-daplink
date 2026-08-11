@@ -50,6 +50,8 @@
 
 本 BSP 为开发者提供 MDK4、MDK5 工程，并且支持 GCC 开发环境，也可使用RT-Thread Studio开发。下面以 MDK5 开发环境为例，介绍如何将系统运行起来。
 
+RT-Thread 源码独立存放于 `~/rt-thread`，不纳入本仓库版本管理，当前验证版本为 v5.2.2。如需使用其他路径，请在构建前设置 `RTT_ROOT` 环境变量。
+
 #### 硬件连接
 
 使用数据线连接开发板到 PC，使用USB转TTL模块连接PA9(MCU TX)和PA10(MCU RX)，上电。

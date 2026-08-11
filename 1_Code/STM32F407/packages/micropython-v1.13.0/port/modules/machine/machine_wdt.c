@@ -35,7 +35,7 @@
 #ifdef MICROPYTHON_USING_MACHINE_WDT
 
 #include <rtthread.h>
-#include <drivers/watchdog.h>
+#include <drivers/dev_watchdog.h>
 #include "machine_wdt.h"
 
 typedef struct _machine_wdt_obj_t {
@@ -131,4 +131,3 @@ const mp_obj_type_t machine_wdt_type = {
 };
 
 #endif // MICROPYTHON_USING_MACHINE_WDT
-
