@@ -72,7 +72,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 #define I_PD_OUT_MEASURE2_Pin GPIO_PIN_3
 #define I_PD_OUT_MEASURE2_GPIO_Port GPIOA
 #define SPI_FLASH_CS_Pin GPIO_PIN_1
-#define SPI_FLASH_CS_GPIO_Port GPIOA
+#define SPI_FLASH_CS_GPIO_Port GPIOB
 #define DAC_OUT_Pin GPIO_PIN_4
 #define DAC_OUT_GPIO_Port GPIOA
 #define V_PD_OUT_MEASURE_Pin GPIO_PIN_4

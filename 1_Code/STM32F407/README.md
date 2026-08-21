@@ -62,6 +62,17 @@ RT-Thread 源码独立存放于 `~/rt-thread`，不纳入本仓库版本管理�
 
 > 工程默认配置使用 CMSIS-DAP 仿真器下载程序，在通过 CMSIS-DAP 连接开发板的基础上，点击下载按钮即可下载程序到开发板
 
+本项目会使用 STM32F407VE 开放后的后半段 Flash。使用 J-Link 下载时必须选择
+`STM32F407VG`，否则 J-Link 会按 VE 的 512 KiB 容量处理，导致固件下载不完整。
+
+```text
+JLinkExe -device STM32F407VG -if SWD -speed 4000 -autoconnect 1
+loadfile rtthread.hex
+r
+g
+q
+```
+
 #### 运行结果
 
 下载程序成功之后，系统会自动运行，LED 闪烁。
@@ -90,7 +101,7 @@ RT-Thread 源码独立存放于 `~/rt-thread`，不纳入本仓库版本管理�
 
 ## 注意事项
 
-暂无
+- 主控型号仍为 STM32F407VE；`STM32F407VG` 仅作为 J-Link 烧录参数，用于访问已开放的后半段 Flash。
 
 ## 联系人信息
 
