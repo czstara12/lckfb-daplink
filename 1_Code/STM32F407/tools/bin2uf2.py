@@ -48,7 +48,7 @@ def _main():
     parser = argparse.ArgumentParser(description="将 BIN 固件转换为 UF2 文件")
     parser.add_argument("input", type=Path, help="输入 BIN 文件")
     parser.add_argument("output", type=Path, help="输出 UF2 文件")
-    parser.add_argument("--base-address", type=_uint32, default=0x08008000)
+    parser.add_argument("--base-address", type=_uint32, default=0x08010000)
     parser.add_argument("--family-id", type=_uint32, default=0x6D0922FA)
     arguments = parser.parse_args()
     source = arguments.input.read_bytes()
@@ -57,16 +57,16 @@ def _main():
 
 def _self_test():
     source = bytes(range(256)) + b"\xa5"
-    result = _to_uf2(source, 0x08008000, 0x6D0922FA)
+    result = _to_uf2(source, 0x08010000, 0x6D0922FA)
 
     assert len(result) == 1024
     assert struct.unpack_from("<8I", result) == (
-        0x0A324655, 0x9E5D5157, 0x2000, 0x08008000,
+        0x0A324655, 0x9E5D5157, 0x2000, 0x08010000,
         256, 0, 2, 0x6D0922FA,
     )
     assert result[32:288] == source[:256]
     assert struct.unpack_from("<8I", result, 512)[3:8] == (
-        0x08008100, 256, 1, 2, 0x6D0922FA,
+        0x08010100, 256, 1, 2, 0x6D0922FA,
     )
     assert result[544] == 0xA5
     assert result[545:800] == bytes(255)
