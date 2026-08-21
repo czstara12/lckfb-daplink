@@ -1,9 +1,12 @@
 #include "main.h"
 #include "dap_main.h"
 #include "drv_common.h"
+#include "drv_gpio.h"
 #include "screens.h"
 #include "dap_main.h"
 #include "lvgl_data_update.h"
+
+#define RS485_RW_PIN GET_PIN(B, 8)
 
 // 定义UART2接收缓冲区，大小为2KB，32字节对齐
 static __ALIGNED(32) uint8_t uart3_recv_buff[2 * 1024];
@@ -98,6 +101,8 @@ int MX_DMA_Init(void)
 
 int usb2uart_init(void)
 {
+	rt_pin_mode(RS485_RW_PIN, PIN_MODE_OUTPUT);
+	rt_pin_write(RS485_RW_PIN, PIN_LOW);
 	MX_DMA_Init();
 	MX_USART3_UART_Init();
 	MX_USART1_UART_Init();
@@ -185,6 +190,7 @@ void USART3_IRQHandler(void)
 void chry_dap_usb2uart_uart_send_bydma(uint8_t *data, uint16_t len)
 {
 
+	rt_pin_write(RS485_RW_PIN, PIN_HIGH);
 	HAL_UART_Transmit_DMA(&huart3,data,len);
 	
 	
@@ -196,6 +202,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == USART3)
 	{
+		rt_pin_write(RS485_RW_PIN, PIN_LOW);
 		chry_dap_usb2uart_uart_send_complete(g_uart_tx_transfer_length);
 	}
 }
