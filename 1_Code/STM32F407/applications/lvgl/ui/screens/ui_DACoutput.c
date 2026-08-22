@@ -145,8 +145,8 @@ void ui_DACoutput_screen_init(void)
                           LV_ROLLER_MODE_INFINITE);
     lv_obj_set_width(ui_DACWaveRoller, lv_pct(90));
     lv_obj_set_align(ui_DACWaveRoller, LV_ALIGN_BOTTOM_MID);
-    lv_obj_set_style_text_font(ui_DACWaveRoller, &ui_font_PuhuiTi20, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_DACWaveRoller, &ui_font_PuhuiTi20, LV_PART_SELECTED | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_DACWaveRoller, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_DACWaveRoller, &ui_font_PuHuiTi16GB2312, LV_PART_SELECTED | LV_STATE_DEFAULT);
     lv_roller_set_visible_row_count(ui_DACWaveRoller, 2);
     lv_obj_set_style_outline_color(ui_DACWaveRoller, lv_color_hex(0x000000),
                                    LV_PART_MAIN | LV_STATE_FOCUS_KEY);

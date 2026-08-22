@@ -3,7 +3,7 @@
  * Origin: Generated from repository fonts by lv_font_conv.
  * Created-By: gpt-5
  * Signed-off-by: xcwynya
- * Font-Input-SHA256: e222b609807e5809cef2ad6ebac1ffade7691b64ba00545c47e9434301df85c7
+ * Font-Input-SHA256: 3a58dcfcfa1d4fede541bf59469484cdc86e8371ea2db16a8f0ff9488d9004c9
  */
 /*******************************************************************************
  * Size: 20 px

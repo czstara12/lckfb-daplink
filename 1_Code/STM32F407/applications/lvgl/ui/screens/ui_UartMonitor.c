@@ -115,7 +115,8 @@ void ui_UartMonitor_screen_init(void)
     lv_obj_set_y(ui_UMTextAreaContainer, -5);
     lv_obj_set_align(ui_UMTextAreaContainer, LV_ALIGN_BOTTOM_MID);
     lv_obj_clear_flag(ui_UMTextAreaContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_text_font(ui_UMTextAreaContainer, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_UMTextAreaContainer, &ui_font_PuHuiTi16GB2312,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_UMTextArea = lv_textarea_create(ui_UMTextAreaContainer);
     lv_obj_set_width(ui_UMTextArea, lv_pct(100));

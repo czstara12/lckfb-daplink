@@ -231,7 +231,7 @@ LV_FONT_DECLARE(ui_font_jetbrainsMonoMedium16);
 LV_FONT_DECLARE(ui_font_jetbrainsMonoMedium20);
 LV_FONT_DECLARE(ui_font_jetbrainsMonoMedium25);
 LV_FONT_DECLARE(ui_font_PuHuiTi);
-LV_FONT_DECLARE(ui_font_PuhuiTi20);
+LV_FONT_DECLARE(ui_font_PuHuiTi16GB2312);
 LV_FONT_DECLARE(ui_font_PuHuiTi25);
 LV_FONT_DECLARE(ui_font_PuHuiTi30);
 

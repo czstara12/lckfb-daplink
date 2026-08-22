@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import unicodedata
 from pathlib import Path
 
 
@@ -21,6 +22,37 @@ UI_DIR = ROOT / "applications/lvgl/ui"
 FONT_DIR = UI_DIR / "fonts"
 FONT_INPUT_DIR = ROOT / "tools/lv_font_conv/fonts"
 LOCAL_CONVERTER = ROOT / "tools/lv_font_conv/node_modules/.bin/lv_font_conv"
+
+
+def _gb2312_hanzi():
+    """返回 GB2312 一级、二级汉字，不混入 ASCII。"""
+    characters = []
+    for area in range(16, 88):
+        for position in range(1, 95):
+            try:
+                characters.append(bytes((area + 0xA0, position + 0xA0)).decode("gb2312"))
+            except UnicodeDecodeError:
+                pass
+    assert len(characters) == len(set(characters)) == 6763
+    assert all(ord(character) > 0x7F for character in characters)
+    return "".join(characters)
+
+
+def _gb2312_fullwidth_punctuation():
+    """返回 GB2312 全角标点，不包含其他语言文字。"""
+    characters = []
+    for area in range(1, 16):
+        for position in range(1, 95):
+            try:
+                character = bytes((area + 0xA0, position + 0xA0)).decode("gb2312")
+            except UnicodeDecodeError:
+                continue
+            if unicodedata.category(character).startswith("P") or character in "　～":
+                characters.append("·" if character == "・" else character)
+    characters = list(dict.fromkeys(characters))
+    assert len(characters) == 55
+    return "".join(characters)
+
 
 # ponytail: 缓冲区动态文本无法静态反推；格式变化时在每项末尾补充运行时字符。
 FONT_SPECS = {
@@ -33,8 +65,13 @@ FONT_SPECS = {
     ),
     "ui_font_jetbrainsMonoMedium25": ("JetBrainsMono-Medium.ttf", 25, 4, " 0123456789.-%KHMhzVAmW"),
     "ui_font_PuHuiTi": ("Alibaba-PuHuiTi-Medium.ttf", 21, 1, ""),
-    "ui_font_PuhuiTi20": ("Alibaba-PuHuiTi-Medium.ttf", 16, 1, ""),
-    "ui_font_PuHuiTi25": ("Alibaba-PuHuiTi-Medium.ttf", 25, 1, ""),
+    "ui_font_PuHuiTi16GB2312": (
+        "Alibaba-PuHuiTi-Medium.ttf",
+        16,
+        1,
+        _gb2312_hanzi() + _gb2312_fullwidth_punctuation(),
+    ),
+    "ui_font_PuHuiTi25": ("Alibaba-PuHuiTi-Medium.ttf", 25, 1, "任意据数"),
     "ui_font_PuHuiTi30": ("Alibaba-PuHuiTi-Medium.ttf", 30, 1, ""),
 }
 
@@ -161,7 +198,11 @@ def missing_glyphs(generated_source, symbols):
 def _generate_font(converter, name, spec, symbols):
     font_file, size, bpp, dynamic_symbols = spec
     font_path = FONT_INPUT_DIR / font_file
-    symbols = "".join(sorted(set(symbols).union(dynamic_symbols)))
+    symbols = (
+        dynamic_symbols
+        if name == "ui_font_PuHuiTi16GB2312"
+        else "".join(sorted(set(symbols).union(dynamic_symbols)))
+    )
     input_hash = _input_hash(font_path, size, bpp, symbols)
     output = FONT_DIR / f"{name}.c"
     if output.is_file() and f"Font-Input-SHA256: {input_hash}" in output.read_text(
@@ -211,6 +252,9 @@ def _generate_font(converter, name, spec, symbols):
             raise RuntimeError(f"{font_file} 缺少字模: {''.join(sorted(missing))}")
         body = body.replace(str(font_path), font_path.relative_to(ROOT).as_posix())
         body = body.replace(str(temporary_path), output.relative_to(ROOT).as_posix())
+        if name == "ui_font_PuHuiTi16GB2312":
+            body = body.replace(".fallback = NULL,", ".fallback = &lv_font_montserrat_12,")
+            body = body.rstrip() + "\n"
         output.write_text(header + body, encoding="utf-8")
         print(f"已生成 {output.relative_to(ROOT)}（{len(symbols)} 个字符）", file=sys.stderr)
     finally:

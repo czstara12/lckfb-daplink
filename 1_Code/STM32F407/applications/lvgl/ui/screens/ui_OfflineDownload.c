@@ -112,7 +112,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_height(ui_chooseDeviceL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_chooseDeviceL, LV_ALIGN_CENTER);
     lv_label_set_text(ui_chooseDeviceL, "芯片型号");
-    lv_obj_set_style_text_font(ui_chooseDeviceL, &ui_font_PuhuiTi20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_chooseDeviceL, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_chooseBinB = lv_btn_create(ui_offlineDownloadButtonContainer);
     lv_obj_set_width(ui_chooseBinB, 80);
@@ -136,7 +136,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_height(ui_chooseBinL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_chooseBinL, LV_ALIGN_CENTER);
     lv_label_set_text(ui_chooseBinL, "选择固件");
-    lv_obj_set_style_text_font(ui_chooseBinL, &ui_font_PuhuiTi20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_chooseBinL, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_startOfflineDownloadB = lv_btn_create(ui_offlineDownloadButtonContainer);
     lv_obj_set_width(ui_startOfflineDownloadB, 80);
@@ -162,7 +162,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_height(ui_startOfflineDownloadL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_startOfflineDownloadL, LV_ALIGN_CENTER);
     lv_label_set_text(ui_startOfflineDownloadL, "开始烧录");
-    lv_obj_set_style_text_font(ui_startOfflineDownloadL, &ui_font_PuhuiTi20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_startOfflineDownloadL, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_downloadConfigureB = lv_btn_create(ui_offlineDownloadButtonContainer);
     lv_obj_set_width(ui_downloadConfigureB, 80);
@@ -186,7 +186,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_height(ui_downloadConfigureL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_downloadConfigureL, LV_ALIGN_CENTER);
     lv_label_set_text(ui_downloadConfigureL, "烧录参数");
-    lv_obj_set_style_text_font(ui_downloadConfigureL, &ui_font_PuhuiTi20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_downloadConfigureL, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_currentDevicePath = lv_label_create(ui_OfflineDownloadContainer);
     lv_obj_set_width(ui_currentDevicePath, 140);
@@ -194,7 +194,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_x(ui_currentDevicePath, 90);
     lv_obj_set_y(ui_currentDevicePath, 0);
     lv_label_set_text(ui_currentDevicePath, "");
-    lv_obj_set_style_text_font(ui_currentDevicePath, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_currentDevicePath, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_currentDevicePath, lv_color_hex(0x978484), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_currentDevicePath, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_currentDevicePath, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -207,7 +207,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_y(ui_currentBinPath, -14);
     lv_obj_set_align(ui_currentBinPath, LV_ALIGN_LEFT_MID);
     lv_label_set_text(ui_currentBinPath, "");
-    lv_obj_set_style_text_font(ui_currentBinPath, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_currentBinPath, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_currentBinPath, lv_color_hex(0x978484), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_currentBinPath, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_currentBinPath, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -228,7 +228,8 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_x(ui_ODdownloadSuccessCountT, 0);
     lv_obj_set_y(ui_ODdownloadSuccessCountT, 5);
     lv_label_set_text(ui_ODdownloadSuccessCountT, "成功计数:");
-    lv_obj_set_style_text_font(ui_ODdownloadSuccessCountT, &ui_font_PuhuiTi20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_ODdownloadSuccessCountT, &ui_font_PuHuiTi16GB2312,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ODdownloadSuccessCount = lv_label_create(ui_offlineDownloadInfoContainer);
     lv_obj_set_width(ui_ODdownloadSuccessCount, lv_pct(48));
@@ -250,7 +251,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_align(ui_ODdownloadInfo, LV_ALIGN_BOTTOM_MID);
     lv_label_set_text(ui_ODdownloadInfo, "download info");
     lv_obj_set_style_text_align(ui_ODdownloadInfo, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_ODdownloadInfo, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_ODdownloadInfo, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ODreturnHome = lv_btn_create(ui_OfflineDownload);
     lv_obj_set_height(ui_ODreturnHome, 18);

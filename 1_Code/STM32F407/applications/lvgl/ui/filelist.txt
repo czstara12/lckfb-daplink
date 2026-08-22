@@ -15,6 +15,6 @@ fonts/ui_font_jetbrainsMonoMedium16.c
 fonts/ui_font_jetbrainsMonoMedium20.c
 fonts/ui_font_jetbrainsMonoMedium25.c
 fonts/ui_font_PuHuiTi.c
-fonts/ui_font_PuhuiTi20.c
+fonts/ui_font_PuHuiTi16GB2312.c
 fonts/ui_font_PuHuiTi25.c
 fonts/ui_font_PuHuiTi30.c
