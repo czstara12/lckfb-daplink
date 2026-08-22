@@ -14,7 +14,7 @@
 
 #define UFFS_SPEED_PATH              "/uffs/.speed_test.bin"
 #define UFFS_SPEED_DEFAULT_SIZE_KIB  1024U
-#define UFFS_SPEED_DEFAULT_BLOCK     4088U
+#define UFFS_SPEED_DEFAULT_BLOCK     4096U
 #define UFFS_SPEED_MAX_SIZE_KIB      (64U * 1024U)
 #define UFFS_SPEED_MAX_BLOCK         (64U * 1024U)
 

@@ -54,6 +54,11 @@
 #define W25N01GV_STATUS_ERASE_FAIL      0x04U
 #define W25N01GV_STATUS_PROGRAM_FAIL    0x08U
 #define W25N01GV_BAD_BLOCK_MARKER_COL   W25N01GV_PAGE_SIZE
+/* 用 OOB 尾部扩展 UFFS 页，使 4 字节 mini header 不再缩减 2048 字节有效数据。 */
+#define W25N01GV_UFFS_PAGE_TAIL_SIZE    4U
+#define W25N01GV_UFFS_PAGE_SIZE         (W25N01GV_PAGE_SIZE + W25N01GV_UFFS_PAGE_TAIL_SIZE)
+#define W25N01GV_UFFS_OOB_SIZE          (W25N01GV_OOB_SIZE - W25N01GV_UFFS_PAGE_TAIL_SIZE)
+#define W25N01GV_UFFS_PAGE_TAIL_COL     (W25N01GV_PAGE_SIZE + W25N01GV_UFFS_OOB_SIZE)
 #define W25N01GV_WAIT_READY_TIMEOUT_MS  1000U
 #define W25N01GV_WAIT_READY_POLL_US     50U
 #define W25N01GV_TEST_BLOCK_FIRST       1000U
@@ -473,13 +478,14 @@ static rt_err_t w25n01gv_write_page_with_oob(uint16_t block,
                                              rt_size_t spare_len)
 {
     rt_err_t ret;
+    rt_size_t physical_data_len;
     uint8_t status = 0;
 
     if (block >= W25N01GV_BLOCK_COUNT || page >= W25N01GV_PAGES_PER_BLOCK ||
         (data == RT_NULL && data_len != 0U) ||
         (spare == RT_NULL && spare_len != 0U) ||
-        data_len > W25N01GV_PAGE_SIZE ||
-        spare_len > W25N01GV_OOB_SIZE)
+        data_len > W25N01GV_UFFS_PAGE_SIZE ||
+        spare_len > W25N01GV_UFFS_OOB_SIZE)
     {
         return -RT_ERROR;
     }
@@ -496,9 +502,10 @@ static rt_err_t w25n01gv_write_page_with_oob(uint16_t block,
         return -RT_ERROR;
     }
 
-    if (data_len > 0U)
+    physical_data_len = data_len > W25N01GV_PAGE_SIZE ? W25N01GV_PAGE_SIZE : data_len;
+    if (physical_data_len > 0U)
     {
-        ret = w25n01gv_program_load(0, data, data_len);
+        ret = w25n01gv_program_load(0, data, physical_data_len);
         if (ret != RT_EOK)
         {
             return ret;
@@ -507,9 +514,20 @@ static rt_err_t w25n01gv_write_page_with_oob(uint16_t block,
 
     if (spare_len > 0U)
     {
-        ret = data_len > 0U ?
+        ret = physical_data_len > 0U ?
               w25n01gv_random_program_load(W25N01GV_PAGE_SIZE, spare, spare_len) :
               w25n01gv_program_load(W25N01GV_PAGE_SIZE, spare, spare_len);
+        if (ret != RT_EOK)
+        {
+            return ret;
+        }
+    }
+
+    if (data_len > W25N01GV_PAGE_SIZE)
+    {
+        ret = w25n01gv_random_program_load(W25N01GV_UFFS_PAGE_TAIL_COL,
+                                           data + W25N01GV_PAGE_SIZE,
+                                           data_len - W25N01GV_PAGE_SIZE);
         if (ret != RT_EOK)
         {
             return ret;
@@ -537,6 +555,7 @@ static rt_err_t w25n01gv_mtd_read_page(struct rt_mtd_nand_device *device,
 {
     uint16_t block = (uint16_t)(page / W25N01GV_PAGES_PER_BLOCK);
     uint8_t page_in_block = (uint8_t)(page % W25N01GV_PAGES_PER_BLOCK);
+    rt_size_t physical_data_len;
 
     (void)device;
 
@@ -544,8 +563,8 @@ static rt_err_t w25n01gv_mtd_read_page(struct rt_mtd_nand_device *device,
         block >= W25N01GV_UFFS_BLOCK_FIRST + W25N01GV_UFFS_BLOCK_COUNT ||
         (data == RT_NULL && data_len != 0U) ||
         (spare == RT_NULL && spare_len != 0U) ||
-        data_len > W25N01GV_PAGE_SIZE ||
-        spare_len > W25N01GV_OOB_SIZE)
+        data_len > W25N01GV_UFFS_PAGE_SIZE ||
+        spare_len > W25N01GV_UFFS_OOB_SIZE)
     {
         return -RT_ERROR;
     }
@@ -558,7 +577,16 @@ static rt_err_t w25n01gv_mtd_read_page(struct rt_mtd_nand_device *device,
 
     if (data != RT_NULL && data_len > 0U)
     {
-        if (w25n01gv_read_cache(0, data, data_len) != RT_EOK)
+        physical_data_len = data_len > W25N01GV_PAGE_SIZE ? W25N01GV_PAGE_SIZE : data_len;
+        if (w25n01gv_read_cache(0, data, physical_data_len) != RT_EOK)
+        {
+            return -RT_ERROR;
+        }
+
+        if (data_len > W25N01GV_PAGE_SIZE &&
+            w25n01gv_read_cache(W25N01GV_UFFS_PAGE_TAIL_COL,
+                                data + W25N01GV_PAGE_SIZE,
+                                data_len - W25N01GV_PAGE_SIZE) != RT_EOK)
         {
             return -RT_ERROR;
         }
@@ -667,9 +695,9 @@ static const struct rt_mtd_nand_driver_ops w25n01gv_mtd_ops =
 static rt_err_t w25n01gv_mtd_register(void)
 {
     memset(&w25n01gv_mtd_dev, 0, sizeof(w25n01gv_mtd_dev));
-    w25n01gv_mtd_dev.page_size = W25N01GV_PAGE_SIZE;
-    w25n01gv_mtd_dev.oob_size = W25N01GV_OOB_SIZE;
-    w25n01gv_mtd_dev.oob_free = W25N01GV_OOB_SIZE;
+    w25n01gv_mtd_dev.page_size = W25N01GV_UFFS_PAGE_SIZE;
+    w25n01gv_mtd_dev.oob_size = W25N01GV_UFFS_OOB_SIZE;
+    w25n01gv_mtd_dev.oob_free = W25N01GV_UFFS_OOB_SIZE;
     w25n01gv_mtd_dev.plane_num = 1;
     w25n01gv_mtd_dev.pages_per_block = W25N01GV_PAGES_PER_BLOCK;
     w25n01gv_mtd_dev.block_total = W25N01GV_BLOCK_COUNT;
