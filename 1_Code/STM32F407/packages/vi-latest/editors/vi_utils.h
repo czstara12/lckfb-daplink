@@ -340,7 +340,7 @@ typedef unsigned smalluint;
 #define X_OK    1               /* Tests whether the file can be accessed for execution. */
 #endif
 
-#if !defined(__GNUC__)
+#if !defined(__GNUC__) || defined(__CC_ARM)
 #define ALIGN1
 #define barrier()
 #else
