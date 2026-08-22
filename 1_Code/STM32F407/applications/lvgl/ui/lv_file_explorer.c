@@ -551,7 +551,7 @@ static void show_dir(lv_obj_t * obj, const char * path)
 
     res = lv_fs_dir_open(&dir, path);
     if(res != LV_FS_RES_OK) {
-        LV_LOG_USER("Open dir error %d!", res);
+        LV_LOG_ERROR("Open dir error %d!", res);
         return;
     }
 
@@ -563,13 +563,12 @@ static void show_dir(lv_obj_t * obj, const char * path)
     while(1) {
         res = lv_fs_dir_read(&dir, fn);
         if(res != LV_FS_RES_OK) {
-            LV_LOG_USER("Driver, file or directory is not exists %d!", res);
+            LV_LOG_ERROR("Read dir error %d!", res);
             break;
         }
 
         /*fn is empty, if not more files to read*/
         if(strlen(fn) == 0) {
-            LV_LOG_USER("Not more files to read!");
             break;
         }
 

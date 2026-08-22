@@ -7,10 +7,6 @@
 #include "lv_file_explorer.h"
 #include "screens.h"
 
-#define LOG_TAG     "FileExplorer"     // 该模块对应的标签。不定义时，默认：NO_TAG
-#define LOG_LVL     LOG_LVL_DBG   // 该模块对应的日志输出级别。不定义时，默认：调试级别
-#include <ulog.h>                 // 必须在 LOG_TAG 与 LOG_LVL 下面
-
 #define WINDOW_WIDTH 240
 #define WINDOW_HEIGHT 240
 #define TITLE_HEIGHT 25
@@ -132,7 +128,7 @@ static void showDir(const char* path) {
 
     res = lv_fs_dir_open(&dir, path);
     if (res != LV_FS_RES_OK) {
-        LV_LOG_USER("Open dir error %d!", res);
+        LV_LOG_ERROR("Open dir error %d!", res);
         btn = lv_list_add_btn(obj, LV_SYMBOL_WARNING, "Open dir error !");
         lv_obj_add_style(btn, &style, LV_PART_MAIN);
         lv_obj_set_style_bg_color(btn, lv_palette_main(LV_PALETTE_RED), 0);
@@ -215,8 +211,11 @@ static void showDir(const char* path) {
     // 读取目录项并添加到列表，直到达到文件数量限制
     while (file_count < MAX_FILES_VISIBLE) {
         res = lv_fs_dir_read(&dir, fn);
-        if (res != LV_FS_RES_OK || strlen(fn) == 0) {
-            LV_LOG_USER("No more files to read or error %d!", res);
+        if (res != LV_FS_RES_OK) {
+            LV_LOG_ERROR("Read dir error %d!", res);
+            break;
+        }
+        if (fn[0] == '\0') {
             break;
         }
 
@@ -255,9 +254,19 @@ void file_explorerevent_handler(lv_event_t *e)
     char file_name[LV_FILE_EXPLORER_PATH_MAX_LEN];
     lv_obj_t *obj = lv_group_get_focused(file_explorer_group);
     str_fn = lv_list_get_btn_text(list1, obj);
-    LV_LOG_USER("str_fn %s\n", str_fn);
+    LV_LOG_TRACE("selected entry: %s", str_fn);
     if ((strcmp(str_fn, ".") == 0))
         return;
+
+    if (strcmp(str_fn, "..") == 0 && strlen(current_path) <= 3)
+    {
+        if (current_path_return == 3)
+        {
+            current_screen_set(SCREEN_MENU);
+            _ui_screen_change(&ui_Menu, LV_SCR_LOAD_ANIM_FADE_ON, 300, 0, &ui_Menu_screen_init);
+        }
+        return;
+    }
 
     if ((strcmp(str_fn, "..") == 0) && (strlen(current_path) > 3))
     {
@@ -272,16 +281,11 @@ void file_explorerevent_handler(lv_event_t *e)
        {
           lv_snprintf((char *)file_name, sizeof(file_name), "%s%s",
                       current_path, str_fn);
-       }else if (current_path_return == 3)
-       {
-           current_screen_set(SCREEN_MENU);
-           _ui_screen_change(&ui_Menu, LV_SCR_LOAD_ANIM_FADE_ON, 300, 0, &ui_Menu_screen_init);
-           return;
        }
     }
 
     lv_fs_dir_t dir;
-    LV_LOG_USER("lv_fs_dir_open file_name %s\n", file_name);
+    LV_LOG_TRACE("open path: %s", file_name);
     if (lv_fs_dir_open(&dir, file_name) == LV_FS_RES_OK)
     {
         lv_fs_dir_close(&dir);
