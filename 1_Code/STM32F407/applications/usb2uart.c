@@ -10,6 +10,7 @@
 
 // 定义UART2接收缓冲区，大小为2KB，32字节对齐
 static __ALIGNED(32) uint8_t uart3_recv_buff[2 * 1024];
+static uint16_t uart3_rx_old_pos = 0;
 // 定义全局变量，用于记录UART发送数据的长度
 static volatile uint32_t g_uart_tx_transfer_length = 0;
 
@@ -154,39 +155,52 @@ void chry_dap_usb2uart_uart_config_callback(struct cdc_line_coding *line_coding)
     }
 
     // 配置UART接收DMA
-	if (HAL_UART_Receive_DMA(&huart3, uart3_recv_buff, sizeof(uart3_recv_buff)) != HAL_OK)
+	uart3_rx_old_pos = 0;
+	if (HAL_UARTEx_ReceiveToIdle_DMA(&huart3, uart3_recv_buff, sizeof(uart3_recv_buff)) != HAL_OK)
 	{
 		Error_Handler();
 	}
 }
 
+static void uart3_receive_write(uint8_t *data, uint16_t length)
+{
+	chry_ringbuffer_write(&g_uartrx, data, length);
+	if (current_screen_get() == SCREEN_UART_MONITOR &&
+		length < CONFIG_UARTRX_RINGBUF_SIZE_FOR_LVGL / 3)
+	{
+		chry_ringbuffer_write(&g_uartrx_for_lvgl, data, length);
+	}
+}
+
+/**
+ * @brief 处理 USART3 循环 DMA 新接收的数据区段。
+ *
+ * @param huart UART 句柄。
+ * @param position DMA 缓冲区当前写入位置。
+ */
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t position)
+{
+	if (huart->Instance != USART3 || position == uart3_rx_old_pos)
+	{
+		return;
+	}
+
+	if (position > uart3_rx_old_pos)
+	{
+		uart3_receive_write(&uart3_recv_buff[uart3_rx_old_pos], position - uart3_rx_old_pos);
+	}
+	else
+	{
+		uart3_receive_write(&uart3_recv_buff[uart3_rx_old_pos], sizeof(uart3_recv_buff) - uart3_rx_old_pos);
+		uart3_receive_write(uart3_recv_buff, position);
+	}
+
+	uart3_rx_old_pos = position == sizeof(uart3_recv_buff) ? 0 : position;
+}
+
 // USART3中断处理函数
 void USART3_IRQHandler(void)
 {
-    static volatile uint32_t receive_len = 0;
-    // 检查USART空闲中断标志
-    if (__HAL_UART_GET_FLAG(&huart3,UART_FLAG_IDLE) != RESET)
-    {
-		  __HAL_UART_CLEAR_IDLEFLAG(&huart3);
-		  HAL_UART_AbortReceive(&huart3);
-		  receive_len = sizeof(uart3_recv_buff) - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx);    // 计算接收的数据长度
-		  chry_ringbuffer_write(&g_uartrx, uart3_recv_buff,sizeof(uart3_recv_buff) - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx));
-			if(current_screen_get() == SCREEN_UART_MONITOR)
-			{
-				if((sizeof(uart3_recv_buff) - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx)) < CONFIG_UARTRX_RINGBUF_SIZE_FOR_LVGL/3)
-				{
-					// 将接收到的数据写入环形缓冲区 给LVGL中的串口监视器使用
-					chry_ringbuffer_write(&g_uartrx_for_lvgl, uart3_recv_buff,
-										  sizeof(uart3_recv_buff) - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx));
-				}
-				else
-				{
-					//too much data,can not display
-				}
-			}
-		  HAL_UART_Receive_DMA(&huart3,uart3_recv_buff,sizeof(uart3_recv_buff));         // 开启DMA继续接收
-
-    }
 	HAL_UART_IRQHandler(&huart3);
 	__HAL_UART_CLEAR_OREFLAG(&huart3);
 }
