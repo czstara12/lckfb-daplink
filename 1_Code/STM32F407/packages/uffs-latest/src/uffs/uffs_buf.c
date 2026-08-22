@@ -940,11 +940,17 @@ ext:
 static URET _BufFlush_NewBlock(uffs_Device *dev, int slot)
 {
 	u8 type;
+	u8 timeStamp;
+	u16 parent;
+	u16 serial;
+	u16 page;
+	u16 data_sum = 0;
 	TreeNode *node;
 	uffs_BlockInfo *bc;
-	URET ret;
-
-	ret = U_FAIL;
+	uffs_Buf *buf;
+	uffs_Tags *tag;
+	URET ret = U_FAIL;
+	int i;
 
 	node = uffs_TreeGetErasedNode(dev);
 	if (node == NULL) {
@@ -959,16 +965,79 @@ static URET _BufFlush_NewBlock(uffs_Device *dev, int slot)
 	}
 
 	type = dev->buf.dirtyGroup[slot].dirty->type;
-	
-	ret = uffs_BufFlush_Exist_With_BlockCover(dev, slot, node, bc);
+	parent = dev->buf.dirtyGroup[slot].dirty->parent;
+	serial = dev->buf.dirtyGroup[slot].dirty->serial;
+	timeStamp = uffs_GetNextBlockTimeStamp(uffs_GetFirstBlockTimeStamp());
 
-	if (ret == U_SUCC)
-		uffs_InsertNodeToTree(dev, type, node);
-	else {
+	/* TreeGetErasedNode() 已验证或擦除该块，无需再扫描 Tag，更不需要第二个擦除块做搬迁。 */
+	for (i = 0; i < dev->attr->pages_per_block; i++) {
+		memset(&bc->spares[i].tag, 0xFF, sizeof(bc->spares[i].tag));
+		bc->spares[i].expired = 0;
+	}
+	bc->expired_count = 0;
+
+	for (page = 0; page < dev->attr->pages_per_block; page++) {
+		buf = _FindBufInDirtyList(dev->buf.dirtyGroup[slot].dirty, page);
+		if (buf == NULL)
+			continue;
+		tag = GET_TAG(bc, page);
+		TAG_DIRTY_BIT(tag) = TAG_DIRTY;
+		TAG_VALID_BIT(tag) = TAG_VALID;
+		TAG_BLOCK_TS(tag) = timeStamp;
+		TAG_DATA_LEN(tag) = buf->data_len;
+		TAG_TYPE(tag) = type;
+		TAG_PARENT(tag) = parent;
+		TAG_SERIAL(tag) = serial;
+		TAG_PAGE_ID(tag) = (u8)page;
+		SEAL_TAG(tag);
+
+		if (page == 0)
+			data_sum = _GetDirOrFileNameSum(dev, buf);
+
+		if (uffs_FlashWritePageCombine(dev, bc->block, page, buf, tag) != UFFS_FLASH_NO_ERR)
+			goto fail;
+	}
+
+	while ((buf = dev->buf.dirtyGroup[slot].dirty) != NULL) {
+		if (_BreakFromDirty(dev, buf) == U_SUCC) {
+			buf->mark = UFFS_BUF_VALID;
+			_MoveNodeToHead(dev, buf);
+		}
+	}
+
+	switch (type) {
+	case UFFS_TYPE_DIR:
+		node->u.dir.parent = parent;
+		node->u.dir.serial = serial;
+		node->u.dir.block = bc->block;
+		node->u.dir.checksum = data_sum;
+		break;
+	case UFFS_TYPE_FILE:
+		node->u.file.parent = parent;
+		node->u.file.serial = serial;
+		node->u.file.block = bc->block;
+		node->u.file.checksum = data_sum;
+		break;
+	case UFFS_TYPE_DATA:
+		node->u.data.parent = parent;
+		node->u.data.serial = serial;
+		node->u.data.block = bc->block;
+		break;
+	default:
+		goto fail;
+	}
+
+	uffs_InsertNodeToTree(dev, type, node);
+	ret = U_SUCC;
+	goto done;
+
+	fail:
+	if (ret != U_SUCC) {
 		uffs_FlashEraseBlock(dev, bc->block);
 		uffs_TreeInsertToErasedListTail(dev, node);
-	}		
+	}
 
+	done:
 	uffs_BlockInfoPut(dev, bc);
 ext:
 	return ret;
@@ -1790,8 +1859,6 @@ URET uffs_BufRead(struct uffs_DeviceSt *dev,
 
 	return U_SUCC;
 }
-
-
 
 
 

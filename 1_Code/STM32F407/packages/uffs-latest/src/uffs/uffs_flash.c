@@ -950,8 +950,13 @@ URET uffs_FlashCheckErasedBlock(uffs_Device *dev, int block)
 	uffs_TagStore ts;
 	uffs_Buf *buf = NULL;
 	int size = dev->com.pg_size;
+	int check_size = size;
 	int i;
 	u8 *p;
+
+	/* MiniHeader 独立放在 OOB 时，它和 Tag 足以判断页是否被编程。 */
+	if (dev->com.pg_size > dev->attr->page_data_size)
+		check_size = sizeof(struct uffs_MiniHeaderSt);
 	
 	spare = (u8 *) uffs_PoolGet(SPOOL(dev));
 	
@@ -970,7 +975,12 @@ URET uffs_FlashCheckErasedBlock(uffs_Device *dev, int block)
 	for (page = 0; page < dev->attr->pages_per_block; page++) {
 		if (ops->ReadPageWithLayout) {
 			
-			flash_ret = ops->ReadPageWithLayout(dev, block, page, buf->header, size, NULL, &ts, ecc_store);
+			flash_ret = ops->ReadPageWithLayout(dev, block, page, buf->header, check_size, NULL, &ts, ecc_store);
+
+			if (UFFS_FLASH_HAVE_ERR(flash_ret)) {
+				ret = U_FAIL;
+				goto ext;
+			}
 			
 			if (flash_ret != UFFS_FLASH_IO_ERR) {
 				// check page tag, should be all 0xFF
@@ -1010,7 +1020,7 @@ URET uffs_FlashCheckErasedBlock(uffs_Device *dev, int block)
 		
 		if (flash_ret != UFFS_FLASH_IO_ERR) {
 			// check page data, should be all 0xFF
-			for (i = 0, p = buf->header; i < size; i++, p++) {
+			for (i = 0, p = buf->header; i < check_size; i++, p++) {
 				if (*p != 0xFF) {
 					ret = U_FAIL;
 					goto ext;
@@ -1031,4 +1041,3 @@ ext:
 	
 	return ret;
 }
-
