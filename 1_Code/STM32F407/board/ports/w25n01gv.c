@@ -26,6 +26,10 @@
 #include <drv_gpio.h>
 #include <drv_spi.h>
 
+#define DBG_TAG "w25n01gv"
+#define DBG_LVL DBG_ERROR
+#include <rtdbg.h>
+
 #define W25N01GV_SPI_BUS_NAME           "spi1"
 #define W25N01GV_SPI_DEVICE_NAME        "w25ngv0"
 #define W25N01GV_SPI_MAX_HZ             20000000U
@@ -780,11 +784,11 @@ static rt_err_t w25n01gv_ftl_format(void)
             if (w25n01gv_oob_buf[0] != W25N01GV_FTL_MAGIC0 ||
                 w25n01gv_oob_buf[1] != W25N01GV_FTL_MAGIC1)
             {
-                rt_kprintf("W25N01GV: skip bad block %u, marker=0x%02x\n", block, marker);
+                LOG_W("skip bad block %u, marker=0x%02x", block, marker);
                 continue;
             }
 
-            rt_kprintf("W25N01GV: reclaim legacy FTL marker on block %u\n", block);
+            LOG_I("reclaim legacy FTL marker on block %u", block);
         }
 
         if (w25n01gv_erase_block(block) != RT_EOK)
@@ -1521,11 +1525,8 @@ static int rt_hw_w25n01gv_init(void)
         return -RT_ERROR;
     }
 
-    rt_kprintf("W25N01GV: init ok, id=%02x %02x %02x, capacity=%u KiB\n",
-               id[0],
-               id[1],
-               id[2],
-               W25N01GV_CAPACITY / 1024U);
+    LOG_I("init ok, id=%02x %02x %02x, capacity=%u KiB",
+          id[0], id[1], id[2], W25N01GV_CAPACITY / 1024U);
 
     if (w25n01gv_unlock_all_blocks() != RT_EOK)
     {
@@ -1545,10 +1546,10 @@ static int rt_hw_w25n01gv_init(void)
         return -RT_ERROR;
     }
 
-    rt_kprintf("W25N01GV: MTD NAND device '%s' ready, blocks %u..%u\n",
-               W25N01GV_UFFS_MTD_NAME,
-               W25N01GV_UFFS_BLOCK_FIRST,
-               W25N01GV_UFFS_BLOCK_FIRST + W25N01GV_UFFS_BLOCK_COUNT - 1U);
+    LOG_I("MTD NAND device '%s' ready, blocks %u..%u",
+          W25N01GV_UFFS_MTD_NAME,
+          W25N01GV_UFFS_BLOCK_FIRST,
+          W25N01GV_UFFS_BLOCK_FIRST + W25N01GV_UFFS_BLOCK_COUNT - 1U);
 
     return RT_EOK;
 }

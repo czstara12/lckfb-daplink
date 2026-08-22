@@ -18,6 +18,7 @@
 #define MY_DISP_HOR_RES          240
 #define MY_DISP_VER_RES          240
 #define LV_USE_LOG              1
+#define LV_LOG_LEVEL            LV_LOG_LEVEL_ERROR
 
 #define LV_COLOR_16_SWAP 1
 

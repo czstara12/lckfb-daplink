@@ -17,7 +17,7 @@
 
 
 #define DBG_TAG "st7789"
-#define DBG_LVL DBG_INFO
+#define DBG_LVL DBG_ERROR
 #include <rtdbg.h>
 
 #ifdef PKG_USING_ST7789

@@ -10,7 +10,7 @@ static void event_handler(lv_event_t * e)
     if(code == LV_EVENT_VALUE_CHANGED) {
         lv_calendar_date_t date;
         if(lv_calendar_get_pressed_date(obj, &date)) {
-            LV_LOG_USER("Clicked date: %02d.%02d.%d", date.day, date.month, date.year);
+            LV_LOG_INFO("Clicked date: %02d.%02d.%d", date.day, date.month, date.year);
         }
     }
 }

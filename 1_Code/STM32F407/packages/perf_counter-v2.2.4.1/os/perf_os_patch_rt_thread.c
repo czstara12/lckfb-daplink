@@ -93,7 +93,7 @@ void __ensure_systick_wrapper(void)
 }
 
 #define DBG_TAG    "perf_counter"
-#define DBG_LVL    DBG_INFO
+#define DBG_LVL    DBG_ERROR
 #include <rtdbg.h>
 
 static int _perf_counter_init(void)

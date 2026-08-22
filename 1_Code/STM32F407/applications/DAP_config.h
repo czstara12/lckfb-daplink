@@ -605,8 +605,6 @@ __STATIC_FORCEINLINE void     PIN_nRESET_OUT (uint32_t bit) {
 
     GPIOE_OUTPUT(10) = bit;
 
-	rt_kprintf("in reset\r\n");
-	
 	if(0 == bit)
 	{
 		soft_reset_target();

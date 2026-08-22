@@ -25,7 +25,7 @@
 #endif
 
 #define DBG_TAG "app.filesystem"
-#define DBG_LVL DBG_INFO
+#define DBG_LVL DBG_ERROR
 #include <rtdbg.h>
 
 #ifdef BSP_USING_FS_AUTO_MOUNT

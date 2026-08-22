@@ -81,7 +81,6 @@ void soft_reset_target(void)
         // Perform a soft reset
         if (!swd_read_word((0xe000e000) + 0x0D0C, &val))
         {
-            rt_kprintf("swd_read_word is %x\r\n", val);
             return;
         }
 
@@ -89,11 +88,9 @@ void soft_reset_target(void)
                             0x05FA0000 | (val & SCB_AIRCR_PRIGROUP_Msk)
                                 | 0x00000004))
         {
-            rt_kprintf("swd_write_word is %x\r\n", val);
             return;
         }
     }
-    rt_kprintf("!!swd_read_word is %x\r\n", val);
 }
 
 uint32_t get_idcode(void)
