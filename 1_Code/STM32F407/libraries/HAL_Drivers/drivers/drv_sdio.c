@@ -25,7 +25,7 @@ static struct stm32_sdio_config sdio_config = SDIO_BUS_CONFIG;
 static struct stm32_sdio_class sdio_obj;
 static struct rt_mmcsd_host *host;
 
-#define SDIO_TX_RX_COMPLETE_TIMEOUT_LOOPS    (100000)
+#define SDIO_TX_RX_COMPLETE_TIMEOUT_MS       (100)
 
 #define RTHW_SDIO_LOCK(_sdio)   rt_mutex_take(&_sdio->mutex, RT_WAITING_FOREVER)
 #define RTHW_SDIO_UNLOCK(_sdio) rt_mutex_release(&_sdio->mutex);
@@ -331,14 +331,17 @@ static void rthw_sdio_send_command(struct rthw_sdio *sdio, struct sdio_pkg *pkg)
     /* Waiting for data to be sent to completion */
     if (data != RT_NULL)
     {
-        volatile rt_uint32_t count = SDIO_TX_RX_COMPLETE_TIMEOUT_LOOPS;
+        rt_tick_t start_tick = rt_tick_get();
 
-        while (count && (hw_sdio->sta & (HW_SDIO_IT_TXACT | HW_SDIO_IT_RXACT)))
+        while ((hw_sdio->sta & (HW_SDIO_IT_TXACT | HW_SDIO_IT_RXACT)) &&
+               !(hw_sdio->sta & HW_SDIO_ERRORS) &&
+               rt_tick_get() - start_tick <
+                   rt_tick_from_millisecond(SDIO_TX_RX_COMPLETE_TIMEOUT_MS))
         {
-            count--;
         }
 
-        if ((count == 0) || (hw_sdio->sta & HW_SDIO_ERRORS))
+        if ((hw_sdio->sta & (HW_SDIO_IT_TXACT | HW_SDIO_IT_RXACT)) ||
+            (hw_sdio->sta & HW_SDIO_ERRORS))
         {
             cmd->err = -RT_ERROR;
         }
@@ -448,13 +451,13 @@ static void rthw_sdio_iocfg(struct rt_mmcsd_host *host, struct rt_mmcsd_io_cfg *
 
     RTHW_SDIO_LOCK(sdio);
 
-    div = clk_src / clk;
-    if ((clk == 0) || (div == 0))
+    if (clk == 0)
     {
         clkcr = 0;
     }
     else
     {
+        div = clk_src / clk;
         if (div < 2)
         {
             div = 2;
