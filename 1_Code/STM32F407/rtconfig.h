@@ -166,6 +166,11 @@
 #define RT_USING_DFS_DEVFS
 #define RT_USING_DFS_ROMFS
 /* end of DFS: device virtual file system */
+#define RT_USING_FAL
+#define FAL_USING_DEBUG
+#define FAL_PART_HAS_TABLE_CFG
+#define FAL_USING_SFUD_PORT
+#define FAL_USING_NOR_FLASH_DEV_NAME "norflash0"
 
 /* Device Drivers */
 
@@ -178,6 +183,7 @@
 #define RT_USING_CPUTIME
 #define RT_USING_CPUTIME_CORTEXM
 #define CPUTIME_TIMER_FREQ 0
+#define RT_USING_DAC
 #define RT_USING_PWM
 #define RT_USING_RTC
 #define RT_USING_SDIO
@@ -382,6 +388,7 @@
 /* end of Micrium: Micrium software products porting for RT-Thread */
 #define PKG_USING_PERF_COUNTER
 #define PKG_USING_PERF_COUNTER_V2241
+#define FAL_DEBUG_CONFIG
 /* end of system packages */
 
 /* peripheral libraries and drivers */
@@ -552,6 +559,9 @@
 #define BSP_USING_SPI_FLASH
 #define BSP_USING_FS
 #define BSP_USING_SDCARD_FATFS
+#define BSP_USING_FLASH_FATFS
+#define BSP_USING_FLASH_FS_AUTO_MOUNT
+#define BSP_USING_FAL
 /* end of Onboard Peripheral Drivers */
 
 /* On-chip Peripheral Drivers */
@@ -567,11 +577,14 @@
 #define BSP_USING_PWM1_CH1
 #define BSP_USING_PWM4
 #define BSP_USING_PWM4_CH4
+#define BSP_USING_ON_CHIP_FLASH
 #define BSP_USING_SPI
 #define BSP_USING_SPI1
 #define BSP_SPI1_TX_USING_DMA
 #define BSP_SPI1_RX_USING_DMA
 #define BSP_USING_SPI2
+#define BSP_USING_DAC
+#define BSP_USING_DAC1
 #define BSP_USING_SDIO
 /* end of On-chip Peripheral Drivers */
 /* end of Hardware Drivers Config */
