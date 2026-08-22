@@ -356,135 +356,138 @@
         <option>
           <name>CCIncludePath2</name>
           <state />
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/monkey</state>
-          <state>$PROJ_DIR$\board/ports</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/epoll</state>
+          <state>$PROJ_DIR$\applications/lvgl/ui/screens</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/fsdrv</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/spinner</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/gif</state>
+          <state>$PROJ_DIR$\applications/lvgl/ui/images</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/spi</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/calendar</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/include</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/basic</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/common</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/extension/fcntl/octal</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/include</state>
           <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/sdio/sdhci/include</state>
-          <state>$PROJ_DIR$\libraries/HAL_Drivers</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/phy</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/cdc</state>
-          <state>$PROJ_DIR$\packages/perf_counter-v2.2.4.1</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src</state>
+          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/default</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/list</state>
+          <state>$PROJ_DIR$\packages/micropython-v1.13.0</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/tabview</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/legacy</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/include</state>
+          <state>$PROJ_DIR$\packages/uffs-latest</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/delay</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/png</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/tiny_ttf</state>
+          <state>$PROJ_DIR$\libraries/STM32F4xx_HAL/CMSIS/Device/ST/STM32F4xx/Include</state>
           <state>$PROJ_DIR$\board/CubeMX_Config/Inc</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/msg</state>
-          <state>$PROJ_DIR$\libraries/HAL_Drivers/drivers/config</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/utilities/ulog</state>
+          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/include</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/gridnav</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font</state>
-          <state>$PROJ_DIR$\libraries/optparse</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/hid</state>
-          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port</state>
-          <state>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Inc</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/net/utest</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/smp_call</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/bmp</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/poll</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/swm341_dma2d</state>
-          <state>$PROJ_DIR$\applications/lvgl/ui/fonts</state>
           <state>$PROJ_DIR$\libraries/HAL_Drivers/CMSIS/Include</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core</state>
+          <state>$PROJ_DIR$\applications/lvgl</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/win</state>
+          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/Source/target</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/monkey</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/utilities/ulog</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/inc</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes</state>
+          <state>$PROJ_DIR$\board/ports</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/imgbtn</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/colorwheel</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/termios</state>
+          <state>$PROJ_DIR$\packages/mem_sandbox-latest</state>
+          <state>$PROJ_DIR$\applications/lvgl/ui</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/core</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/include</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/sjpg</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/freetype</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/smp_call</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/spinbox</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/led</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/net/utest</state>
+          <state>$PROJ_DIR$\packages/optparse-latest</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/hid</state>
           <state>$PROJ_DIR$\packages/ST7789-master</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/env_support/rt-thread</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/finsh</state>
+          <state>$PROJ_DIR$\libraries/HAL_Drivers/drivers</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/animimg</state>
+          <state>$PROJ_DIR$\libraries/CherryRB</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/libcpu/arm/cortex-m4</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/Source</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sw</state>
+          <state>$PROJ_DIR$\packages/uffs-latest/src/inc</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others</state>
+          <state>$PROJ_DIR$\packages/perf_counter-v2.2.4.1</state>
+          <state>$PROJ_DIR$\libraries/HAL_Drivers</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/ipc</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/elmfat</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/tileview</state>
+          <state>$PROJ_DIR$\applications/offline_download</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/fragment</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/poll</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/hal</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/qrcode</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/bmp</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/snapshot</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/meter</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/hal</state>
-          <state>$PROJ_DIR$\applications/lvgl/ui</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/qrcode</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/msc</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/imgfont</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/fsdrv</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/common</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts/flex</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/ime</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/legacy/dfs</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/mono</state>
-          <state>$PROJ_DIR$\packages/uffs-latest/src/inc</state>
-          <state>$PROJ_DIR$\packages/micropython-v1.13.0</state>
-          <state>$PROJ_DIR$\packages/FlexibleButton-v1.0.0</state>
-          <state>$PROJ_DIR$\packages/uffs-latest</state>
-          <state>$PROJ_DIR$\applications/offline_download</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/delay</state>
-          <state>$PROJ_DIR$\applications</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/inc</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/extension/fcntl/octal</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/include</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/arm2d</state>
-          <state>$PROJ_DIR$\applications/flmparse</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/include</state>
-          <state>$PROJ_DIR$\libraries/uMCN/inc</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/basic</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/list</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/eventfd</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/spinner</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts/grid</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/animimg</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/imgbtn</state>
-          <state>$PROJ_DIR$\.</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/chart</state>
-          <state>$PROJ_DIR$\applications/lvgl</state>
-          <state>$PROJ_DIR$\libraries/moving-average-library</state>
           <state>$PROJ_DIR$\board</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/colorwheel</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/finsh</state>
-          <state>$PROJ_DIR$\applications/lvgl/ui/images</state>
-          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite</state>
-          <state>$PROJ_DIR$\libraries/CherryRB</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/keyboard</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/swm341_dma2d</state>
           <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/menu</state>
-          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/freetype</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/epoll</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/calendar</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/ipc</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/tabview</state>
-          <state>$PROJ_DIR$\libraries/HAL_Drivers/drivers</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/libcpu/arm/cortex-m4</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/devfs</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/widgets</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/msgbox</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/env_support/rt-thread</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/msg</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/chart</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/stdio</state>
           <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/romfs</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/span</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/renesas</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/libcpu/arm/common</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/sjpg</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/spinbox</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/tileview</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/fragment</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/Source/hic_hal</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/ime</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sw</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/rlottie</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/Source/target</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/Source/interface</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/include</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/core</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/Source</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/win</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/ffmpeg</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/tiny_ttf</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/menu</state>
+          <state>$PROJ_DIR$\packages/FlexibleButton-v1.0.0</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/cdc</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/imgfont</state>
+          <state>$PROJ_DIR$\libraries/uMCN/inc</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/stm32_dma2d</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/msgbox</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/widgets</state>
+          <state>$PROJ_DIR$\.</state>
+          <state>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Inc</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/eventfd</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/arm2d</state>
+          <state>$PROJ_DIR$\applications/flmparse</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/include</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/libcpu/arm/common</state>
+          <state>$PROJ_DIR$\applications</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/gridnav</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/Source/hic_hal</state>
+          <state>$PROJ_DIR$\libraries/HAL_Drivers/drivers/config</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/devfs</state>
+          <state>$PROJ_DIR$\applications/lvgl/ui/fonts</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/phy</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/msc</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/rlottie</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts/grid</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/renesas</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/ffmpeg</state>
+          <state>$PROJ_DIR$\libraries/moving-average-library</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/Source/interface</state>
           <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/extension</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/legacy/dfs</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/png</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/elmfat</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/default</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/gif</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/include</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/led</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/legacy</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/keyboard</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/spi</state>
-          <state>$PROJ_DIR$\applications/lvgl/ui/screens</state>
-          <state>$PROJ_DIR$\libraries/STM32F4xx_HAL/CMSIS/Device/ST/STM32F4xx/Include</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1514,135 +1517,138 @@
         <option>
           <name>CCIncludePath2</name>
           <state />
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/monkey</state>
-          <state>$PROJ_DIR$\board/ports</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/epoll</state>
+          <state>$PROJ_DIR$\applications/lvgl/ui/screens</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/fsdrv</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/spinner</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/gif</state>
+          <state>$PROJ_DIR$\applications/lvgl/ui/images</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/spi</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/calendar</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/include</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/basic</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/common</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/extension/fcntl/octal</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/include</state>
           <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/sdio/sdhci/include</state>
-          <state>$PROJ_DIR$\libraries/HAL_Drivers</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/phy</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/cdc</state>
-          <state>$PROJ_DIR$\packages/perf_counter-v2.2.4.1</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src</state>
+          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/default</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/list</state>
+          <state>$PROJ_DIR$\packages/micropython-v1.13.0</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/tabview</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/legacy</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/include</state>
+          <state>$PROJ_DIR$\packages/uffs-latest</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/delay</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/png</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/tiny_ttf</state>
+          <state>$PROJ_DIR$\libraries/STM32F4xx_HAL/CMSIS/Device/ST/STM32F4xx/Include</state>
           <state>$PROJ_DIR$\board/CubeMX_Config/Inc</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/msg</state>
-          <state>$PROJ_DIR$\libraries/HAL_Drivers/drivers/config</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/utilities/ulog</state>
+          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/include</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/gridnav</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font</state>
-          <state>$PROJ_DIR$\libraries/optparse</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/hid</state>
-          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port</state>
-          <state>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Inc</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/net/utest</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/smp_call</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/bmp</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/poll</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/swm341_dma2d</state>
-          <state>$PROJ_DIR$\applications/lvgl/ui/fonts</state>
           <state>$PROJ_DIR$\libraries/HAL_Drivers/CMSIS/Include</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core</state>
+          <state>$PROJ_DIR$\applications/lvgl</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/win</state>
+          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/Source/target</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/monkey</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/utilities/ulog</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/inc</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes</state>
+          <state>$PROJ_DIR$\board/ports</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/imgbtn</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/colorwheel</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/termios</state>
+          <state>$PROJ_DIR$\packages/mem_sandbox-latest</state>
+          <state>$PROJ_DIR$\applications/lvgl/ui</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/core</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/include</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/sjpg</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/freetype</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/smp_call</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/spinbox</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/led</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/net/utest</state>
+          <state>$PROJ_DIR$\packages/optparse-latest</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/hid</state>
           <state>$PROJ_DIR$\packages/ST7789-master</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/env_support/rt-thread</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/finsh</state>
+          <state>$PROJ_DIR$\libraries/HAL_Drivers/drivers</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/animimg</state>
+          <state>$PROJ_DIR$\libraries/CherryRB</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/libcpu/arm/cortex-m4</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/Source</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sw</state>
+          <state>$PROJ_DIR$\packages/uffs-latest/src/inc</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others</state>
+          <state>$PROJ_DIR$\packages/perf_counter-v2.2.4.1</state>
+          <state>$PROJ_DIR$\libraries/HAL_Drivers</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/ipc</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/elmfat</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/tileview</state>
+          <state>$PROJ_DIR$\applications/offline_download</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/fragment</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/poll</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/hal</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/qrcode</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/bmp</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/snapshot</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/meter</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/hal</state>
-          <state>$PROJ_DIR$\applications/lvgl/ui</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/qrcode</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/msc</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/imgfont</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/fsdrv</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/common</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts/flex</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/ime</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/legacy/dfs</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/mono</state>
-          <state>$PROJ_DIR$\packages/uffs-latest/src/inc</state>
-          <state>$PROJ_DIR$\packages/micropython-v1.13.0</state>
-          <state>$PROJ_DIR$\packages/FlexibleButton-v1.0.0</state>
-          <state>$PROJ_DIR$\packages/uffs-latest</state>
-          <state>$PROJ_DIR$\applications/offline_download</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/delay</state>
-          <state>$PROJ_DIR$\applications</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/inc</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/extension/fcntl/octal</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/include</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/arm2d</state>
-          <state>$PROJ_DIR$\applications/flmparse</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/include</state>
-          <state>$PROJ_DIR$\libraries/uMCN/inc</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/basic</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/list</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/eventfd</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/spinner</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts/grid</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/animimg</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/imgbtn</state>
-          <state>$PROJ_DIR$\.</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/chart</state>
-          <state>$PROJ_DIR$\applications/lvgl</state>
-          <state>$PROJ_DIR$\libraries/moving-average-library</state>
           <state>$PROJ_DIR$\board</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/colorwheel</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/finsh</state>
-          <state>$PROJ_DIR$\applications/lvgl/ui/images</state>
-          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite</state>
-          <state>$PROJ_DIR$\libraries/CherryRB</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/keyboard</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/swm341_dma2d</state>
           <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/menu</state>
-          <state>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/freetype</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/epoll</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/calendar</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/ipc</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/tabview</state>
-          <state>$PROJ_DIR$\libraries/HAL_Drivers/drivers</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/libcpu/arm/cortex-m4</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/devfs</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/widgets</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/msgbox</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/env_support/rt-thread</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/msg</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/chart</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/stdio</state>
           <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/romfs</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/span</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/renesas</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/libcpu/arm/common</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/sjpg</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/spinbox</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/tileview</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/fragment</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/Source/hic_hal</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/ime</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sw</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/rlottie</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/Source/target</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/Source/interface</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/include</state>
-          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/core</state>
-          <state>$PROJ_DIR$\libraries/DAPLink/Source</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/win</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/ffmpeg</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/tiny_ttf</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/menu</state>
+          <state>$PROJ_DIR$\packages/FlexibleButton-v1.0.0</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/cdc</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/imgfont</state>
+          <state>$PROJ_DIR$\libraries/uMCN/inc</state>
           <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/stm32_dma2d</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/msgbox</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/widgets</state>
+          <state>$PROJ_DIR$\.</state>
+          <state>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Inc</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/eventfd</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/arm2d</state>
+          <state>$PROJ_DIR$\applications/flmparse</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/include</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/libcpu/arm/common</state>
+          <state>$PROJ_DIR$\applications</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/others/gridnav</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/Source/hic_hal</state>
+          <state>$PROJ_DIR$\libraries/HAL_Drivers/drivers/config</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/devfs</state>
+          <state>$PROJ_DIR$\applications/lvgl/ui/fonts</state>
+          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/phy</state>
+          <state>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/msc</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/rlottie</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/layouts/grid</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/renesas</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/ffmpeg</state>
+          <state>$PROJ_DIR$\libraries/moving-average-library</state>
+          <state>$PROJ_DIR$\libraries/DAPLink/Source/interface</state>
           <state>$PROJ_DIR$\../../../../rt-thread/components/libc/compilers/common/extension</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/legacy/dfs</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/png</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/dfs/dfs_v1/filesystems/elmfat</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/default</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/gif</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/include</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/led</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/legacy</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp</state>
-          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/keyboard</state>
-          <state>$PROJ_DIR$\../../../../rt-thread/components/drivers/spi</state>
-          <state>$PROJ_DIR$\applications/lvgl/ui/screens</state>
-          <state>$PROJ_DIR$\libraries/STM32F4xx_HAL/CMSIS/Device/ST/STM32F4xx/Include</state>
+          <state>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -2320,19 +2326,10 @@
   <group>
     <name>Applications</name>
     <file>
-      <name>$PROJ_DIR$\applications/bsp_beep.c</name>
+      <name>$PROJ_DIR$\applications/adc_convert.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\applications/bsp_led.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\applications/dap_loop.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\applications/main.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\applications/runtime_load_test.c</name>
+      <name>$PROJ_DIR$\applications/power_control.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\applications/usb2uart.c</name>
@@ -2341,13 +2338,10 @@
       <name>$PROJ_DIR$\applications/runtime_load_indicator.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\applications/power_control.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\applications/adc_convert.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\applications/bsp_dac.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\applications/bsp_led.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\applications/dap_main.c</name>
@@ -2356,10 +2350,22 @@
       <name>$PROJ_DIR$\applications/numeric_tools.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\applications/offline_download_thread.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\applications/sd_card_thread.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\applications/offline_download_thread.c</name>
+      <name>$PROJ_DIR$\applications/main.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\applications/bsp_beep.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\applications/dap_loop.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\applications/runtime_load_test.c</name>
     </file>
   </group>
   <group>
@@ -2423,6 +2429,12 @@
     </file>
     <file>
       <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/block/blk_partition.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/block/partitions/dfs.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/block/partitions/efi.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/core/device.c</name>
@@ -2512,9 +2524,6 @@
       <name>$PROJ_DIR$\board/board.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\board/ports/dfs_uffs_v1.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\board/ports/drv_filesystem.c</name>
     </file>
     <file>
@@ -2581,7 +2590,7 @@
       <name>$PROJ_DIR$\../../../../rt-thread/components/finsh/shell.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\../../../../rt-thread/components/finsh/msh.c</name>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/finsh/cmd.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\../../../../rt-thread/components/finsh/msh_parse.c</name>
@@ -2590,7 +2599,7 @@
       <name>$PROJ_DIR$\../../../../rt-thread/components/finsh/msh_file.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\../../../../rt-thread/components/finsh/cmd.c</name>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/finsh/msh.c</name>
     </file>
   </group>
   <group>
@@ -2650,19 +2659,19 @@
   <group>
     <name>klibc</name>
     <file>
+      <name>$PROJ_DIR$\../../../../rt-thread/src/klibc/kstring.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\../../../../rt-thread/src/klibc/kerrno.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\../../../../rt-thread/src/klibc/rt_vsnprintf_tiny.c</name>
+      <name>$PROJ_DIR$\../../../../rt-thread/src/klibc/kstdio.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\../../../../rt-thread/src/klibc/rt_vsscanf.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\../../../../rt-thread/src/klibc/kstring.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\../../../../rt-thread/src/klibc/kstdio.c</name>
+      <name>$PROJ_DIR$\../../../../rt-thread/src/klibc/rt_vsnprintf_tiny.c</name>
     </file>
   </group>
   <group>
@@ -2671,10 +2680,10 @@
       <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/src/boottime.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/src/hrtimer.c</name>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/src/cputimer.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/src/cputimer.c</name>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/drivers/ktime/src/hrtimer.c</name>
     </file>
   </group>
   <group>
@@ -2704,97 +2713,97 @@
   <group>
     <name>Libraries</name>
     <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</name>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nand.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</name>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac_ex.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp_ex.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cec.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_usart.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_lptim.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_usart.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nand.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</name>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp_ex.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_lptim.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cec.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/STM32F4xx_HAL/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</name>
     </file>
   </group>
   <group>
@@ -2809,40 +2818,40 @@
       <name>$PROJ_DIR$\libraries/CherryUSB-0.10.2/port/dwc2/usb_dc_dwc2.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/hid/usbd_hid.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/cdc/usbd_cdc.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\libraries/CherryUSB-0.10.2/core/usbd_core.c</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/CherryUSB-0.10.2/class/hid/usbd_hid.c</name>
+    </file>
   </group>
   <group>
     <name>Libraries/DAPLINK</name>
     <file>
-      <name>$PROJ_DIR$\libraries/DAPLink/Source/UART.c</name>
+      <name>$PROJ_DIR$\libraries/DAPLink/Source/DAP_vendor.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\libraries/DAPLink/Source/DAP.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\libraries/DAPLink/Source/DAP_vendor.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/DAPLink/Source/JTAG_DP.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/DAPLink/Source/interface/swd_host.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\libraries/DAPLink/Source/SWO.c</name>
+      <name>$PROJ_DIR$\libraries/DAPLink/Source/interface/SWD_flash.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\libraries/DAPLink/Source/SW_DP.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\libraries/DAPLink/Source/interface/SWD_flash.c</name>
+      <name>$PROJ_DIR$\libraries/DAPLink/Source/UART.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/DAPLink/Source/JTAG_DP.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/DAPLink/Source/SWO.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\libraries/DAPLink/Source/interface/swd_host.c</name>
     </file>
   </group>
   <group>
@@ -2853,6 +2862,54 @@
   </group>
   <group>
     <name>LVGL</name>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_log.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj_tree.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_montserrat_12.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/lv_draw_mask.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/png/lv_png.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/default/lv_theme_default.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sw/lv_draw_sw_line.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/renesas/lv_gpu_d2_draw_label.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_indev.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_montserrat_24.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_unscii_8.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/widgets/lv_bar.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/keyboard/lv_keyboard.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl/lv_draw_sdl_texture_cache.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite/lv_draw_vglite_blend.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/renesas/lv_gpu_d2_ra6m3.c</name>
+    </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_area.c</name>
     </file>
@@ -2876,6 +2933,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sw/lv_draw_sw_dither.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj_pos.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_theme.c</name>
@@ -2917,6 +2977,9 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/mono/lv_theme_mono.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_utils.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_disp.c</name>
     </file>
     <file>
@@ -2932,13 +2995,13 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl/lv_draw_sdl_label.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_timer.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/hal/lv_hal_tick.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_montserrat_48.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_timer.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/lv_img_buf.c</name>
@@ -2956,7 +3019,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/stm32_dma2d/lv_gpu_stm32_dma2d.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_utils.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_txt.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj_class.c</name>
@@ -2983,9 +3046,6 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl/lv_draw_sdl_polygon.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite/lv_draw_vglite_rect.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_async.c</name>
     </file>
     <file>
@@ -3004,7 +3064,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp/lv_draw_pxp_blend.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_txt.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_anim_timeline.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_refr.c</name>
@@ -3052,7 +3112,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp/lv_draw_pxp.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_log.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_style.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_event.c</name>
@@ -3100,7 +3160,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp/lv_gpu_nxp_pxp.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_style.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_style_gen.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj_draw.c</name>
@@ -3127,9 +3187,6 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl/lv_draw_sdl_line.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp/lv_gpu_nxp_pxp_osa.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_tlsf.c</name>
     </file>
     <file>
@@ -3148,6 +3205,9 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/animimg/lv_animimg.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_mem.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj.c</name>
     </file>
     <file>
@@ -3155,9 +3215,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/lv_draw_arc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_style_gen.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/widgets/lv_objx_templ.c</name>
@@ -3196,7 +3253,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite/lv_draw_vglite_arc.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_mem.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_fs.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj_style_gen.c</name>
@@ -3226,7 +3283,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_montserrat_8.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/lv_draw_mask.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/lv_img_cache.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/widgets/lv_btnmatrix.c</name>
@@ -3238,13 +3295,10 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/meter/lv_meter.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/renesas/lv_gpu_d2_ra6m3.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite/lv_draw_vglite.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_fs.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_txt_ap.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj_style.c</name>
@@ -3263,6 +3317,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl/lv_draw_sdl_stack_blur.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite/lv_draw_vglite_rect.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_gc.c</name>
@@ -3289,7 +3346,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl/lv_draw_sdl_bg.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_ll.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_color.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_group.c</name>
@@ -3337,7 +3394,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite/lv_vglite_buf.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_color.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_ll.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_indev_scroll.c</name>
@@ -3355,7 +3412,7 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sw/lv_draw_sw_polygon.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj_tree.c</name>
+      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/pxp/lv_gpu_nxp_pxp_osa.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_montserrat_14.c</name>
@@ -3379,54 +3436,6 @@
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl/lv_draw_sdl_img.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_txt_ap.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_obj_pos.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_montserrat_12.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/lv_img_cache.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/libs/png/lv_png.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/themes/default/lv_theme_default.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sw/lv_draw_sw_line.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/renesas/lv_gpu_d2_draw_label.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/misc/lv_anim_timeline.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/core/lv_indev.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_montserrat_24.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/font/lv_font_unscii_8.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/widgets/lv_bar.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/extra/widgets/keyboard/lv_keyboard.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/sdl/lv_draw_sdl_texture_cache.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite/lv_draw_vglite_blend.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\packages/LVGL-v8.3.11/src/draw/nxp/vglite/lv_draw_vglite_line.c</name>
     </file>
   </group>
@@ -3443,7 +3452,58 @@
     </file>
   </group>
   <group>
+    <name>mem_sandbox</name>
+    <file>
+      <name>$PROJ_DIR$\packages/mem_sandbox-latest/mem_sandbox.c</name>
+    </file>
+  </group>
+  <group>
     <name>MicroPython</name>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/builtinhelp.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/malloc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objfloat.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objset.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/stackctrl.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/extmod/modurandom.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/extmod/modussl_mbedtls.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/modfile.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/modsys.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objenumerate.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objobject.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objslice.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/lib/utils/pyexec.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/extmod/modujson.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/modpyb.c</name>
+    </file>
     <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/emitnxtensawin.c</name>
     </file>
@@ -3511,10 +3571,10 @@
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/extmod/vfs_fat_diskio.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/argcheck.c</name>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/emitinlinethumb.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/emitinlinethumb.c</name>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/argcheck.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objstringio.c</name>
@@ -3529,10 +3589,10 @@
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/moduos.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/builtinimport.c</name>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objint.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objint.c</name>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/builtinimport.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/scheduler.c</name>
@@ -3574,19 +3634,16 @@
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/mphalport.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine/machine_pin.c</name>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine/machine_wdt.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine/machine_wdt.c</name>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/emitnxtensa.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/mpstate.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objfilter.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/emitnxtensa.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/ringbuf.c</name>
@@ -3862,6 +3919,9 @@
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine/machine_timer.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine/machine_pin.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/emitglue.c</name>
     </file>
     <file>
@@ -3884,9 +3944,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/extmod/virtpin.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/builtinhelp.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/nlrsetjmp.c</name>
@@ -3988,49 +4045,7 @@
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/machine/machine_hw_spi.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/malloc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objfloat.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objset.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/stackctrl.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/extmod/modurandom.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/extmod/modussl_mbedtls.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/modfile.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/native/easyflash_module.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/modsys.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objenumerate.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objobject.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/py/objslice.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/lib/utils/pyexec.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/extmod/modujson.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/micropython-v1.13.0/port/modules/modpyb.c</name>
     </file>
   </group>
   <group>
@@ -4045,7 +4060,7 @@
   <group>
     <name>optparse</name>
     <file>
-      <name>$PROJ_DIR$\libraries/optparse/optparse.c</name>
+      <name>$PROJ_DIR$\packages/optparse-latest/optparse.c</name>
     </file>
   </group>
   <group>
@@ -4062,6 +4077,15 @@
     <file>
       <name>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/delay/delay.c</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/poll/poll.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/stdio/stdio.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\../../../../rt-thread/components/libc/posix/io/termios/termios.c</name>
+    </file>
   </group>
   <group>
     <name>st7789</name>
@@ -4072,70 +4096,70 @@
   <group>
     <name>uffs</name>
     <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_fd.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_flash.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_crc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_mtb.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/dfs_uffs.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_pool.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_blockinfo.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_public.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_utils.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_find.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_badblock.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_version.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_buf.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/uffs-latest/uffs_rtthread.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_tree.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_fs.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_ecc.c</name>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_find.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/uffs-latest/uffs_nandif.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_debug.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_fd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_badblock.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_init.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_device.c</name>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_mtb.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_public.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_blockinfo.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_fs.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_tree.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/dfs_uffs.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_crc.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_mem.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_debug.c</name>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_buf.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_utils.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_device.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_version.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_flash.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/uffs-latest/src/uffs/uffs_ecc.c</name>
     </file>
   </group>
   <group>
@@ -4144,13 +4168,13 @@
       <name>$PROJ_DIR$\applications/lvgl/ui/fonts/ui_font_PuHuiTi.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\applications/lvgl/ui/fonts/ui_font_PuHuiTi16GB2312.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\applications/lvgl/ui/fonts/ui_font_PuHuiTi25.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\applications/lvgl/ui/fonts/ui_font_PuHuiTi30.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\applications/lvgl/ui/fonts/ui_font_PuhuiTi20.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\applications/lvgl/ui/fonts/ui_font_jetbrainsMonoMedium16.c</name>
@@ -4210,10 +4234,10 @@
   <group>
     <name>uMCN</name>
     <file>
-      <name>$PROJ_DIR$\libraries/uMCN/src/cmd_mcn.c</name>
+      <name>$PROJ_DIR$\libraries/uMCN/src/uMCN.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\libraries/uMCN/src/uMCN.c</name>
+      <name>$PROJ_DIR$\libraries/uMCN/src/cmd_mcn.c</name>
     </file>
   </group>
   <group>
@@ -4229,6 +4253,15 @@
     </file>
     <file>
       <name>$PROJ_DIR$\../../../../rt-thread/components/utilities/ulog/backend/console_be.c</name>
+    </file>
+  </group>
+  <group>
+    <name>vi</name>
+    <file>
+      <name>$PROJ_DIR$\packages/vi-latest/editors/vi.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\packages/vi-latest/editors/vi_utils.c</name>
     </file>
   </group>
 </project>
