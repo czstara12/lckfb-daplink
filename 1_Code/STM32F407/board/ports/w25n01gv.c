@@ -32,7 +32,7 @@
 
 #define W25N01GV_SPI_BUS_NAME           "spi1"
 #define W25N01GV_SPI_DEVICE_NAME        "w25ngv0"
-#define W25N01GV_SPI_MAX_HZ             20000000U
+#define W25N01GV_SPI_MAX_HZ             104000000U
 #define W25N01GV_CMD_RESET              0xFFU
 #define W25N01GV_CMD_READ_ID            0x9FU
 #define W25N01GV_CMD_READ_FEATURE       0x0FU
@@ -54,12 +54,27 @@
 #define W25N01GV_STATUS_ERASE_FAIL      0x04U
 #define W25N01GV_STATUS_PROGRAM_FAIL    0x08U
 #define W25N01GV_BAD_BLOCK_MARKER_COL   W25N01GV_PAGE_SIZE
-#define W25N01GV_WAIT_READY_RETRY       1000U
+#define W25N01GV_WAIT_READY_TIMEOUT_MS  1000U
+#define W25N01GV_WAIT_READY_POLL_US     50U
 #define W25N01GV_TEST_BLOCK_FIRST       1000U
 #define W25N01GV_READ_DUMP_MAX          256U
 static struct rt_spi_device *w25n01gv_spi_dev;
 static uint8_t w25n01gv_page_buf[W25N01GV_PAGE_SIZE];
 static struct rt_mtd_nand_device w25n01gv_mtd_dev;
+static struct w25n01gv_io_stats w25n01gv_stats;
+
+void w25n01gv_stats_reset(void)
+{
+    memset(&w25n01gv_stats, 0, sizeof(w25n01gv_stats));
+}
+
+void w25n01gv_stats_get(struct w25n01gv_io_stats *stats)
+{
+    if (stats != RT_NULL)
+    {
+        *stats = w25n01gv_stats;
+    }
+}
 
 static rt_err_t w25n01gv_read_feature(uint8_t reg, uint8_t *value)
 {
@@ -93,8 +108,10 @@ static rt_err_t w25n01gv_set_feature(uint8_t reg, uint8_t value)
 static rt_err_t w25n01gv_wait_ready(void)
 {
     uint8_t status = 0;
+    rt_tick_t start_tick = rt_tick_get();
+    rt_tick_t timeout_ticks = rt_tick_from_millisecond(W25N01GV_WAIT_READY_TIMEOUT_MS);
 
-    for (uint32_t retry = 0; retry < W25N01GV_WAIT_READY_RETRY; retry++)
+    while ((rt_tick_get() - start_tick) < timeout_ticks)
     {
         if (w25n01gv_read_feature(W25N01GV_REG_STATUS, &status) != RT_EOK)
         {
@@ -106,7 +123,9 @@ static rt_err_t w25n01gv_wait_ready(void)
             return RT_EOK;
         }
 
-        rt_thread_mdelay(1);
+        w25n01gv_stats.busy_wait_us += W25N01GV_WAIT_READY_POLL_US;
+        /* ponytail: 短轮询优先保证 NAND 延迟；若块擦除影响调度响应，再为长等待加入让步。 */
+        rt_hw_us_delay(W25N01GV_WAIT_READY_POLL_US);
     }
 
     return -RT_ETIMEOUT;
@@ -218,6 +237,7 @@ static rt_err_t w25n01gv_read_cache(uint16_t column, uint8_t *buf, rt_size_t len
     cmd[2] = (uint8_t)column;
     cmd[3] = 0x00;
 
+    w25n01gv_stats.cache_read_bytes += len;
     return rt_spi_send_then_recv(w25n01gv_spi_dev, cmd, sizeof(cmd), buf, len);
 }
 
@@ -234,6 +254,7 @@ static rt_err_t w25n01gv_program_load_cmd(uint8_t command, uint16_t column, cons
     cmd[1] = (uint8_t)(column >> 8);
     cmd[2] = (uint8_t)column;
 
+    w25n01gv_stats.program_load_bytes += len;
     return rt_spi_send_then_send(w25n01gv_spi_dev, cmd, sizeof(cmd), buf, len);
 }
 
@@ -263,6 +284,7 @@ static rt_err_t w25n01gv_program_execute(uint32_t row)
     cmd[2] = (uint8_t)(row >> 8);
     cmd[3] = (uint8_t)row;
 
+    w25n01gv_stats.program_pages++;
     if (rt_spi_send(w25n01gv_spi_dev, cmd, sizeof(cmd)) != (rt_ssize_t)sizeof(cmd))
     {
         return -RT_ERROR;
@@ -302,6 +324,7 @@ static rt_err_t w25n01gv_load_page(uint32_t row)
     cmd[2] = (uint8_t)(row >> 8);
     cmd[3] = (uint8_t)row;
 
+    w25n01gv_stats.load_pages++;
     if (rt_spi_send(w25n01gv_spi_dev, cmd, sizeof(cmd)) != (rt_ssize_t)sizeof(cmd))
     {
         return -RT_ERROR;
@@ -347,12 +370,7 @@ static rt_err_t w25n01gv_erase_block(uint16_t block)
     cmd[2] = (uint8_t)(row >> 8);
     cmd[3] = (uint8_t)row;
 
-    ret = w25n01gv_unlock_all_blocks();
-    if (ret != RT_EOK)
-    {
-        return ret;
-    }
-
+    w25n01gv_stats.erase_blocks++;
     ret = w25n01gv_write_enable();
     if (ret != RT_EOK)
     {
@@ -392,12 +410,6 @@ static rt_err_t w25n01gv_write_page(uint16_t block, uint8_t page, const uint8_t 
         block >= W25N01GV_BLOCK_COUNT || page >= W25N01GV_PAGES_PER_BLOCK)
     {
         return -RT_ERROR;
-    }
-
-    ret = w25n01gv_unlock_all_blocks();
-    if (ret != RT_EOK)
-    {
-        return ret;
     }
 
     ret = w25n01gv_write_enable();
@@ -472,12 +484,6 @@ static rt_err_t w25n01gv_write_page_with_oob(uint16_t block,
         return -RT_ERROR;
     }
 
-    ret = w25n01gv_unlock_all_blocks();
-    if (ret != RT_EOK)
-    {
-        return ret;
-    }
-
     ret = w25n01gv_write_enable();
     if (ret != RT_EOK)
     {
@@ -536,15 +542,23 @@ static rt_err_t w25n01gv_mtd_read_page(struct rt_mtd_nand_device *device,
 
     if (block < W25N01GV_UFFS_BLOCK_FIRST ||
         block >= W25N01GV_UFFS_BLOCK_FIRST + W25N01GV_UFFS_BLOCK_COUNT ||
+        (data == RT_NULL && data_len != 0U) ||
+        (spare == RT_NULL && spare_len != 0U) ||
         data_len > W25N01GV_PAGE_SIZE ||
         spare_len > W25N01GV_OOB_SIZE)
     {
         return -RT_ERROR;
     }
 
+    if ((data_len > 0U || spare_len > 0U) &&
+        w25n01gv_load_page(w25n01gv_row_from_block_page(block, page_in_block)) != RT_EOK)
+    {
+        return -RT_ERROR;
+    }
+
     if (data != RT_NULL && data_len > 0U)
     {
-        if (w25n01gv_read_page(block, page_in_block, data, data_len) != RT_EOK)
+        if (w25n01gv_read_cache(0, data, data_len) != RT_EOK)
         {
             return -RT_ERROR;
         }
@@ -552,7 +566,7 @@ static rt_err_t w25n01gv_mtd_read_page(struct rt_mtd_nand_device *device,
 
     if (spare != RT_NULL && spare_len > 0U)
     {
-        if (w25n01gv_read_oob(block, page_in_block, 0, spare, spare_len) != RT_EOK)
+        if (w25n01gv_read_cache(W25N01GV_PAGE_SIZE, spare, spare_len) != RT_EOK)
         {
             return -RT_ERROR;
         }
@@ -1063,6 +1077,7 @@ static int w25n01gv_msh(int argc, char **argv)
         rt_kprintf("  w25n01gv id\n");
         rt_kprintf("  w25n01gv status\n");
         rt_kprintf("  w25n01gv regs\n");
+        rt_kprintf("  w25n01gv stats [reset]\n");
         rt_kprintf("  w25n01gv unlock\n");
         rt_kprintf("  w25n01gv bb <block>\n");
         rt_kprintf("  w25n01gv read <block> <page> [len]\n");
@@ -1088,6 +1103,23 @@ static int w25n01gv_msh(int argc, char **argv)
         {
             rt_kprintf("W25N01GV: read regs failed\n");
         }
+        return 0;
+    }
+
+    if (strcmp(argv[1], "stats") == 0)
+    {
+        if (argc > 2 && strcmp(argv[2], "reset") == 0)
+        {
+            w25n01gv_stats_reset();
+        }
+        rt_kprintf("W25N01GV stats: load=%u program=%u erase=%u busy=%u ms\n",
+                   w25n01gv_stats.load_pages,
+                   w25n01gv_stats.program_pages,
+                   w25n01gv_stats.erase_blocks,
+                   w25n01gv_stats.busy_wait_us / 1000U);
+        rt_kprintf("W25N01GV bytes: cache_read=%u program_load=%u\n",
+                   w25n01gv_stats.cache_read_bytes,
+                   w25n01gv_stats.program_load_bytes);
         return 0;
     }
 

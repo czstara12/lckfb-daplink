@@ -41,6 +41,19 @@ enum w25n01gv_ecc_status
 };
 
 /**
+ * @brief W25N01GV 底层 I/O 统计。
+ */
+struct w25n01gv_io_stats
+{
+    uint32_t load_pages;
+    uint32_t program_pages;
+    uint32_t erase_blocks;
+    uint32_t cache_read_bytes;
+    uint32_t program_load_bytes;
+    uint32_t busy_wait_us;
+};
+
+/**
  * @brief 判断 JEDEC ID 是否匹配 Winbond W25N01GV。
  *
  * @param id 由 W25N01GV_JEDEC_ID_LEN 个字节组成的 JEDEC ID 缓冲区。
@@ -89,6 +102,18 @@ void w25n01gv_fill_test_pattern(uint8_t *buf, uint32_t len, uint16_t block, uint
  * @return 匹配返回 1，否则返回 0。
  */
 int w25n01gv_check_test_pattern(const uint8_t *buf, uint32_t len, uint16_t block, uint8_t page);
+
+/**
+ * @brief 清零 W25N01GV 底层 I/O 统计。
+ */
+void w25n01gv_stats_reset(void);
+
+/**
+ * @brief 获取 W25N01GV 底层 I/O 统计。
+ *
+ * @param stats 输出统计。
+ */
+void w25n01gv_stats_get(struct w25n01gv_io_stats *stats);
 
 #ifdef __cplusplus
 }
