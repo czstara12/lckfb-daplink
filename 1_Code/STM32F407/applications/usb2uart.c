@@ -114,7 +114,10 @@ INIT_BOARD_EXPORT(usb2uart_init);
 void chry_dap_usb2uart_uart_config_callback(struct cdc_line_coding *line_coding)
 {
     // USART配置
-//    HAL_UART_DeInit(&huart3);
+	if (HAL_UART_AbortReceive(&huart3) != HAL_OK)
+	{
+		Error_Handler();
+	}
 	
 	huart3.Instance = USART3;
 	huart3.Init.BaudRate = line_coding->dwDTERate;
@@ -151,7 +154,10 @@ void chry_dap_usb2uart_uart_config_callback(struct cdc_line_coding *line_coding)
     }
 
     // 配置UART接收DMA
-	HAL_UART_Receive_DMA(&huart3, uart3_recv_buff, sizeof(uart3_recv_buff));
+	if (HAL_UART_Receive_DMA(&huart3, uart3_recv_buff, sizeof(uart3_recv_buff)) != HAL_OK)
+	{
+		Error_Handler();
+	}
 }
 
 // USART3中断处理函数
