@@ -20,11 +20,6 @@
   "ver": "v2.2.4.1"
  },
  {
-  "name": "UFFS",
-  "path": "/packages/system/uffs",
-  "ver": "latest"
- },
- {
   "name": "OPTPARSE",
   "path": "/packages/misc/optparse",
   "ver": "latest"

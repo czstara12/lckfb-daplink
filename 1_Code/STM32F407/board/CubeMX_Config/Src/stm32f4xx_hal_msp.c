@@ -376,7 +376,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     __HAL_RCC_SPI1_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
 
-    /* PA5/PA6/PA7 分别连接 W25N01GV 的 SCK/MISO/MOSI。 */
+    /* PA5/PA6/PA7 分别连接 W25Q32 的 SCK/MISO/MOSI。 */
     GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;

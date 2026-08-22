@@ -24,11 +24,14 @@
 extern const struct fal_flash_dev stm32_onchip_flash_16k;
 extern const struct fal_flash_dev stm32_onchip_flash_64k;
 extern const struct fal_flash_dev stm32_onchip_flash_128k;
+/** W25Q32 外部 SPI NOR Flash 的 FAL 设备。 */
+extern struct fal_flash_dev w25q32;
 
 /* flash device table */
 #define FAL_FLASH_DEV_TABLE                                          \
 {                                                                    \
     &stm32_onchip_flash_128k,                                        \
+    &w25q32,                                                         \
 }
 
 /* ====================== Partition Configuration ========================== */
@@ -37,5 +40,8 @@ extern const struct fal_flash_dev stm32_onchip_flash_128k;
 {                                                                                                                   \
     {FAL_PART_MAGIC_WROD,        "app", "onchip_flash_128k",                            0,       384 * 1024, 0}, \
     {FAL_PART_MAGIC_WROD,      "param", "onchip_flash_128k",                   384 * 1024,       512 * 1024, 0}, \
+    {FAL_PART_MAGIC_WROD,  "easyflash",    "W25Q32",                                   0,       512 * 1024, 0}, \
+    {FAL_PART_MAGIC_WROD,   "download",    "W25Q32",                          512 * 1024,       512 * 1024, 0}, \
+    {FAL_PART_MAGIC_WROD, "filesystem",    "W25Q32",                  (512 + 512) * 1024,    3 * 1024 * 1024, 0}, \
 }
 #endif /*FAL_PART_TABLE*/

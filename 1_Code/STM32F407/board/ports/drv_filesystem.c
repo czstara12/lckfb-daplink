@@ -15,8 +15,6 @@
 #include <dfs_fs.h>
 #include <dfs_file.h>
 
-#include "w25n01gv.h"
-
 #if DFS_FILESYSTEMS_MAX < 4
 #error "Please define DFS_FILESYSTEMS_MAX more than 4"
 #endif
@@ -46,23 +44,37 @@ static int onboard_sdcard_mount(void)
 #endif /* BSP_USING_SDCARD_FATFS */
 #endif /* BSP_USING_FS_AUTO_MOUNT */
 
-#ifdef BSP_USING_FLASH_UFFS_AUTO_MOUNT
-#ifdef BSP_USING_FLASH_UFFS
-static int onboard_spi_nand_mount(void)
+#ifdef BSP_USING_FLASH_FS_AUTO_MOUNT
+#ifdef BSP_USING_FLASH_FATFS
+#define FS_PARTITION_NAME "filesystem"
+
+static int onboard_fal_mount(void)
 {
-    if (dfs_mount(W25N01GV_UFFS_MTD_NAME, "/uffs", "uffs", 0, 0) == 0)
+    extern int fal_init(void);
+    extern struct rt_device *fal_blk_device_create(const char *parition_name);
+    struct rt_device *flash_dev;
+
+    fal_init();
+    flash_dev = fal_blk_device_create(FS_PARTITION_NAME);
+    if (flash_dev == RT_NULL)
     {
-        LOG_I("SPI NAND UFFS mount to '/uffs'");
+        LOG_E("Can't create a block device on '%s' partition.", FS_PARTITION_NAME);
+        return -RT_ERROR;
+    }
+
+    if (dfs_mount(flash_dev->parent.name, "/fal", "elm", 0, 0) == RT_EOK)
+    {
+        LOG_I("SPI NOR FATFS mount to '/fal'");
     }
     else
     {
-        LOG_E("SPI NAND UFFS mount to '/uffs' failed!");
+        LOG_E("SPI NOR FATFS mount to '/fal' failed!");
     }
 
     return RT_EOK;
 }
-#endif /* BSP_USING_FLASH_UFFS */
-#endif /* BSP_USING_FLASH_UFFS_AUTO_MOUNT */
+#endif /* BSP_USING_FLASH_FATFS */
+#endif /* BSP_USING_FLASH_FS_AUTO_MOUNT */
 
 
 const struct romfs_dirent _romfs_root[] =
@@ -71,8 +83,8 @@ const struct romfs_dirent _romfs_root[] =
     {ROMFS_DIRENT_DIR, "sdcard", RT_NULL, 0},
 #endif
 
-#ifdef BSP_USING_FLASH_UFFS
-    {ROMFS_DIRENT_DIR, "uffs", RT_NULL, 0},
+#ifdef BSP_USING_FLASH_FATFS
+    {ROMFS_DIRENT_DIR, "fal", RT_NULL, 0},
 #endif
 };
 
@@ -99,8 +111,8 @@ int filesystem_mount(void)
     onboard_sdcard_mount();
 #endif /* BSP_USING_FS_AUTO_MOUNT */
 
-#ifdef BSP_USING_FLASH_UFFS_AUTO_MOUNT
-    onboard_spi_nand_mount();
+#ifdef BSP_USING_FLASH_FS_AUTO_MOUNT
+    onboard_fal_mount();
 #endif
 
     return RT_EOK;

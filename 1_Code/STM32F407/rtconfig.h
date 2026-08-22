@@ -179,7 +179,6 @@
 #define RT_USING_CPUTIME_CORTEXM
 #define CPUTIME_TIMER_FREQ 0
 #define RT_USING_PWM
-#define RT_USING_MTD_NAND
 #define RT_USING_RTC
 #define RT_USING_SDIO
 #define RT_SDIO_STACK_SIZE 512
@@ -188,6 +187,9 @@
 #define RT_MMCSD_THREAD_PRIORITY 22
 #define RT_MMCSD_MAX_PARTITION 16
 #define RT_USING_SPI
+#define RT_USING_SFUD
+#define RT_SFUD_USING_SFDP
+#define RT_SFUD_SPI_MAX_HZ 50000000
 #define RT_USING_BLK
 
 /* Partition Types */
@@ -380,11 +382,6 @@
 /* end of Micrium: Micrium software products porting for RT-Thread */
 #define PKG_USING_PERF_COUNTER
 #define PKG_USING_PERF_COUNTER_V2241
-#define PKG_USING_DFS_UFFS
-#define RT_USING_DFS_UFFS
-#define RT_UFFS_ECC_MODE_3
-#define RT_UFFS_ECC_MODE 3
-#define PKG_USING_DFS_UFFS_LATEST_VERSION
 /* end of system packages */
 
 /* peripheral libraries and drivers */
@@ -555,8 +552,6 @@
 #define BSP_USING_SPI_FLASH
 #define BSP_USING_FS
 #define BSP_USING_SDCARD_FATFS
-#define BSP_USING_FLASH_UFFS
-#define BSP_USING_FLASH_UFFS_AUTO_MOUNT
 /* end of Onboard Peripheral Drivers */
 
 /* On-chip Peripheral Drivers */

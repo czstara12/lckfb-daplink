@@ -17,10 +17,14 @@ if GetDepend(['BSP_USING_RS485']):
     src += Glob('drv_rs485.c')
     
 if GetDepend(['BSP_USING_SPI_FLASH']):
-    src += Glob('w25n01gv.c')
+    src += Glob('spi_flash_init.c')
 
 if GetDepend(['BSP_USING_FS']):
     src += Glob('drv_filesystem.c')
+
+if GetDepend(['BSP_USING_FAL']):
+    src += Glob('fal/fal_spi_flash_sfud_port.c')
+    path += [cwd + '/fal']
 
 if GetDepend(['BSP_USING_SRAM']):
     src += Glob('drv_sram.c')
