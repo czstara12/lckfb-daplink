@@ -43,7 +43,7 @@
                 "-If",
                 "SWD",
                 "-Speed",
-                "4000",
+                "15000",
                 "-AutoConnect",
                 "1",
                 "-CommanderScript",
