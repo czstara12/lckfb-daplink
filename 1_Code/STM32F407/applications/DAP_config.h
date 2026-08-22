@@ -138,7 +138,7 @@ This information includes:
 #define SWO_STREAM              0               ///< SWO Streaming Trace: 1 = available, 0 = not available.
 
 /// Clock frequency of the Test Domain Timer. Timer value is returned with \ref TIMESTAMP_GET.
-#define TIMESTAMP_CLOCK         100000000U      ///< Timestamp clock in Hz (0 = timestamps not supported).
+#define TIMESTAMP_CLOCK         CPU_CLOCK       ///< Timestamp clock in Hz (0 = timestamps not supported).
 
 /// Indicate that UART Communication Port is available.
 /// This information is returned by the command \ref DAP_Info as part of <b>Capabilities</b>.
