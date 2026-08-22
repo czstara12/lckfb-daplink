@@ -350,7 +350,7 @@ __STATIC_INLINE void PORT_JTAG_SETUP(void)
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = NRST_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(NRST_GPIO_Port, &GPIO_InitStruct);
