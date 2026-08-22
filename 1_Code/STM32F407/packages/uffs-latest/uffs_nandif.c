@@ -162,6 +162,41 @@ void uffs_setup_storage(struct uffs_StorageAttrSt *attr,
 }
 
 #elif  RT_CONFIG_UFFS_ECC_MODE == UFFS_ECC_HW_AUTO
+#define W25N01GV_PHYSICAL_OOB_SIZE       64
+#define W25N01GV_MINI_HEADER_OOB_OFFSET  4
+#define W25N01GV_SEAL_OOB_OFFSET         20
+
+static const rt_uint8_t w25n01gv_tag_oob_offsets[sizeof(uffs_TagStore)] =
+{
+    2, 3, 18, 19, 34, 35, 50, 51
+};
+
+static void pack_w25n01gv_spare(rt_uint8_t *spare,
+                                const u8 *header,
+                                const uffs_TagStore *ts,
+                                rt_bool_t seal)
+{
+    rt_size_t i;
+
+    rt_memset(spare, 0xFF, W25N01GV_PHYSICAL_OOB_SIZE);
+    if (header != RT_NULL)
+        rt_memcpy(spare + W25N01GV_MINI_HEADER_OOB_OFFSET,
+                  header, sizeof(struct uffs_MiniHeaderSt));
+    if (ts != RT_NULL)
+        for (i = 0; i < sizeof(*ts); i++)
+            spare[w25n01gv_tag_oob_offsets[i]] = ((const u8 *)ts)[i];
+    if (seal)
+        spare[W25N01GV_SEAL_OOB_OFFSET] = 0;
+}
+
+static void unpack_w25n01gv_tag(const rt_uint8_t *spare, uffs_TagStore *ts)
+{
+    rt_size_t i;
+
+    for (i = 0; i < sizeof(*ts); i++)
+        ((u8 *)ts)[i] = spare[w25n01gv_tag_oob_offsets[i]];
+}
+
 static int WritePageWithLayout(uffs_Device         *dev,
                                u32                  block,
                                u32                  page,
@@ -171,26 +206,23 @@ static int WritePageWithLayout(uffs_Device         *dev,
                                const uffs_TagStore *ts)
 {
     int res;
-    int spare_len;
     rt_uint8_t spare[UFFS_MAX_SPARE_SIZE];
 
     RT_ASSERT(UFFS_MAX_SPARE_SIZE >= dev->attr->spare_size);
 
     page = block * dev->attr->pages_per_block + page;
-    spare_len = dev->mem.spare_data_size;
-
     if (data == NULL && ts == NULL)
     {
 #if defined(RT_UFFS_USE_CHECK_MARK_FUNCITON)
         RT_ASSERT(0); //should not be here
 #else
         /* mark bad block  */
-        rt_memset(spare, 0xFF, UFFS_MAX_SPARE_SIZE);
-        spare[dev->attr->block_status_offs] =  0x00;
+        rt_memset(spare, 0xFF, W25N01GV_PHYSICAL_OOB_SIZE);
+        spare[0] = 0x00;
 
         res = rt_mtd_nand_write(RT_MTD_NAND_DEVICE(dev->_private),
                                 page, RT_NULL, 0,
-                                spare, dev->attr->spare_size);//dev->mem.spare_data_size
+                                spare, W25N01GV_PHYSICAL_OOB_SIZE);
         if (res != RT_EOK)
             goto __error;
 
@@ -201,7 +233,7 @@ static int WritePageWithLayout(uffs_Device         *dev,
 
     if (data != NULL && data_len != 0)
     {
-        RT_ASSERT(data_len == dev->attr->page_data_size);
+        RT_ASSERT(data_len == dev->com.pg_size);
 
         dev->st.page_write_count++;
         dev->st.io_write += data_len;
@@ -209,13 +241,17 @@ static int WritePageWithLayout(uffs_Device         *dev,
 
     if (ts != RT_NULL)
     {
-        uffs_FlashMakeSpare(dev, ts, RT_NULL, (u8 *)spare);
         dev->st.spare_write_count++;
-        dev->st.io_write += spare_len;
+        dev->st.io_write += sizeof(*ts) + 1;
     }
 
+    pack_w25n01gv_spare(spare, data, ts, data != RT_NULL);
+
     res = rt_mtd_nand_write(RT_MTD_NAND_DEVICE(dev->_private),
-                            page, data, data_len, spare, spare_len);
+                            page,
+                            data != RT_NULL ? data + sizeof(struct uffs_MiniHeaderSt) : RT_NULL,
+                            data != RT_NULL ? data_len - sizeof(struct uffs_MiniHeaderSt) : 0,
+                            spare, W25N01GV_PHYSICAL_OOB_SIZE);
     if (res != RT_EOK)
         goto __error;
 
@@ -235,14 +271,11 @@ static URET ReadPageWithLayout(uffs_Device   *dev,
                                u8            *ecc_store)        //NULL
 {
     int res = UFFS_FLASH_NO_ERR;
-    int spare_len;
     rt_uint8_t spare[UFFS_MAX_SPARE_SIZE];
 
     RT_ASSERT(UFFS_MAX_SPARE_SIZE >= dev->attr->spare_size);
 
     page = block * dev->attr->pages_per_block + page;
-    spare_len = dev->mem.spare_data_size;
-
     if (data == RT_NULL && ts == RT_NULL)
     {
 #if defined(RT_UFFS_USE_CHECK_MARK_FUNCITON)
@@ -252,7 +285,7 @@ static URET ReadPageWithLayout(uffs_Device   *dev,
 
         rt_mtd_nand_read(RT_MTD_NAND_DEVICE(dev->_private),
                          page, RT_NULL, 0,
-                         spare, dev->attr->spare_size);//dev->mem.spare_data_size
+                         spare, W25N01GV_PHYSICAL_OOB_SIZE);
 
         dev->st.io_read++;
 
@@ -269,28 +302,36 @@ static URET ReadPageWithLayout(uffs_Device   *dev,
     }
 
     res = rt_mtd_nand_read(RT_MTD_NAND_DEVICE(dev->_private),
-                           page, data, data_len, spare, spare_len);
-    if (res == 0)
+                           page,
+                           data != RT_NULL && data_len > (int)sizeof(struct uffs_MiniHeaderSt) ?
+                               data + sizeof(struct uffs_MiniHeaderSt) : RT_NULL,
+                           data != RT_NULL && data_len > (int)sizeof(struct uffs_MiniHeaderSt) ?
+                               data_len - sizeof(struct uffs_MiniHeaderSt) : 0,
+                           spare, W25N01GV_PHYSICAL_OOB_SIZE);
+    if (res == RT_EOK)
         res = UFFS_FLASH_NO_ERR;
-    else if (res == -1)
-    {
-        //TODO ecc correct, add code to use hardware do ecc correct
+    else if (res == -RT_MTD_EECC_CORRECT)
         res = UFFS_FLASH_ECC_OK;
-    }
-    else
+    else if (res == -RT_MTD_EECC)
         res = UFFS_FLASH_ECC_FAIL;
+    else
+        res = UFFS_FLASH_IO_ERR;
 
     if (ts != RT_NULL)
     {
-        // unload ts and ecc from spare, you can modify it if you like
-        uffs_FlashUnloadSpare(dev, (const u8 *)spare, ts, RT_NULL);
+        unpack_w25n01gv_tag(spare, ts);
 
-        if ((spare[spare_len - 1] == 0xFF) && (res == UFFS_FLASH_NO_ERR))
+        if ((spare[W25N01GV_SEAL_OOB_OFFSET] == 0xFF) && (res == UFFS_FLASH_NO_ERR))
             res = UFFS_FLASH_NOT_SEALED;
 
-        dev->st.io_read += spare_len;
+        dev->st.io_read += sizeof(*ts) + 1;
         dev->st.spare_read_count++;
     }
+
+    if (data != RT_NULL)
+        rt_memcpy(data, spare + W25N01GV_MINI_HEADER_OOB_OFFSET,
+                  data_len < (int)sizeof(struct uffs_MiniHeaderSt) ?
+                      data_len : sizeof(struct uffs_MiniHeaderSt));
 
     return res;
 }
@@ -334,12 +375,12 @@ RT_WEAK void uffs_setup_storage(struct uffs_StorageAttrSt *attr,
     attr->pages_per_block = nand->pages_per_block;         /* pages per block */
     attr->spare_size = nand->oob_size;                     /* page spare size */
     attr->ecc_opt = RT_CONFIG_UFFS_ECC_MODE;               /* ecc option */
-    attr->ecc_size = nand->oob_size-nand->oob_free;        /* ecc size */
-    attr->block_status_offs = attr->ecc_size;              /* indicate block bad or good, offset in spare */
+    attr->ecc_size = 0;                                    /* ECC 字节由芯片内部管理 */
+    attr->block_status_offs = 0;                           /* 物理坏块标记 */
     attr->layout_opt = RT_CONFIG_UFFS_LAYOUT;              /* let UFFS do the spare layout */
 
     /* calculate the ecc layout array */
-    hw_flash_data_layout[0] = attr->ecc_size + 1; /* ecc size + 1byte block status */
+    hw_flash_data_layout[0] = 1;
     hw_flash_data_layout[1] = 0x08;
     hw_flash_data_layout[2] = 0xFF;
     hw_flash_data_layout[3] = 0x00;

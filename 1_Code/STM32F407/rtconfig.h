@@ -381,8 +381,8 @@
 #define PKG_USING_PERF_COUNTER_V2241
 #define PKG_USING_DFS_UFFS
 #define RT_USING_DFS_UFFS
-#define RT_UFFS_ECC_MODE_1
-#define RT_UFFS_ECC_MODE 1
+#define RT_UFFS_ECC_MODE_3
+#define RT_UFFS_ECC_MODE 3
 #define PKG_USING_DFS_UFFS_LATEST_VERSION
 /* end of system packages */
 

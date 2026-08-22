@@ -99,9 +99,9 @@ URET uffs_BufInit(uffs_Device *dev, int buf_max, int dirty_buf_max)
 		return U_FAIL;
 
 	//init device common parameters, which are needed by page buffers
-	dev->com.pg_size = dev->attr->page_data_size;  // we use the whole page.
+	dev->com.pg_size = dev->attr->page_data_size + sizeof(struct uffs_MiniHeaderSt);
 	dev->com.header_size = sizeof(struct uffs_MiniHeaderSt); // mini header
-	dev->com.pg_data_size = dev->com.pg_size - dev->com.header_size;
+	dev->com.pg_data_size = dev->attr->page_data_size;
 
 	if (dev->buf.pool != NULL) {
 		uffs_Perror(UFFS_MSG_NORMAL,
@@ -1790,7 +1790,6 @@ URET uffs_BufRead(struct uffs_DeviceSt *dev,
 
 	return U_SUCC;
 }
-
 
 
 

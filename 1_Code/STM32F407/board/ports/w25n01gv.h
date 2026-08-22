@@ -51,6 +51,8 @@ struct w25n01gv_io_stats
     uint32_t cache_read_bytes;
     uint32_t program_load_bytes;
     uint32_t busy_wait_us;
+    uint32_t ecc_corrected_pages;
+    uint32_t ecc_failed_pages;
 };
 
 /**

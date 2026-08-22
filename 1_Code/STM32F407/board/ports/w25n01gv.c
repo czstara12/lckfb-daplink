@@ -54,11 +54,8 @@
 #define W25N01GV_STATUS_ERASE_FAIL      0x04U
 #define W25N01GV_STATUS_PROGRAM_FAIL    0x08U
 #define W25N01GV_BAD_BLOCK_MARKER_COL   W25N01GV_PAGE_SIZE
-/* 用 OOB 尾部扩展 UFFS 页，使 4 字节 mini header 不再缩减 2048 字节有效数据。 */
-#define W25N01GV_UFFS_PAGE_TAIL_SIZE    4U
-#define W25N01GV_UFFS_PAGE_SIZE         (W25N01GV_PAGE_SIZE + W25N01GV_UFFS_PAGE_TAIL_SIZE)
-#define W25N01GV_UFFS_OOB_SIZE          (W25N01GV_OOB_SIZE - W25N01GV_UFFS_PAGE_TAIL_SIZE)
-#define W25N01GV_UFFS_PAGE_TAIL_COL     (W25N01GV_PAGE_SIZE + W25N01GV_UFFS_OOB_SIZE)
+#define W25N01GV_UFFS_PAGE_SIZE         W25N01GV_PAGE_SIZE
+#define W25N01GV_UFFS_OOB_SIZE          W25N01GV_OOB_SIZE
 #define W25N01GV_WAIT_READY_TIMEOUT_MS  1000U
 #define W25N01GV_WAIT_READY_POLL_US     50U
 #define W25N01GV_TEST_BLOCK_FIRST       1000U
@@ -67,6 +64,7 @@ static struct rt_spi_device *w25n01gv_spi_dev;
 static uint8_t w25n01gv_page_buf[W25N01GV_PAGE_SIZE];
 static struct rt_mtd_nand_device w25n01gv_mtd_dev;
 static struct w25n01gv_io_stats w25n01gv_stats;
+static enum w25n01gv_ecc_status w25n01gv_last_ecc;
 
 void w25n01gv_stats_reset(void)
 {
@@ -186,7 +184,7 @@ static rt_err_t w25n01gv_unlock_all_blocks(void)
     return lock == 0x00U ? RT_EOK : -RT_ERROR;
 }
 
-static rt_err_t w25n01gv_configure_for_raw_oob(void)
+static rt_err_t w25n01gv_configure_ecc(void)
 {
     uint8_t config = 0;
     rt_err_t ret;
@@ -198,7 +196,7 @@ static rt_err_t w25n01gv_configure_for_raw_oob(void)
     }
 
     config |= W25N01GV_CONFIG_BUF;
-    config &= (uint8_t)~W25N01GV_CONFIG_ECC_ENABLE;
+    config |= W25N01GV_CONFIG_ECC_ENABLE;
 
     ret = w25n01gv_set_feature(W25N01GV_REG_CONFIG, config);
     if (ret != RT_EOK)
@@ -213,7 +211,7 @@ static rt_err_t w25n01gv_configure_for_raw_oob(void)
     }
 
     return ((config & W25N01GV_CONFIG_BUF) != 0U &&
-            (config & W25N01GV_CONFIG_ECC_ENABLE) == 0U) ? RT_EOK : -RT_ERROR;
+            (config & W25N01GV_CONFIG_ECC_ENABLE) != 0U) ? RT_EOK : -RT_ERROR;
 }
 
 static rt_err_t w25n01gv_read_jedec_id(uint8_t id[W25N01GV_JEDEC_ID_LEN])
@@ -318,6 +316,8 @@ static rt_err_t w25n01gv_program_execute(uint32_t row)
 static rt_err_t w25n01gv_load_page(uint32_t row)
 {
     uint8_t cmd[4];
+    uint8_t status;
+    rt_err_t ret;
 
     if (w25n01gv_spi_dev == RT_NULL)
     {
@@ -335,7 +335,23 @@ static rt_err_t w25n01gv_load_page(uint32_t row)
         return -RT_ERROR;
     }
 
-    return w25n01gv_wait_ready();
+    ret = w25n01gv_wait_ready();
+    if (ret != RT_EOK || w25n01gv_read_feature(W25N01GV_REG_STATUS, &status) != RT_EOK)
+    {
+        return ret != RT_EOK ? ret : -RT_ERROR;
+    }
+
+    w25n01gv_last_ecc = w25n01gv_decode_ecc_status(status);
+    if (w25n01gv_last_ecc == W25N01GV_ECC_CORRECTED)
+    {
+        w25n01gv_stats.ecc_corrected_pages++;
+    }
+    else if (w25n01gv_last_ecc == W25N01GV_ECC_FAILED ||
+             w25n01gv_last_ecc == W25N01GV_ECC_RESERVED)
+    {
+        w25n01gv_stats.ecc_failed_pages++;
+    }
+    return RT_EOK;
 }
 
 static rt_err_t w25n01gv_read_page(uint16_t block, uint8_t page, uint8_t *buf, rt_size_t len)
@@ -523,17 +539,6 @@ static rt_err_t w25n01gv_write_page_with_oob(uint16_t block,
         }
     }
 
-    if (data_len > W25N01GV_PAGE_SIZE)
-    {
-        ret = w25n01gv_random_program_load(W25N01GV_UFFS_PAGE_TAIL_COL,
-                                           data + W25N01GV_PAGE_SIZE,
-                                           data_len - W25N01GV_PAGE_SIZE);
-        if (ret != RT_EOK)
-        {
-            return ret;
-        }
-    }
-
     return w25n01gv_program_execute(w25n01gv_row_from_block_page(block, page));
 }
 
@@ -582,14 +587,6 @@ static rt_err_t w25n01gv_mtd_read_page(struct rt_mtd_nand_device *device,
         {
             return -RT_ERROR;
         }
-
-        if (data_len > W25N01GV_PAGE_SIZE &&
-            w25n01gv_read_cache(W25N01GV_UFFS_PAGE_TAIL_COL,
-                                data + W25N01GV_PAGE_SIZE,
-                                data_len - W25N01GV_PAGE_SIZE) != RT_EOK)
-        {
-            return -RT_ERROR;
-        }
     }
 
     if (spare != RT_NULL && spare_len > 0U)
@@ -600,6 +597,15 @@ static rt_err_t w25n01gv_mtd_read_page(struct rt_mtd_nand_device *device,
         }
     }
 
+    if (w25n01gv_last_ecc == W25N01GV_ECC_CORRECTED)
+    {
+        return -RT_MTD_EECC_CORRECT;
+    }
+    if (w25n01gv_last_ecc == W25N01GV_ECC_FAILED ||
+        w25n01gv_last_ecc == W25N01GV_ECC_RESERVED)
+    {
+        return -RT_MTD_EECC;
+    }
     return RT_EOK;
 }
 
@@ -697,7 +703,7 @@ static rt_err_t w25n01gv_mtd_register(void)
     memset(&w25n01gv_mtd_dev, 0, sizeof(w25n01gv_mtd_dev));
     w25n01gv_mtd_dev.page_size = W25N01GV_UFFS_PAGE_SIZE;
     w25n01gv_mtd_dev.oob_size = W25N01GV_UFFS_OOB_SIZE;
-    w25n01gv_mtd_dev.oob_free = W25N01GV_UFFS_OOB_SIZE;
+    w25n01gv_mtd_dev.oob_free = 24U;
     w25n01gv_mtd_dev.plane_num = 1;
     w25n01gv_mtd_dev.pages_per_block = W25N01GV_PAGES_PER_BLOCK;
     w25n01gv_mtd_dev.block_total = W25N01GV_BLOCK_COUNT;
@@ -1140,11 +1146,13 @@ static int w25n01gv_msh(int argc, char **argv)
         {
             w25n01gv_stats_reset();
         }
-        rt_kprintf("W25N01GV stats: load=%u program=%u erase=%u busy=%u ms\n",
+        rt_kprintf("W25N01GV stats: load=%u program=%u erase=%u busy=%u ms ecc=%u/%u\n",
                    w25n01gv_stats.load_pages,
                    w25n01gv_stats.program_pages,
                    w25n01gv_stats.erase_blocks,
-                   w25n01gv_stats.busy_wait_us / 1000U);
+                   w25n01gv_stats.busy_wait_us / 1000U,
+                   w25n01gv_stats.ecc_corrected_pages,
+                   w25n01gv_stats.ecc_failed_pages);
         rt_kprintf("W25N01GV bytes: cache_read=%u program_load=%u\n",
                    w25n01gv_stats.cache_read_bytes,
                    w25n01gv_stats.program_load_bytes);
@@ -1594,9 +1602,9 @@ static int rt_hw_w25n01gv_init(void)
         return -RT_ERROR;
     }
 
-    if (w25n01gv_configure_for_raw_oob() != RT_EOK)
+    if (w25n01gv_configure_ecc() != RT_EOK)
     {
-        rt_kprintf("W25N01GV: raw OOB config failed\n");
+        rt_kprintf("W25N01GV: ECC config failed\n");
         return -RT_ERROR;
     }
 
