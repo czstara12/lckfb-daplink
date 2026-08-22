@@ -52,3 +52,11 @@ tags
 CMakeLists.txt
 cmake-build-debug
 *.mk
+
+# Keil 本机调试与界面配置
+/*.uvoptx
+/*.uvguix.*
+/DebugConfig/
+
+# 本机构建和调试日志
+/*.log
