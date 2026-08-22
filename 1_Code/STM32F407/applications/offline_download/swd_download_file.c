@@ -297,9 +297,9 @@ char* get_offline_download_info_message(void)
 static int _offline_download_info_init(void)
 {
     rt_snprintf(choose_device_path, sizeof(choose_device_path),
-                "%s", "/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
+                "%s", "/sdcard/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
     rt_snprintf(choose_firmware_bin_path, sizeof(choose_firmware_bin_path),
-                "%s", "/firmware/f407_100ms.bin");
+                "%s", "/sdcard/firmware/f407_100ms.bin");
     offline_download_info.success_download_count = 0;
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "wait for start");
     offline_download_info.progress = 0;
@@ -312,8 +312,8 @@ INIT_APP_EXPORT(_offline_download_info_init);
 
 //void swd_download_100ms(void)
 //{
-//    swd_download_update_flash_algo("/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
-//    if(swd_download_from_file("/firmware/f407_100ms.bin")==-1)
+//    swd_download_update_flash_algo("/sdcard/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
+//    if(swd_download_from_file("/sdcard/firmware/f407_100ms.bin")==-1)
 //    {
 //        //下载错误
 //        buzzer_beep_set(4000,100);
@@ -343,8 +343,8 @@ INIT_APP_EXPORT(_offline_download_info_init);
 
 //void swd_download_500ms(void)
 //{
-//    swd_download_update_flash_algo("/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
-//    if(swd_download_from_file("/firmware/f407_500ms.bin")==-1)
+//    swd_download_update_flash_algo("/sdcard/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
+//    if(swd_download_from_file("/sdcard/firmware/f407_500ms.bin")==-1)
 //    {
 //        //下载错误
 //        buzzer_beep_set(4000,100);
@@ -374,8 +374,8 @@ INIT_APP_EXPORT(_offline_download_info_init);
 
 void swd_download_rtthread(void)
 {
-    swd_download_update_flash_algo("/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
-    swd_download_from_file("/firmware/rtthread.bin ");
+    swd_download_update_flash_algo("/sdcard/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
+    swd_download_from_file("/sdcard/firmware/rtthread.bin");
 }
 
 MSH_CMD_EXPORT(swd_download_rtthread, swd_download_rtthread);
