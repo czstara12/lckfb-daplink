@@ -131,7 +131,8 @@ void chry_dap_usb2uart_uart_config_callback(struct cdc_line_coding *line_coding)
     {
 		huart3.Init.Parity = UART_PARITY_NONE;
     }
-	huart3.Init.WordLength = line_coding->bDataBits;
+	huart3.Init.WordLength = (huart3.Init.Parity != UART_PARITY_NONE &&
+							 line_coding->bDataBits == 8) ? UART_WORDLENGTH_9B : UART_WORDLENGTH_8B;
    
 	if(line_coding->bCharFormat == 1)
 	{
