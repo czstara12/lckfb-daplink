@@ -108,6 +108,7 @@ SECTIONS
         *(.bss.uart3_recv_buff)
         *(.bss.gt_adc_val)
         *(.bss.spi_dma_dummy_tx)
+        *(.bss.cmd_data.*)
         . = ALIGN(8);
         _ebss = .;
         __bss_end = .;
