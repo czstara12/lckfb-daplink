@@ -268,6 +268,7 @@ typedef  void (*pUART_RxEventCallbackTypeDef)(struct __UART_HandleTypeDef *huart
   */
 #define UART_STOPBITS_1                     0x00000000U
 #define UART_STOPBITS_2                     ((uint32_t)USART_CR2_STOP_1)
+#define UART_STOPBITS_1_5                   ((uint32_t)(USART_CR2_STOP_0 | USART_CR2_STOP_1))
 /**
   * @}
   */
@@ -811,7 +812,8 @@ uint32_t              HAL_UART_GetError(UART_HandleTypeDef *huart);
                                      ((LENGTH) == UART_WORDLENGTH_9B))
 #define IS_UART_LIN_WORD_LENGTH(LENGTH) (((LENGTH) == UART_WORDLENGTH_8B))
 #define IS_UART_STOPBITS(STOPBITS) (((STOPBITS) == UART_STOPBITS_1) || \
-                                    ((STOPBITS) == UART_STOPBITS_2))
+                                    ((STOPBITS) == UART_STOPBITS_2) || \
+                                    ((STOPBITS) == UART_STOPBITS_1_5))
 #define IS_UART_PARITY(PARITY) (((PARITY) == UART_PARITY_NONE) || \
                                 ((PARITY) == UART_PARITY_EVEN) || \
                                 ((PARITY) == UART_PARITY_ODD))

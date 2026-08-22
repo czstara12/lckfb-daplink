@@ -133,10 +133,9 @@ void chry_dap_usb2uart_uart_config_callback(struct cdc_line_coding *line_coding)
     }
 	huart3.Init.WordLength = line_coding->bDataBits;
    
-    if(line_coding->bCharFormat == 1)
-    {
-		//not suppore
-		huart3.Init.StopBits = UART_STOPBITS_1;
+	if(line_coding->bCharFormat == 1)
+	{
+			huart3.Init.StopBits = UART_STOPBITS_1_5;
     }else if (line_coding->bCharFormat == 2)
     {
 		huart3.Init.StopBits = UART_STOPBITS_2;
