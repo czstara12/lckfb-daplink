@@ -24,6 +24,7 @@
 
 #include "swd_download_file.h"
 #include "FlashOS.h"
+#include "flmparse.h"
 
 #define LOG_TAG     "swd_download_file"     // 该模块对应的标签。不定义时，默认：NO_TAG
 #define LOG_LVL     LOG_LVL_DBG   // 该模块对应的日志输出级别。不定义时，默认：调试级别
@@ -37,15 +38,7 @@ char choose_firmware_bin_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
 //判断当前是不是正在脱机下载中
 static int8_t on_offline_swd_downloading = 0;
 
-uint32_t parse_flm_from_file(char* _file_path);
-extern uint32_t * get_flm_flash_blob_addr(void);
-extern uint32_t get_flm_flash_algo_init_addr(void);
-extern uint32_t get_flm_flash_algo_uninit_addr(void);
-extern uint32_t get_flm_flash_algo_erase_chip_addr(void);
-extern uint32_t get_flm_flash_algo_erase_sector_addr(void);
-extern uint32_t get_flm_flash_algo_program_page_addr(void);
-
-extern FlashDevice_T target_device;
+static flm_image_t flash_image;
 
 int8_t is_on_offline_swd_downloading(void)
 {
@@ -85,57 +78,77 @@ program_target_t flash_algo = {
     0x00000400, // ram_to_flash_bytes_to_be_written
 };
 
+static void release_flash_image(void)
+{
+    flm_image_release(&flash_image);
+    flash_algo.algo_blob = RT_NULL;
+    flash_algo.algo_size = 0U;
+}
+
 //uint32_t Flash_Sect_Size = 8 * 1024;
 //uint32_t Flash_Page_Size = 4 * 1024;
 uint32_t Flash_Start_Addr = 0x00000000;
 
-static uint8_t file_read_buf[4*1024] __attribute__((section(".ram1.bss")));
-static uint8_t target_mcu_flash_read_buf[4*1024] __attribute__((section(".ram1.bss")));
-
 int8_t swd_download_update_flash_algo(char *_file_path)
 {
-    uint32_t flm_size = 0;
-    flm_size = parse_flm_from_file(_file_path);
-    if(flm_size == 0)
+    release_flash_image();
+    if (flm_parse_file(_file_path, &flash_image) < 0)
     {
         LOG_E("parse flm from file error");
         return -1;
     }
-    flash_algo.init = get_flm_flash_algo_init_addr();
-    flash_algo.uninit = get_flm_flash_algo_uninit_addr();
-    flash_algo.erase_chip = get_flm_flash_algo_erase_chip_addr();
-    flash_algo.erase_sector = get_flm_flash_algo_erase_sector_addr();
-    flash_algo.program_page = get_flm_flash_algo_program_page_addr();
+    flash_algo.init = flash_image.init + 0X20000020;
+    flash_algo.uninit = flash_image.uninit + 0X20000020;
+    flash_algo.erase_chip = flash_image.erase_chip + 0X20000020;
+    flash_algo.erase_sector = flash_image.erase_sector + 0X20000020;
+    flash_algo.program_page = flash_image.program_page + 0X20000020;
 
     // flash_algo.sys_call_s.breakpoint = 0x20000001;
     // flash_algo.sys_call_s.static_base = 0x20000C00;
     // flash_algo.sys_call_s.stack_pointer = 0x20001000;
 
-    flash_algo.program_buffer = 0x20000000+flm_size;
+    flash_algo.program_buffer = 0x20000000 + flash_image.blob_size;
     flash_algo.algo_start = 0x20000000;
 
-    flash_algo.algo_size = flm_size;
-    flash_algo.algo_blob = get_flm_flash_blob_addr();
+    flash_algo.algo_size = flash_image.blob_size;
+    flash_algo.algo_blob = flash_image.blob;
 
-    flash_algo.program_buffer_size = target_device.szPage;   //这个和实际flash写入时的容量相关
+    flash_algo.program_buffer_size = flash_image.page_size;
 	
 	flash_algo.sys_call_s.breakpoint = 0x20000000 + 1;
     flash_algo.sys_call_s.static_base = flash_algo.program_buffer + flash_algo.program_buffer_size;
 	
-	Flash_Start_Addr = target_device.devAdr;
+	Flash_Start_Addr = flash_image.device_address;
 	return 0;
 }
 
 int32_t swd_download_from_file(char *_file_path)
 {
-
-    static int32_t fd = 0,read_size = 0, ret = 0;
+    int32_t fd = -1, read_size = 0, ret = 0;
     static char file_path[LV_FILE_EXPLORER_PATH_MAX_LEN] = {0};
     struct stat file_stat;
-
+    uint8_t *download_buffer = RT_NULL;
+    uint8_t *file_read_buf;
+    uint8_t *target_mcu_flash_read_buf;
     uint32_t val;
 
     start_offline_swd_download();
+
+    if (flash_image.blob == RT_NULL || flash_image.page_size == 0U ||
+        flash_image.page_size > UINT32_MAX / 2U)
+    {
+        LOG_E("flash algorithm is not ready");
+        goto error;
+    }
+
+    download_buffer = rt_calloc(2U, flash_image.page_size);
+    if (download_buffer == RT_NULL)
+    {
+        LOG_E("download buffer memory allocation failed");
+        goto error;
+    }
+    file_read_buf = download_buffer;
+    target_mcu_flash_read_buf = download_buffer + flash_image.page_size;
 
     if (rt_strlen(_file_path) < sizeof(file_path))
     {
@@ -172,7 +185,15 @@ int32_t swd_download_from_file(char *_file_path)
         if (ret == 0)
             LOG_I("%s file size = %d", file_path,file_stat.st_size);
         else
+        {
             LOG_E("%s file not fonud",file_path);
+            goto error;
+        }
+    }
+    if (file_stat.st_size <= 0)
+    {
+        LOG_E("firmware file is empty");
+        goto error;
     }
 
     // 2 将FLM文件加载到目标单片机的RAM里
@@ -202,7 +223,7 @@ int32_t swd_download_from_file(char *_file_path)
 
     // 3 擦除目标单片机的Flash
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "erase flash");
-    for (uint32_t addr = 0; addr < file_stat.st_size; addr += target_device.szPage)
+    for (uint32_t addr = 0; addr < file_stat.st_size; addr += flash_image.page_size)
     {
         target_flash_erase_sector(Flash_Start_Addr + addr);
         offline_download_info.progress = (addr * 100) / file_stat.st_size;
@@ -217,24 +238,48 @@ int32_t swd_download_from_file(char *_file_path)
 //    }
     // 5 下载至目标单片机的Flash
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "download flash");
-    for (uint32_t addr = 0; addr < file_stat.st_size; addr += target_device.szPage)
+    for (uint32_t addr = 0; addr < file_stat.st_size; addr += flash_image.page_size)
     {
-        read_size = read(fd, file_read_buf, target_device.szPage);
+        uint32_t transfer_size = file_stat.st_size - addr > flash_image.page_size
+                                     ? flash_image.page_size
+                                     : file_stat.st_size - addr;
+
+        rt_memset(file_read_buf, 0xFF, flash_image.page_size);
+        read_size = read(fd, file_read_buf, transfer_size);
+        if (read_size != (int32_t)transfer_size)
+        {
+            LOG_E("firmware file read failed");
+            goto error;
+        }
 
 		LOG_I("read size = %d", read_size);
         offline_download_info.progress = (addr * 100) / file_stat.st_size;
         target_flash_program_page(Flash_Start_Addr + addr, file_read_buf,
-                                  target_device.szPage);
+                                  flash_image.page_size);
     }
     close(fd);
+    fd = -1;
     fd = open(file_path, O_RDONLY); //重新打开文件要从头开始读
+    if (fd < 0)
+    {
+        goto error;
+    }
     // 6 读回校验
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "verify flash");
-    for (uint32_t addr = 0; addr < file_stat.st_size; addr += target_device.szPage)
+    for (uint32_t addr = 0; addr < file_stat.st_size; addr += flash_image.page_size)
     {
-        swd_read_memory(Flash_Start_Addr + addr, target_mcu_flash_read_buf, target_device.szPage);
+        uint32_t transfer_size = file_stat.st_size - addr > flash_image.page_size
+                                     ? flash_image.page_size
+                                     : file_stat.st_size - addr;
 
-        read_size = read(fd, file_read_buf, target_device.szPage);
+        swd_read_memory(Flash_Start_Addr + addr, target_mcu_flash_read_buf, flash_image.page_size);
+
+        read_size = read(fd, file_read_buf, transfer_size);
+        if (read_size != (int32_t)transfer_size)
+        {
+            LOG_E("firmware verify read failed");
+            goto error;
+        }
 
         LOG_I("file read size = %d", read_size);
         offline_download_info.progress = (addr * 100) / file_stat.st_size;
@@ -242,11 +287,7 @@ int32_t swd_download_from_file(char *_file_path)
         //
         // ulog_hexdump("file", 8,file_read_buf,sizeof(file_read_buf));
 
-        if (rt_memcmp(target_mcu_flash_read_buf, file_read_buf,
-                      file_stat.st_size - addr > target_device.szPage
-                          ? target_device.szPage
-                          : file_stat.st_size - addr)
-            == 0)
+        if (rt_memcmp(target_mcu_flash_read_buf, file_read_buf, transfer_size) == 0)
         {
             LOG_I("verify pass");
         }
@@ -260,17 +301,25 @@ int32_t swd_download_from_file(char *_file_path)
     offline_download_info.progress = 100;
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "verify pass");
     close(fd);
+    fd = -1;
     //7 让目标单片机开始运行
     soft_reset_target();
 
     offline_download_info.success_download_count += 1;
 
+    rt_free(download_buffer);
+    release_flash_image();
     stop_offline_swd_download();
 
     return 0;
     // 6 进入错误状态
 error:
-	close(fd);
+    if (fd >= 0)
+    {
+        close(fd);
+    }
+    rt_free(download_buffer);
+    release_flash_image();
     LOG_E("error occured!");
     rt_snprintf( offline_download_info.info_message, sizeof( offline_download_info.info_message), "%s", "error occured!");
 
@@ -374,8 +423,10 @@ INIT_APP_EXPORT(_offline_download_info_init);
 
 void swd_download_rtthread(void)
 {
-    swd_download_update_flash_algo("/sdcard/MCU/ST/STM32F4xx/STM32F4xx_512.FLM");
-    swd_download_from_file("/sdcard/firmware/rtthread.bin");
+    if (swd_download_update_flash_algo("/sdcard/MCU/ST/STM32F4xx/STM32F4xx_512.FLM") == 0)
+    {
+        swd_download_from_file("/sdcard/firmware/rtthread.bin");
+    }
 }
 
 MSH_CMD_EXPORT(swd_download_rtthread, swd_download_rtthread);

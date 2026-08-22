@@ -30,4 +30,20 @@ uint8_t get_offline_progress(void);
 
 int8_t is_on_offline_swd_downloading(void);
 
+/**
+ * @brief 从 FLM 文件加载目标芯片 Flash 算法。
+ *
+ * @param file_path FLM 文件路径。
+ * @return 0 表示成功，-1 表示失败。
+ */
+int8_t swd_download_update_flash_algo(char *file_path);
+
+/**
+ * @brief 使用已加载的 Flash 算法下载 BIN 文件。
+ *
+ * @param file_path BIN 文件路径。
+ * @return 0 表示成功，-1 表示失败。
+ */
+int32_t swd_download_from_file(char *file_path);
+
 #endif /* __SWD_DOWLNLOAD_FILE_H__ */

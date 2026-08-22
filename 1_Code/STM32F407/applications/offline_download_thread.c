@@ -17,6 +17,7 @@
 #include "dap.h"
 #include "ui.h"
 #include "bsp_beep.h"
+#include "swd_download_file.h"
 
 #define LOG_TAG     "offline download"     // 该模块对应的标签。不定义时，默认：NO_TAG
 #define LOG_LVL     LOG_LVL_DBG   // 该模块对应的日志输出级别。不定义时，默认：调试级别
@@ -34,9 +35,6 @@ static struct rt_thread offline_download;
 
 extern char choose_device_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
 extern char choose_firmware_bin_path[LV_FILE_EXPLORER_PATH_MAX_LEN];
-
-extern int32_t swd_download_from_file(char *_file_path);
-extern int8_t swd_download_update_flash_algo(char *_file_path);
 
 /* 指向互斥量的指针 */
 rt_sem_t offline_download_sem = RT_NULL;
@@ -58,8 +56,8 @@ static void offline_download_entry(void *param)
         LOG_D("device_path:%s", choose_device_path);
         LOG_D("firmware_bin_path:%s", choose_firmware_bin_path);
 		rt_thread_mdelay(100);
-        swd_download_update_flash_algo(choose_device_path);
-        if (swd_download_from_file(choose_firmware_bin_path)
+        if (swd_download_update_flash_algo(choose_device_path) < 0 ||
+            swd_download_from_file(choose_firmware_bin_path)
             == -1)
         {
             // 下载错误

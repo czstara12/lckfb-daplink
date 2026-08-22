@@ -1,389 +1,339 @@
 /*
- * flmparse.c
- *
- *  Created on: 2021年4月10日
- *      Author: hello
+ * SPDX-License-Identifier: MIT
+ * Origin: https://gitee.com/jhembedded/flmparse
+ * Created-By: xcwynya
  */
 
-//来源：https://gitee.com/jhembedded/flmparse   @MIT
-
+#include <dfs_posix.h>
+#include <fcntl.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #include <rtthread.h>
-#include <dfs_posix.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <ctype.h>
+
 #include "elf.h"
 #include "FlashOS.h"
+#include "flmparse.h"
 
-#define LOG_TAG     "flmparse"     // 该模块对应的标签。不定义时，默认：NO_TAG
-#define LOG_LVL     LOG_LVL_DBG   // 该模块对应的日志输出级别。不定义时，默认：调试级别
-#include <ulog.h>                 // 必须在 LOG_TAG 与 LOG_LVL 下面
+#define LOG_TAG "flmparse"
+#define LOG_LVL LOG_LVL_DBG
+#include <ulog.h>
 
-static int ReadDataFromFile(char* FName, uint32_t offset, void* buf, uint32_t size);
-static int FLM_Prase(char* FName, void* pBuffer, uint32_t* Size, uint32_t* Init, uint32_t* UnInit, uint32_t* EraseChip, uint32_t* EraseSector, uint32_t* ProgramPage);
+#define FLM_BLOB_MAX_SIZE (10U * 1024U)
+#define LOAD_FUN_NUM 5U
 
-static uint32_t RAM[2560];
-uint32_t static Addr[5] = {0x000003C9,0x00000405,0x00000081,0x00000089,0x000003D9};
-//uint32_t static Addr[5] = {0};
-
-FlashDevice_T target_device;
-	
-int parse_flm_file(int argc, char* argv[])
+static int read_data_from_file(const char *file_name, uint32_t offset, void *buffer, uint32_t size)
 {
-    int i = 0;
-    uint32_t Size = 0;
-
-    if(argc != 2)
-    {
-        rt_kprintf("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
-        rt_kprintf("Usage:\n");
-        rt_kprintf("        parse_flm_file [filename]\n");
-        rt_kprintf("\n\n");
-        goto __exit;
-    }
-
-    /* 这8个数是中断halt程序，让函数执行完后返回到这里来执行从而让CPU自动halt住 */
-    RAM[0] = 0xE00ABE00;
-    RAM[1] = 0x062D780D;
-    RAM[2] = 0x24084068;
-    RAM[3] = 0xD3000040;
-    RAM[4] = 0x1E644058;
-    RAM[5] = 0x1C49D1FA;
-    RAM[6] = 0x2A001E52;
-    RAM[7] = 0x4770D1F2;
-
-    if(FLM_Prase(argv[1], &RAM[8], &Size, &Addr[0],&Addr[1],&Addr[2],&Addr[3],&Addr[4]) < 0)
-    {
-        rt_kprintf("错误：解析FLM格式文件失败，请检查FLM文件是否存在或格式正确性！\r\n");
-        goto __exit;
-    }
-
-    rt_kprintf("\r\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\r\n");
-
-    Size += 32;
-
-    rt_kprintf("\r\nstatic const uint32_t flash_code[] = \n{");
-    for(i = 0; i < (Size >> 2); i++)
-    {
-        if(i % 8 == 0)
-        {
-            rt_kprintf( "\n    ");
-        }
-        rt_kprintf("0X%08X,", RAM[i]);
-    }
-    rt_kprintf( "\n};\n");
-
-    rt_kprintf( "\r\nconst program_target_t flash_algo =\n{\n");
-    rt_kprintf( "    0X20000020 + 0X%08X,  // Init\n",        Addr[0]);
-    rt_kprintf( "    0X20000020 + 0X%08X,  // UnInit\n",      Addr[1]);
-    rt_kprintf( "    0X20000020 + 0X%08X,  // EraseChip\n",   Addr[2]);
-    rt_kprintf( "    0X20000020 + 0X%08X,  // EraseSector\n", Addr[3]);
-    rt_kprintf( "    0X20000020 + 0X%08X,  // ProgramPage\n", Addr[4]);
-    rt_kprintf( "\n");
-    rt_kprintf( "    // BKPT : start of blob + 1\n");
-    rt_kprintf( "    // RSB  : address to access global/static data\n");
-    rt_kprintf( "    // RSP  : stack pointer\n");
-    rt_kprintf( "    {\n");
-    rt_kprintf( "        0X20000001,\n");
-    rt_kprintf( "        0X20000C00,\n");
-    rt_kprintf( "        0X20001000,\n");
-    rt_kprintf( "    },\n");
-    rt_kprintf( "\n");
-    rt_kprintf( "    0x20000400,                      // mem buffer location\n");
-    rt_kprintf( "    0x20000000,                      // location to write prog_blob in target RAM\n");
-    rt_kprintf( "    sizeof(flash_code),              // prog_blob size\n");
-    rt_kprintf( "    flash_code,                      // address of prog_blob\n");
-    rt_kprintf( "    0x00000400,                      // ram_to_flash_bytes_to_be_written\n");
-    rt_kprintf( "};\n");
-    rt_kprintf( "\n");
-    rt_kprintf( "\n");
-    rt_kprintf( "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
-
-__exit:
-    return 0;
-}
-MSH_CMD_EXPORT(parse_flm_file , parse_flm_file);
-
-
-//static int ReadDataFromFile(char* FName, uint32_t offset, void* buf, uint32_t size)
-//{
-//    int ret = 0;
-//    int fd = 0;
-
-//    if ((fd = open(FName, O_RDONLY | O_BINARY)) < 0)
-//    {
-//        ret = -1;
-//        goto __exit;
-//    }
-
-//    if (lseek(fd, offset, SEEK_SET) < 0)
-//    {
-//        ret = -2;
-//        goto __exit;
-//    }
-
-//    if (read(fd, buf, size) != size)
-//    {
-//        ret = -3;
-//        goto __exit;
-//    }
-
-//__exit:
-//    close(fd);
-//    return ret;
-//}
-
-static int ReadDataFromFile(char* FName, uint32_t offset, void* buf, uint32_t size)
-{
-    int ret = 0;
-    int fd = 0;
+    int fd;
     ssize_t read_bytes;
 
-	LOG_D("wait for read file size is %d",size);
-    if ((fd = open(FName, O_RDONLY | O_BINARY)) < 0)
+    fd = open(file_name, O_RDONLY | O_BINARY);
+    if (fd < 0)
     {
-        LOG_E("Error opening file");
-        ret = -1;
-        goto __exit;
+        LOG_E("open file failed: %s", file_name);
+        return -1;
     }
 
     if (lseek(fd, offset, SEEK_SET) < 0)
     {
-        LOG_E("Error seeking in file");
-        ret = -2;
-        goto __exit;
+        close(fd);
+        return -2;
     }
 
-    read_bytes = read(fd, buf, size);
-    if (read_bytes < 0)
-    {
-        LOG_E("Error reading file");
-        ret = -3;
-        goto __exit;
-    }
-    if (read_bytes != size)
-    {
-        LOG_E("Expected to read %u bytes, but only read %zd bytes.\n", size, read_bytes);
-        ret = -3;
-        goto __exit;
-    }
-
-__exit:
+    read_bytes = read(fd, buffer, size);
     close(fd);
-    return ret;
+    return read_bytes == (ssize_t)size ? 0 : -3;
 }
 
-int FLM_Prase(char* FName, void* pBuffer, uint32_t* Size, uint32_t* Init, uint32_t* UnInit, uint32_t* EraseChip, uint32_t* EraseSector, uint32_t* ProgramPage)
+static int resize_buffer(uint8_t **buffer, uint32_t size)
 {
-#define LOAD_FUN_NUM 5
+    uint8_t *new_buffer;
 
-	uint8_t* buffer = rt_malloc(2048);  // 动态分配内存
-    if (buffer == NULL)                 // 检查内存分配是否成功
+    if (size == 0U)
     {
-		LOG_E("rt_malloc fail!");
-        return -1;  // 内存分配失败
-    }
-	
-    uint32_t i = 0, k = 0;
-    int found = 0;
-    const Elf32_Phdr* pPhdr = (const Elf32_Phdr *) buffer;
-    const Elf32_Shdr* pShdr = (const Elf32_Shdr *) buffer;
-    const Elf32_Sym* pSymbol = (const Elf32_Sym *) buffer;
-    Elf32_Ehdr ehdr = {0};      // ELF文件信息头
-    Elf32_Shdr ShdrSym = {0};   // 符号表头
-    Elf32_Shdr ShdrStr = {0};   // 字符串表头
-    const char* StrFunNameTable[LOAD_FUN_NUM] = { "Init", "UnInit", "EraseChip", "EraseSector", "ProgramPage"};
-
-    int StrFunIndexTable[LOAD_FUN_NUM] = {-1, -1, -1, -1, -1};
-
-    //
-    // 读取ELF文件头信息（ELF Header）
-    //
-    ReadDataFromFile(FName, 0, &ehdr, sizeof(Elf32_Ehdr));
-
-    // 不是ELF格式文件
-    if (rt_strstr((const char *)ehdr.e_ident, "ELF") == NULL)
-    {
-		rt_free(buffer);  // 释放内存
         return -1;
     }
 
-    //
-    // 读取程序头信息（Program Header）
-    //
-    ReadDataFromFile(FName, ehdr.e_phoff, buffer, sizeof(Elf32_Phdr) * ehdr.e_phnum);
-    for (i = 0; i < ehdr.e_phnum; i++)
+    new_buffer = *buffer == RT_NULL ? rt_malloc(size) : rt_realloc(*buffer, size);
+    if (new_buffer == RT_NULL)
     {
-        if (pPhdr[i].p_type == PT_LOAD && (pPhdr[i].p_flags & (PF_X | PF_W | PF_R)) == (PF_X | PF_W | PF_R))
-        {
-            if (pPhdr[i].p_filesz > sizeof(RAM))  // RAM代码过大
-            {
-				rt_free(buffer);  // 释放内存
-                return -2;
-            }
-            if(ReadDataFromFile(FName, pPhdr[i].p_offset, pBuffer, pPhdr[i].p_filesz) < 0)  // 提取需要下载到RAM的程序代码
-            {
-				rt_free(buffer);  // 释放内存
-                return -3;
-            }
-            LOG_D("the file size=:%d\r\n", pPhdr[i].p_filesz);
-            *Size = pPhdr[i].p_filesz;
-        }
-        else if ((pPhdr[i].p_type == PT_LOAD)&&(i == 1))
-        {
-            ReadDataFromFile(FName, pPhdr[i].p_offset, &target_device, pPhdr[i].p_filesz);
-        }
+        return -1;
     }
 
-    //
-    // 读取节区头部（Sections Header）
-    //
-    ReadDataFromFile(FName, ehdr.e_shoff, buffer, sizeof(Elf32_Shdr) * ehdr.e_shnum);
-
-    // 查找符号表头并拷贝出来备用
-    for (i = 0; i < ehdr.e_shnum; i++)
-    {
-        if (pShdr[i].sh_type == SHT_SYMTAB)
-        {
-            rt_memcpy(&ShdrSym, &pShdr[i], sizeof(Elf32_Shdr));
-
-            // 查找字符串表头并拷贝出来备用
-            if (pShdr[ShdrSym.sh_link].sh_type == SHT_STRTAB)
-            {
-                rt_memcpy(&ShdrStr, &pShdr[ShdrSym.sh_link], sizeof(Elf32_Shdr));
-                found = 1;
-                break;
-            }
-        }
-    }
-
-    if(!found)
-    {
-		rt_free(buffer);  // 释放内存
-        return -4;
-    }
-
-    //
-    // 根据字符串表头读取所有字符串表
-    //
-    ReadDataFromFile(FName, ShdrStr.sh_offset, buffer, ShdrStr.sh_size);
-
-    for (i = 0; i < ShdrStr.sh_size; i++)    
-	{
-		if (buffer[i] == '\0')    
-		{
-		buffer[i] = '\n';
-		}
-	}
-    buffer[ShdrStr.sh_size] = 0;
-    for (i = 0; i < LOAD_FUN_NUM; i++)
-    {
-        char* p = NULL;
-
-        if(StrFunNameTable[i] == NULL)
-            continue;
-
-        if((p = rt_strstr((const char *) buffer, StrFunNameTable[i])) == NULL)
-            continue;
-
-        StrFunIndexTable[i] = (uint32_t) p - (uint32_t) buffer;
-		LOG_D("Checking function: %s,StrFunIndexTable :%0X", StrFunNameTable[i],StrFunIndexTable[i]);
-    }
-
-	
-    //
-    // 读取符号表
-    //
-    ReadDataFromFile(FName, ShdrSym.sh_offset, buffer, ShdrSym.sh_size);
-	
-    // 遍历查询我们用到的函数符号
-    for (i = 0; i < ShdrSym.sh_size / sizeof(Elf32_Sym); i++, pSymbol++)
-    {
-//		LOG_D("loop i is:%d", i);
-        for (k = 0; k < LOAD_FUN_NUM; k++)
-        {
-//			LOG_D("loop k is:%d", k);
-            if (StrFunIndexTable[k] >= 0 && StrFunIndexTable[k] == pSymbol->st_name)  // symbol.st_name的值就是偏移地址
-            {
-//				LOG_D("pSymbol->st_value is:%x", pSymbol->st_value);
-                switch (k)
-                {
-                case 0:
-                    *Init = pSymbol->st_value;
-                    break;
-                case 1:
-                    *UnInit = pSymbol->st_value;
-                    break;
-                case 2:
-                    *EraseChip = pSymbol->st_value;
-                    break;
-                case 3:
-                    *EraseSector = pSymbol->st_value;
-                    break;
-                case 4:
-                    *ProgramPage = pSymbol->st_value;
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
-    }
-
-	rt_free(buffer);  // 释放内存
+    *buffer = new_buffer;
     return 0;
 }
 
-uint32_t * get_flm_flash_blob_addr(void)
+static int parse_flm_sections(const char *file_name, flm_image_t *image)
 {
-    return &RAM[0];
-}
-uint32_t get_flm_flash_algo_init_addr(void)
-{
-    return Addr[0]+0X20000020;
-}
-uint32_t get_flm_flash_algo_uninit_addr(void)
-{
-    return Addr[1]+0X20000020;
-}
-uint32_t get_flm_flash_algo_erase_chip_addr(void)
-{
-    return Addr[2]+0X20000020;
-}
-uint32_t get_flm_flash_algo_erase_sector_addr(void)
-{
-    return Addr[3]+0X20000020;
-}
-uint32_t get_flm_flash_algo_program_page_addr(void)
-{
-    return Addr[4]+0X20000020;
-}
+    static const char *const function_names[LOAD_FUN_NUM] = {
+        "Init", "UnInit", "EraseChip", "EraseSector", "ProgramPage"
+    };
+    int function_name_offsets[LOAD_FUN_NUM] = {-1, -1, -1, -1, -1};
+    uint8_t *buffer = RT_NULL;
+    Elf32_Ehdr elf_header = {0};
+    Elf32_Shdr symbol_header = {0};
+    Elf32_Shdr string_header = {0};
+    uint32_t i;
+    uint32_t k;
+    uint32_t found_mask = 0U;
+    int result = -1;
 
-
-uint32_t parse_flm_from_file(char* _file_path)
-{
-    uint32_t Size = 0;
-
-    /* 这8个数是中断halt程序，让函数执行完后返回到这里来执行从而让CPU自动halt住 */
-    RAM[0] = 0xE00ABE00;
-    RAM[1] = 0x062D780D;
-    RAM[2] = 0x24084068;
-    RAM[3] = 0xD3000040;
-    RAM[4] = 0x1E644058;
-    RAM[5] = 0x1C49D1FA;
-    RAM[6] = 0x2A001E52;
-    RAM[7] = 0x4770D1F2;
-
-    if(FLM_Prase(_file_path, &RAM[8], &Size, &Addr[0],&Addr[1],&Addr[2],&Addr[3],&Addr[4]) < 0)
+    if (read_data_from_file(file_name, 0, &elf_header, sizeof(elf_header)) < 0 ||
+        rt_memcmp(elf_header.e_ident, ELFMAG, SELFMAG) != 0)
     {
-        LOG_E("Error: Failed to parse FLM format file, please check whether the FLM file exists or the format is correct!\r\n");
+        goto cleanup;
+    }
+
+    if (resize_buffer(&buffer, sizeof(Elf32_Phdr) * elf_header.e_phnum) < 0 ||
+        read_data_from_file(file_name, elf_header.e_phoff, buffer,
+                            sizeof(Elf32_Phdr) * elf_header.e_phnum) < 0)
+    {
+        goto cleanup;
+    }
+
+    for (i = 0; i < elf_header.e_phnum; i++)
+    {
+        const Elf32_Phdr *program_header = &((const Elf32_Phdr *)buffer)[i];
+
+        if (program_header->p_type == PT_LOAD &&
+            (program_header->p_flags & (PF_X | PF_W | PF_R)) == (PF_X | PF_W | PF_R))
+        {
+            if (program_header->p_filesz > FLM_BLOB_MAX_SIZE - 32U)
+            {
+                result = -2;
+                goto cleanup;
+            }
+            if (read_data_from_file(file_name, program_header->p_offset,
+                                    &image->blob[8], program_header->p_filesz) < 0)
+            {
+                result = -3;
+                goto cleanup;
+            }
+            image->blob_size = program_header->p_filesz + 32U;
+        }
+        else if (program_header->p_type == PT_LOAD && i == 1U)
+        {
+            if (program_header->p_filesz < offsetof(FlashDevice_T, szPage) + sizeof(uint32_t) ||
+                read_data_from_file(file_name,
+                                    program_header->p_offset + offsetof(FlashDevice_T, devAdr),
+                                    &image->device_address, sizeof(image->device_address)) < 0 ||
+                read_data_from_file(file_name,
+                                    program_header->p_offset + offsetof(FlashDevice_T, szPage),
+                                    &image->page_size, sizeof(image->page_size)) < 0)
+            {
+                result = -3;
+                goto cleanup;
+            }
+        }
+    }
+
+    if (image->blob_size == 0U || image->page_size == 0U)
+    {
+        goto cleanup;
+    }
+
+    if (resize_buffer(&buffer, sizeof(Elf32_Shdr) * elf_header.e_shnum) < 0 ||
+        read_data_from_file(file_name, elf_header.e_shoff, buffer,
+                            sizeof(Elf32_Shdr) * elf_header.e_shnum) < 0)
+    {
+        goto cleanup;
+    }
+
+    for (i = 0; i < elf_header.e_shnum; i++)
+    {
+        const Elf32_Shdr *section_headers = (const Elf32_Shdr *)buffer;
+
+        if (section_headers[i].sh_type == SHT_SYMTAB &&
+            section_headers[i].sh_link < elf_header.e_shnum &&
+            section_headers[section_headers[i].sh_link].sh_type == SHT_STRTAB)
+        {
+            symbol_header = section_headers[i];
+            string_header = section_headers[section_headers[i].sh_link];
+            break;
+        }
+    }
+
+    if (string_header.sh_size == 0U || string_header.sh_size == UINT32_MAX)
+    {
+        result = -4;
+        goto cleanup;
+    }
+
+    if (resize_buffer(&buffer, string_header.sh_size + 1U) < 0 ||
+        read_data_from_file(file_name, string_header.sh_offset,
+                            buffer, string_header.sh_size) < 0)
+    {
+        goto cleanup;
+    }
+
+    for (i = 0; i < string_header.sh_size; i++)
+    {
+        if (buffer[i] == '\0')
+        {
+            buffer[i] = '\n';
+        }
+    }
+    buffer[string_header.sh_size] = '\0';
+
+    for (i = 0; i < LOAD_FUN_NUM; i++)
+    {
+        char *name = rt_strstr((const char *)buffer, function_names[i]);
+
+        if (name != RT_NULL)
+        {
+            function_name_offsets[i] = name - (char *)buffer;
+        }
+    }
+
+    if (resize_buffer(&buffer, symbol_header.sh_size) < 0 ||
+        read_data_from_file(file_name, symbol_header.sh_offset,
+                            buffer, symbol_header.sh_size) < 0)
+    {
+        goto cleanup;
+    }
+
+    for (i = 0; i < symbol_header.sh_size / sizeof(Elf32_Sym); i++)
+    {
+        const Elf32_Sym *symbol = &((const Elf32_Sym *)buffer)[i];
+
+        for (k = 0; k < LOAD_FUN_NUM; k++)
+        {
+            if (function_name_offsets[k] < 0 ||
+                (uint32_t)function_name_offsets[k] != symbol->st_name)
+            {
+                continue;
+            }
+
+            switch (k)
+            {
+            case 0:
+                image->init = symbol->st_value;
+                break;
+            case 1:
+                image->uninit = symbol->st_value;
+                break;
+            case 2:
+                image->erase_chip = symbol->st_value;
+                break;
+            case 3:
+                image->erase_sector = symbol->st_value;
+                break;
+            case 4:
+                image->program_page = symbol->st_value;
+                break;
+            default:
+                break;
+            }
+            found_mask |= 1UL << k;
+        }
+    }
+
+    result = found_mask == (1UL << LOAD_FUN_NUM) - 1UL ? 0 : -4;
+
+cleanup:
+    rt_free(buffer);
+    return result;
+}
+
+int flm_parse_file(const char *file_path, flm_image_t *image)
+{
+    static const uint32_t halt_code[8] = {
+        0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040,
+        0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2
+    };
+    uint32_t *resized_blob;
+
+    if (file_path == RT_NULL || image == RT_NULL)
+    {
+        return -1;
+    }
+
+    rt_memset(image, 0, sizeof(*image));
+    image->blob = rt_malloc(FLM_BLOB_MAX_SIZE);
+    if (image->blob == RT_NULL)
+    {
+        LOG_E("FLM blob memory allocation failed");
+        return -1;
+    }
+
+    rt_memcpy(image->blob, halt_code, sizeof(halt_code));
+    if (parse_flm_sections(file_path, image) < 0)
+    {
+        LOG_E("Failed to parse FLM file: %s", file_path);
+        flm_image_release(image);
+        return -1;
+    }
+
+    resized_blob = rt_realloc(image->blob, image->blob_size);
+    if (resized_blob != RT_NULL)
+    {
+        image->blob = resized_blob;
+    }
+
+    return 0;
+}
+
+void flm_image_release(flm_image_t *image)
+{
+    if (image == RT_NULL)
+    {
+        return;
+    }
+
+    rt_free(image->blob);
+    rt_memset(image, 0, sizeof(*image));
+}
+
+/**
+ * @brief 将 FLM 文件转换为可粘贴的算法定义。
+ *
+ * @param argc 参数数量。
+ * @param argv 参数列表，第二项为 FLM 文件路径。
+ * @return 始终返回 0。
+ */
+int parse_flm_file(int argc, char *argv[])
+{
+    flm_image_t image = {0};
+    uint32_t i;
+
+    if (argc != 2 || flm_parse_file(argv[1], &image) < 0)
+    {
+        rt_kprintf("Usage: parse_flm_file [filename]\n");
         return 0;
     }
 
-    Size += 32;
+    rt_kprintf("\nstatic const uint32_t flash_code[] =\n{");
+    for (i = 0; i < image.blob_size / sizeof(uint32_t); i++)
+    {
+        if (i % 8U == 0U)
+        {
+            rt_kprintf("\n    ");
+        }
+        rt_kprintf("0X%08X,", image.blob[i]);
+    }
+    rt_kprintf("\n};\n");
+    rt_kprintf("\nconst program_target_t flash_algo =\n{\n");
+    rt_kprintf("    0X20000020 + 0X%08X,  // Init\n", image.init);
+    rt_kprintf("    0X20000020 + 0X%08X,  // UnInit\n", image.uninit);
+    rt_kprintf("    0X20000020 + 0X%08X,  // EraseChip\n", image.erase_chip);
+    rt_kprintf("    0X20000020 + 0X%08X,  // EraseSector\n", image.erase_sector);
+    rt_kprintf("    0X20000020 + 0X%08X,  // ProgramPage\n", image.program_page);
+    rt_kprintf("    {\n");
+    rt_kprintf("        0X20000001,\n");
+    rt_kprintf("        0X20000C00,\n");
+    rt_kprintf("        0X20001000,\n");
+    rt_kprintf("    },\n");
+    rt_kprintf("    0x20000400,\n");
+    rt_kprintf("    0x20000000,\n");
+    rt_kprintf("    sizeof(flash_code),\n");
+    rt_kprintf("    flash_code,\n");
+    rt_kprintf("    0x00000400,\n");
+    rt_kprintf("};\n");
 
-    return Size;
+    flm_image_release(&image);
+    return 0;
 }
+MSH_CMD_EXPORT(parse_flm_file, parse_flm_file);
