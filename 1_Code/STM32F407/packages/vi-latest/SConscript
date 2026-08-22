@@ -1,0 +1,5 @@
+from building import *
+
+src   = Glob('editors/*.c')
+group = DefineGroup('vi', src, depend = ['PKG_USING_VI'])
+Return('group')

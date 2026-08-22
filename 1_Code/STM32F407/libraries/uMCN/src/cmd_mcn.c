@@ -343,7 +343,11 @@ int cmd_mcn(int argc, char** argv)
 
     console_dev = rt_console_get_device();
 
+#ifdef PKG_USING_OPTPARSE
+    optparse_init(&options, argc, argv);
+#else
     optparse_init(&options, argv);
+#endif
 
     arg = optparse_arg(&options);
     if (arg) {
