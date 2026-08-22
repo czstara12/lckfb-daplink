@@ -812,11 +812,11 @@ void SD_LowLevel_DMA_RxConfig(uint32_t *src, uint32_t *dst, uint32_t BufferSize)
 /**
   * @brief  This function get stm32 sdio clock.
   * @param  hw_sdio: stm32_sdio
-  * @retval PCLK2Freq
+  * @retval SDIO clock frequency
   */
 static rt_uint32_t stm32_sdio_clock_get(struct stm32_sdio *hw_sdio)
 {
-    return HAL_RCC_GetPCLK2Freq();
+    return SDIO_CLOCK_FREQ;
 }
 
 static rt_err_t DMA_TxConfig(rt_uint32_t *src, rt_uint32_t *dst, int Size)

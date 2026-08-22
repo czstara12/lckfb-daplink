@@ -48,6 +48,15 @@ int onboard_sdcard_mount(void)
 
     if (device == RT_NULL)
     {
+        for (retry = 0; retry < 10 && device == RT_NULL; retry++)
+        {
+            rt_thread_mdelay(50);
+            device = rt_device_find("sd0");
+        }
+    }
+
+    if (device == RT_NULL)
+    {
         stm32_mmcsd_change();
         for (retry = 0; retry < 10 && device == RT_NULL; retry++)
         {
