@@ -76,7 +76,7 @@ void ui_PWMoutput_screen_init(void)
     lv_obj_set_width(ui_PWMtitle, 240);
     lv_obj_set_height(ui_PWMtitle, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_PWMtitle, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_PWMtitle, "PWM 输出");
+    lv_label_set_text(ui_PWMtitle, "\x50\x57\x4D\x20\xE8\xBE\x93\xE5\x87\xBA"); /* 原文：PWM 输出 */
     lv_obj_set_style_text_color(ui_PWMtitle, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PWMtitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_PWMtitle, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -173,7 +173,7 @@ void ui_PWMoutput_screen_init(void)
     ui_PWMfrequencyLabelInfo = lv_label_create(ui_pwmInfoContainer);
     lv_obj_set_width(ui_PWMfrequencyLabelInfo, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_PWMfrequencyLabelInfo, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_PWMfrequencyLabelInfo, "频率值:");
+    lv_label_set_text(ui_PWMfrequencyLabelInfo, "\xE9\xA2\x91\xE7\x8E\x87\xE5\x80\xBC\x3A"); /* 原文：频率值: */
     lv_obj_set_style_text_font(ui_PWMfrequencyLabelInfo, &ui_font_PuHuiTi25, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PWMDutyCyclelabelInfo = lv_label_create(ui_pwmInfoContainer);
@@ -182,7 +182,7 @@ void ui_PWMoutput_screen_init(void)
     lv_obj_set_x(ui_PWMDutyCyclelabelInfo, 0);
     lv_obj_set_y(ui_PWMDutyCyclelabelInfo, -4);
     lv_obj_set_align(ui_PWMDutyCyclelabelInfo, LV_ALIGN_BOTTOM_LEFT);
-    lv_label_set_text(ui_PWMDutyCyclelabelInfo, "占空比:");
+    lv_label_set_text(ui_PWMDutyCyclelabelInfo, "\xE5\x8D\xA0\xE7\xA9\xBA\xE6\xAF\x94\x3A"); /* 原文：占空比: */
     lv_obj_set_style_text_font(ui_PWMDutyCyclelabelInfo, &ui_font_PuHuiTi25, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PWMfrequencyLabel = lv_label_create(ui_pwmInfoContainer);

@@ -83,7 +83,7 @@ void ui_DACoutput_screen_init(void)
     lv_obj_set_width(ui_DACtitle, 240);
     lv_obj_set_height(ui_DACtitle, LV_SIZE_CONTENT);
     lv_obj_set_align(ui_DACtitle, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_DACtitle, "DAC 输出");
+    lv_label_set_text(ui_DACtitle, "\x44\x41\x43\x20\xE8\xBE\x93\xE5\x87\xBA"); /* 原文：DAC 输出 */
     lv_obj_set_style_text_color(ui_DACtitle, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_DACtitle, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_DACtitle, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -135,13 +135,13 @@ void ui_DACoutput_screen_init(void)
     lv_obj_set_width(ui_OutputWaveLabel, lv_pct(80));
     lv_obj_set_height(ui_OutputWaveLabel, LV_SIZE_CONTENT);
     lv_obj_set_align(ui_OutputWaveLabel, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_OutputWaveLabel, "输出波形");
+    lv_label_set_text(ui_OutputWaveLabel, "\xE8\xBE\x93\xE5\x87\xBA\xE6\xB3\xA2\xE5\xBD\xA2"); /* 原文：输出波形 */
     lv_obj_set_style_text_align(ui_OutputWaveLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_OutputWaveLabel, &ui_font_PuHuiTi25, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_DACWaveRoller = lv_roller_create(ui_OutputWaveContainer);
     lv_roller_set_options(ui_DACWaveRoller,
-                          "正弦波\n方波\n三角波\n梯形波\n上升斜坡锯齿波\n下降斜坡锯齿波",
+                          "\xE6\xAD\xA3\xE5\xBC\xA6\xE6\xB3\xA2\x0A\xE6\x96\xB9\xE6\xB3\xA2\x0A\xE4\xB8\x89\xE8\xA7\x92\xE6\xB3\xA2\x0A\xE6\xA2\xAF\xE5\xBD\xA2\xE6\xB3\xA2\x0A\xE4\xB8\x8A\xE5\x8D\x87\xE6\x96\x9C\xE5\x9D\xA1\xE9\x94\xAF\xE9\xBD\xBF\xE6\xB3\xA2\x0A\xE4\xB8\x8B\xE9\x99\x8D\xE6\x96\x9C\xE5\x9D\xA1\xE9\x94\xAF\xE9\xBD\xBF\xE6\xB3\xA2", /* 原文：正弦波、方波、三角波、梯形波、上升斜坡锯齿波、下降斜坡锯齿波 */
                           LV_ROLLER_MODE_INFINITE);
     lv_obj_set_width(ui_DACWaveRoller, lv_pct(90));
     lv_obj_set_align(ui_DACWaveRoller, LV_ALIGN_BOTTOM_MID);
@@ -164,7 +164,7 @@ void ui_DACoutput_screen_init(void)
     lv_obj_set_width(ui_OutputWaveFrequencyLabel, lv_pct(80));
     lv_obj_set_height(ui_OutputWaveFrequencyLabel, LV_SIZE_CONTENT);
     lv_obj_set_align(ui_OutputWaveFrequencyLabel, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_OutputWaveFrequencyLabel, "输出频率");
+    lv_label_set_text(ui_OutputWaveFrequencyLabel, "\xE8\xBE\x93\xE5\x87\xBA\xE9\xA2\x91\xE7\x8E\x87"); /* 原文：输出频率 */
     lv_obj_set_style_text_align(ui_OutputWaveFrequencyLabel, LV_TEXT_ALIGN_CENTER,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_OutputWaveFrequencyLabel, &ui_font_PuHuiTi25,

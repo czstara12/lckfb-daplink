@@ -83,7 +83,7 @@ void ui_About_screen_init(void)
     lv_obj_set_width(ui_Abouttitle, 240);
     lv_obj_set_height(ui_Abouttitle, LV_SIZE_CONTENT);
     lv_obj_set_align(ui_Abouttitle, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_Abouttitle, "关于");
+    lv_label_set_text(ui_Abouttitle, "\xE5\x85\xB3\xE4\xBA\x8E"); /* 原文：关于 */
     lv_obj_set_style_text_color(ui_Abouttitle, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Abouttitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_Abouttitle, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);

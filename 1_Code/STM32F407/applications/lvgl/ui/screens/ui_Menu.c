@@ -47,7 +47,7 @@ void ui_Menu_screen_init(void)
     lv_obj_set_width(ui_menuDAPLINKL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_menuDAPLINKL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuDAPLINKL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_menuDAPLINKL, "在线DAPLINK");
+    lv_label_set_text(ui_menuDAPLINKL, "\xE5\x9C\xA8\xE7\xBA\xBF\x44\x41\x50\x4C\x49\x4E\x4B"); /* 原文：在线DAPLINK */
 
     ui_menuOfflineB = lv_btn_create(ui_menuPanel);
     lv_obj_set_height(ui_menuOfflineB, 40);
@@ -72,7 +72,7 @@ void ui_Menu_screen_init(void)
     lv_obj_set_width(ui_menuOfflineL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_menuOfflineL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuOfflineL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_menuOfflineL, "脱机烧录器");
+    lv_label_set_text(ui_menuOfflineL, "\xE8\x84\xB1\xE6\x9C\xBA\xE7\x83\xA7\xE5\xBD\x95\xE5\x99\xA8"); /* 原文：脱机烧录器 */
 
     ui_menuAmmeterB = lv_btn_create(ui_menuPanel);
     lv_obj_set_height(ui_menuAmmeterB, 40);
@@ -97,7 +97,7 @@ void ui_Menu_screen_init(void)
     lv_obj_set_width(ui_menuAmmeterL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_menuAmmeterL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuAmmeterL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_menuAmmeterL, "电压电流输出");
+    lv_label_set_text(ui_menuAmmeterL, "\xE7\x94\xB5\xE5\x8E\x8B\xE7\x94\xB5\xE6\xB5\x81\xE8\xBE\x93\xE5\x87\xBA"); /* 原文：电压电流输出 */
 
     ui_menuUARTB = lv_btn_create(ui_menuPanel);
     lv_obj_set_height(ui_menuUARTB, 40);
@@ -122,7 +122,7 @@ void ui_Menu_screen_init(void)
     lv_obj_set_width(ui_menuUARTL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_menuUARTL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuUARTL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_menuUARTL, "串口监视器");
+    lv_label_set_text(ui_menuUARTL, "\xE4\xB8\xB2\xE5\x8F\xA3\xE7\x9B\x91\xE8\xA7\x86\xE5\x99\xA8"); /* 原文：串口监视器 */
 
     ui_menuPWMB = lv_btn_create(ui_menuPanel);
     lv_obj_set_height(ui_menuPWMB, 40);
@@ -147,7 +147,7 @@ void ui_Menu_screen_init(void)
     lv_obj_set_width(ui_menuPWML, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_menuPWML, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuPWML, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_menuPWML, "PWM输出");
+    lv_label_set_text(ui_menuPWML, "\x50\x57\x4D\xE8\xBE\x93\xE5\x87\xBA"); /* 原文：PWM输出 */
 
     ui_menuDACOutputB = lv_btn_create(ui_menuPanel);
     lv_obj_set_height(ui_menuDACOutputB, 40);
@@ -172,7 +172,7 @@ void ui_Menu_screen_init(void)
     lv_obj_set_width(ui_menuDACOutputL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_menuDACOutputL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuDACOutputL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_menuDACOutputL, "DAC输出");
+    lv_label_set_text(ui_menuDACOutputL, "\x44\x41\x43\xE8\xBE\x93\xE5\x87\xBA"); /* 原文：DAC输出 */
 
     ui_menuSDCardB = lv_btn_create(ui_menuPanel);
     lv_obj_set_height(ui_menuSDCardB, 40);
@@ -197,7 +197,7 @@ void ui_Menu_screen_init(void)
     lv_obj_set_width(ui_menuSDCardL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_menuSDCardL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuSDCardL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_menuSDCardL, "文件浏览器");
+    lv_label_set_text(ui_menuSDCardL, "\xE6\x96\x87\xE4\xBB\xB6\xE6\xB5\x8F\xE8\xA7\x88\xE5\x99\xA8"); /* 原文：文件浏览器 */
 
     ui_menuAboutB = lv_btn_create(ui_menuPanel);
     lv_obj_set_height(ui_menuAboutB, 40);
@@ -222,7 +222,7 @@ void ui_Menu_screen_init(void)
     lv_obj_set_width(ui_menuAboutL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_menuAboutL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_menuAboutL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_menuAboutL, "关于");
+    lv_label_set_text(ui_menuAboutL, "\xE5\x85\xB3\xE4\xBA\x8E"); /* 原文：关于 */
 
     lv_obj_add_event_cb(ui_menuDAPLINKB, ui_event_menuDAPLINKB, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_menuOfflineB, ui_event_menuOfflineB, LV_EVENT_ALL, NULL);

@@ -38,7 +38,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_width(ui_OfflineDownloadTitle, 240);
     lv_obj_set_height(ui_OfflineDownloadTitle, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_OfflineDownloadTitle, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_OfflineDownloadTitle, "脱机烧录器");
+    lv_label_set_text(ui_OfflineDownloadTitle, "\xE8\x84\xB1\xE6\x9C\xBA\xE7\x83\xA7\xE5\xBD\x95\xE5\x99\xA8"); /* 原文：脱机烧录器 */
     lv_obj_set_style_text_color(ui_OfflineDownloadTitle, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_OfflineDownloadTitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_OfflineDownloadTitle, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -111,7 +111,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_width(ui_chooseDeviceL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_chooseDeviceL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_chooseDeviceL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_chooseDeviceL, "芯片型号");
+    lv_label_set_text(ui_chooseDeviceL, "\xE8\x8A\xAF\xE7\x89\x87\xE5\x9E\x8B\xE5\x8F\xB7"); /* 原文：芯片型号 */
     lv_obj_set_style_text_font(ui_chooseDeviceL, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_chooseBinB = lv_btn_create(ui_offlineDownloadButtonContainer);
@@ -135,7 +135,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_width(ui_chooseBinL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_chooseBinL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_chooseBinL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_chooseBinL, "选择固件");
+    lv_label_set_text(ui_chooseBinL, "\xE9\x80\x89\xE6\x8B\xA9\xE5\x9B\xBA\xE4\xBB\xB6"); /* 原文：选择固件 */
     lv_obj_set_style_text_font(ui_chooseBinL, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_startOfflineDownloadB = lv_btn_create(ui_offlineDownloadButtonContainer);
@@ -161,7 +161,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_width(ui_startOfflineDownloadL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_startOfflineDownloadL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_startOfflineDownloadL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_startOfflineDownloadL, "开始烧录");
+    lv_label_set_text(ui_startOfflineDownloadL, "\xE5\xBC\x80\xE5\xA7\x8B\xE7\x83\xA7\xE5\xBD\x95"); /* 原文：开始烧录 */
     lv_obj_set_style_text_font(ui_startOfflineDownloadL, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_downloadConfigureB = lv_btn_create(ui_offlineDownloadButtonContainer);
@@ -185,7 +185,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_width(ui_downloadConfigureL, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_downloadConfigureL, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_downloadConfigureL, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_downloadConfigureL, "烧录参数");
+    lv_label_set_text(ui_downloadConfigureL, "\xE7\x83\xA7\xE5\xBD\x95\xE5\x8F\x82\xE6\x95\xB0"); /* 原文：烧录参数 */
     lv_obj_set_style_text_font(ui_downloadConfigureL, &ui_font_PuHuiTi16GB2312, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_currentDevicePath = lv_label_create(ui_OfflineDownloadContainer);
@@ -227,7 +227,7 @@ void ui_OfflineDownload_screen_init(void)
     lv_obj_set_height(ui_ODdownloadSuccessCountT, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_ODdownloadSuccessCountT, 0);
     lv_obj_set_y(ui_ODdownloadSuccessCountT, 5);
-    lv_label_set_text(ui_ODdownloadSuccessCountT, "成功计数:");
+    lv_label_set_text(ui_ODdownloadSuccessCountT, "\xE6\x88\x90\xE5\x8A\x9F\xE8\xAE\xA1\xE6\x95\xB0\x3A"); /* 原文：成功计数: */
     lv_obj_set_style_text_font(ui_ODdownloadSuccessCountT, &ui_font_PuHuiTi16GB2312,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 

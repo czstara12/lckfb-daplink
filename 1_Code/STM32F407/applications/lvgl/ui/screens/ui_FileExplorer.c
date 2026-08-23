@@ -385,7 +385,7 @@ void ui_FileExplorer_screen_init(void)
     lv_obj_set_width(ui_FileExplorerTitle, 240);
     lv_obj_set_height(ui_FileExplorerTitle, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_FileExplorerTitle, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_FileExplorerTitle, "文件浏览器");
+    lv_label_set_text(ui_FileExplorerTitle, "\xE6\x96\x87\xE4\xBB\xB6\xE6\xB5\x8F\xE8\xA7\x88\xE5\x99\xA8"); /* 原文：文件浏览器 */
     lv_obj_set_style_text_color(ui_FileExplorerTitle, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_FileExplorerTitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_FileExplorerTitle, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);

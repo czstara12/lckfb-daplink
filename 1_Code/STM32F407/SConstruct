@@ -47,6 +47,33 @@ Export('SDK_LIB')
 # prepare building environment
 objs = PrepareBuilding(env, RTT_ROOT, has_libcpu=False)
 
+
+def sanitize_mdk5_local_flags(groups):
+    """移除可由 Keil 工程通用选项表达的 AC5 专用文件级参数。"""
+    if GetOption('target') != 'mdk5':
+        return
+
+    incompatible_flags = {'--c99', '--gnu', '--no-multibyte-chars'}
+    local_flag_names = ('LOCAL_CFLAGS', 'LOCAL_CXXFLAGS', 'LOCAL_CCFLAGS')
+
+    for group in groups:
+        for flag_name in local_flag_names:
+            flags = group.get(flag_name)
+            if not isinstance(flags, str):
+                continue
+
+            compatible_flags = [
+                flag for flag in flags.split()
+                if flag not in incompatible_flags
+            ]
+            if compatible_flags:
+                group[flag_name] = ' ' + ' '.join(compatible_flags)
+            else:
+                group.pop(flag_name)
+
+
+sanitize_mdk5_local_flags(Projects)
+
 stm32_library = 'STM32F4xx_HAL'
 rtconfig.BSP_LIBRARY_TYPE = stm32_library
 

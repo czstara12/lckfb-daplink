@@ -60,7 +60,7 @@ void ui_UartMonitor_screen_init(void)
     lv_obj_set_width(ui_UartMonitorTitle, 240);
     lv_obj_set_height(ui_UartMonitorTitle, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_UartMonitorTitle, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_UartMonitorTitle, "(串口)TTL/232/485");
+    lv_label_set_text(ui_UartMonitorTitle, "\x28\xE4\xB8\xB2\xE5\x8F\xA3\x29\x54\x54\x4C\x2F\x32\x33\x32\x2F\x34\x38\x35"); /* 原文：(串口)TTL/232/485 */
     lv_obj_set_style_text_color(ui_UartMonitorTitle, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_UartMonitorTitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_UartMonitorTitle, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
