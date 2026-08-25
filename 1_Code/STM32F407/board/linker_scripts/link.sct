@@ -8,10 +8,17 @@ LR_IROM1 0x08010000 0x000F0000  {    ; 前置四个 16KB 配置区，APP 可用 
    *(InRoot$$Sections)
    .ANY (+RO)
   }
-  RW_IRAM1 0x20000000 0x00020000  {  ; RW data
-   .ANY (+RW +ZI)
+  RW_IRAM1 0x20000000 0x00020000  {  ; DMA 和大块缓冲区保留在 SRAM1
+   *(.ram1.data)
+   *(.ram1.bss)
+   *(.bss.*.buf_1)
+   *(.bss.cache_buf)
+   *(.bss.uart3_recv_buff)
+   *(.bss.gt_adc_val)
+   *(.bss.spi_dma_dummy_tx)
+   *(.bss.*.cmd_data)
   }
-  RW_IRAM2 0x10000000 0x00010000 {  ; RW data TCMSRAM(64KB)
-   *(.TCM)
+  RW_IRAM2 0x10000000 0x00010000  {  ; 其余读写数据和栈放入 CCM(64KB)
+   .ANY (+RW +ZI)
   }
 }

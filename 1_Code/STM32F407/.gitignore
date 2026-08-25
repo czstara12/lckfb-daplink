@@ -60,3 +60,4 @@ cmake-build-debug
 
 # 本机构建和调试日志
 /*.log
+JLinkLog.txt
