@@ -388,7 +388,6 @@
 /* end of Micrium: Micrium software products porting for RT-Thread */
 #define PKG_USING_PERF_COUNTER
 #define PKG_USING_PERF_COUNTER_V2241
-#define FAL_DEBUG_CONFIG
 /* end of system packages */
 
 /* peripheral libraries and drivers */
@@ -559,9 +558,6 @@
 #define BSP_USING_SPI_FLASH
 #define BSP_USING_FS
 #define BSP_USING_SDCARD_FATFS
-#define BSP_USING_FLASH_FATFS
-#define BSP_USING_FLASH_FS_AUTO_MOUNT
-#define BSP_USING_FAL
 /* end of Onboard Peripheral Drivers */
 
 /* On-chip Peripheral Drivers */

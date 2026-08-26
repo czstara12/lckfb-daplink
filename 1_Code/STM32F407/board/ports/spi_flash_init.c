@@ -13,32 +13,49 @@
 
 #ifdef BSP_USING_SPI_FLASH
 
+static void w25q32_retry_delay(void)
+{
+    rt_hw_us_delay(100U);
+}
+
 static int rt_hw_spi_flash_init(void)
 {
+    rt_spi_flash_device_t device;
+    sfud_flash_t flash;
+
     if (rt_hw_spi_device_attach("spi1", "spi10", GET_PIN(B, 1)) != RT_EOK)
     {
         return -RT_ERROR;
     }
 
-    return rt_sfud_flash_probe("W25Q32", "spi10") == RT_NULL ? -RT_ERROR : RT_EOK;
+    device = rt_sfud_flash_probe("W25Q32", "spi10");
+    if (device == RT_NULL)
+    {
+        return -RT_ERROR;
+    }
+    flash = rt_sfud_flash_find_by_dev_name("W25Q32");
+    flash->retry.delay = w25q32_retry_delay;
+
+    return RT_EOK;
 }
 INIT_COMPONENT_EXPORT(rt_hw_spi_flash_init);
 
 #define W25Q32_TEST_BLOCK_SIZE 4096U
 
-static void print_speed(const char *name, rt_uint32_t bytes, rt_tick_t ticks)
+static void print_speed(const char *name, rt_uint32_t bytes, rt_uint32_t cycles)
 {
-    rt_uint32_t milliseconds;
-    rt_uint32_t kib_per_second;
+    rt_uint32_t microseconds;
+    rt_uint32_t kib_per_second_x100;
 
-    if (ticks == 0U)
+    if (cycles == 0U)
     {
-        ticks = 1U;
+        cycles = 1U;
     }
-    milliseconds = (rt_uint32_t)((rt_uint64_t)ticks * 1000U / RT_TICK_PER_SECOND);
-    kib_per_second = (rt_uint32_t)((rt_uint64_t)bytes * RT_TICK_PER_SECOND /
-                                   ticks / 1024U);
-    rt_kprintf("%s: %u ms, %u KiB/s\n", name, milliseconds, kib_per_second);
+    microseconds = (rt_uint32_t)((rt_uint64_t)cycles * 1000000U / SystemCoreClock);
+    kib_per_second_x100 = (rt_uint32_t)((rt_uint64_t)bytes * SystemCoreClock * 100U /
+                                        cycles / 1024U);
+    rt_kprintf("%s: %u us, %u.%02u KiB/s, %u cycles\n", name, microseconds,
+               kib_per_second_x100 / 100U, kib_per_second_x100 % 100U, cycles);
 }
 
 /**
@@ -53,10 +70,14 @@ static void w25q32_speed(void)
     rt_uint8_t *buffer;
     rt_uint32_t address;
     rt_uint32_t index;
-    rt_tick_t start;
-    rt_tick_t erase_ticks;
-    rt_tick_t write_ticks;
-    rt_tick_t read_ticks;
+    rt_uint32_t start;
+    rt_uint32_t block_start;
+    rt_uint32_t block_cycles;
+    rt_uint32_t min_write_cycles = UINT32_MAX;
+    rt_uint32_t max_write_cycles = 0U;
+    rt_uint32_t erase_cycles;
+    rt_uint32_t write_cycles;
+    rt_uint32_t read_cycles;
 
     if (flash == RT_NULL)
     {
@@ -84,31 +105,43 @@ static void w25q32_speed(void)
         return;
     }
 
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
     rt_kprintf("testing %u bytes, all data will be erased\n", flash->chip.capacity);
-    start = rt_tick_get();
+    start = DWT->CYCCNT;
     if (sfud_erase(flash, 0U, flash->chip.capacity) != SFUD_SUCCESS)
     {
         rt_kprintf("erase failed\n");
         goto exit;
     }
-    erase_ticks = rt_tick_get() - start;
+    erase_cycles = DWT->CYCCNT - start;
 
     for (index = 0U; index < W25Q32_TEST_BLOCK_SIZE; index++)
     {
         buffer[index] = (rt_uint8_t)index;
     }
-    start = rt_tick_get();
+    start = DWT->CYCCNT;
     for (address = 0U; address < flash->chip.capacity; address += W25Q32_TEST_BLOCK_SIZE)
     {
+        block_start = DWT->CYCCNT;
         if (sfud_write(flash, address, W25Q32_TEST_BLOCK_SIZE, buffer) != SFUD_SUCCESS)
         {
             rt_kprintf("write failed at 0x%08x\n", address);
             goto exit;
         }
+        block_cycles = DWT->CYCCNT - block_start;
+        if (block_cycles < min_write_cycles)
+        {
+            min_write_cycles = block_cycles;
+        }
+        if (block_cycles > max_write_cycles)
+        {
+            max_write_cycles = block_cycles;
+        }
     }
-    write_ticks = rt_tick_get() - start;
+    write_cycles = DWT->CYCCNT - start;
 
-    start = rt_tick_get();
+    start = DWT->CYCCNT;
     for (address = 0U; address < flash->chip.capacity; address += W25Q32_TEST_BLOCK_SIZE)
     {
         if (sfud_read(flash, address, W25Q32_TEST_BLOCK_SIZE, buffer) != SFUD_SUCCESS)
@@ -125,11 +158,14 @@ static void w25q32_speed(void)
             }
         }
     }
-    read_ticks = rt_tick_get() - start;
+    read_cycles = DWT->CYCCNT - start;
 
-    print_speed("erase", flash->chip.capacity, erase_ticks);
-    print_speed("write", flash->chip.capacity, write_ticks);
-    print_speed("read ", flash->chip.capacity, read_ticks);
+    print_speed("erase", flash->chip.capacity, erase_cycles);
+    print_speed("write", flash->chip.capacity, write_cycles);
+    print_speed("read ", flash->chip.capacity, read_cycles);
+    rt_kprintf("write 4KiB: min %u us, max %u us\n",
+               (rt_uint32_t)((rt_uint64_t)min_write_cycles * 1000000U / SystemCoreClock),
+               (rt_uint32_t)((rt_uint64_t)max_write_cycles * 1000000U / SystemCoreClock));
     rt_kprintf("verify passed\n");
 
 exit:

@@ -333,6 +333,14 @@ static rt_ssize_t spixfer(struct rt_spi_device *device, struct rt_spi_message *m
             message_length = 0;
         }
 
+        if ((message->send_buf == RT_NULL) &&
+            (spi_drv->spi_dma_flag & SPI_USING_RX_DMA_FLAG) &&
+            (send_length > SPI_DMA_DUMMY_TX_SIZE))
+        {
+            message_length += send_length - SPI_DMA_DUMMY_TX_SIZE;
+            send_length = SPI_DMA_DUMMY_TX_SIZE;
+        }
+
         /* calculate the start address */
         already_send_length = message->length - send_length - message_length;
         /* avoid null pointer problems */
