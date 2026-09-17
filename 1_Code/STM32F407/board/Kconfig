@@ -28,11 +28,12 @@ menu "Onboard Peripheral Drivers"
                     default y
             endif
 
-            config BSP_USING_FLASH_FATFS
-                bool "Enable FAL filesystem partition base on W25Q32"
+            config BSP_USING_FLASH_LITTLEFS
+                bool "Enable LittleFS on the whole W25Q32 (4 MiB)"
                 select BSP_USING_FAL
+                select PKG_USING_LITTLEFS
                 default n
-            if BSP_USING_FLASH_FATFS
+            if BSP_USING_FLASH_LITTLEFS
                 menuconfig BSP_USING_FLASH_FS_AUTO_MOUNT
                     bool "Enable filesystem auto mount"
                     default y
@@ -43,7 +44,6 @@ menu "Onboard Peripheral Drivers"
         bool "Enable FAL (enable on-chip flash and spi1 flash)"
         select BSP_USING_SPI_FLASH
         select RT_USING_FAL
-        select FAL_DEBUG_CONFIG
         select FAL_PART_HAS_TABLE_CFG
         select FAL_USING_SFUD_PORT
         select BSP_USING_ON_CHIP_FLASH

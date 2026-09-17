@@ -99,6 +99,40 @@ q
 
 4. 输入`scons --target=mdk4/mdk5/iar` 命令重新生成工程。
 
+### W25Q32 LittleFS
+
+W25Q32 的全部 4 MiB（`0x000000`～`0x3FFFFF`）作为一个 `filesystem`
+分区，使用 LittleFS v2.11.2，挂载到 `/fal`。旧 FAL 分区表已移除。
+SD 卡仍使用 FatFs，挂载到 `/sdcard`。
+
+配置源为 `.config` 和 `board/Kconfig`，通过以下流程更新配置、依赖和工程：
+
+```text
+scons --defconfig
+pkgs --update
+scons --target=mdk5
+scons
+```
+
+LittleFS 使用 4096 字节擦除块、256 字节读写粒度和缓存，
+`LFS_BLOCK_CYCLES=500`，开启动态磨损均衡。
+启用 `BSP_USING_FLASH_LITTLEFS` 后，整片擦写测速函数及 `w25q32_speed`
+命令不会参与编译；关闭该选项后恢复。
+
+首次刷入固件后，在串口 MSH 中初始化并挂载（格式化会使旧布局中的数据失效）：
+
+```text
+mkfs -t lfs filesystem
+mount filesystem /fal lfs
+echo "littlefs ok" /fal/check.txt
+cat /fal/check.txt
+df /fal
+```
+
+重启后会自动挂载，可再次执行 `cat /fal/check.txt` 检查持久化。
+4 MiB 是分区容量，文件可用容量需扣除文件系统元数据。
+挂载失败只报错，不自动格式化；已有文件系统出现错误时应先排查原因。
+
 ## 注意事项
 
 - 主控型号仍为 STM32F407VE；`STM32F407VG` 仅作为 J-Link 烧录参数，用于访问已开放的后半段 Flash。

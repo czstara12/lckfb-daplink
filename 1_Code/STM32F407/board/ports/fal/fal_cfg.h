@@ -1,4 +1,6 @@
-/*
+/**
+ * @file fal_cfg.h
+ * @brief W25Q32 整片 LittleFS 分区配置。
  * Copyright (c) 2006-2021, RT-Thread Development Team
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -27,21 +29,16 @@ extern const struct fal_flash_dev stm32_onchip_flash_128k;
 /** W25Q32 外部 SPI NOR Flash 的 FAL 设备。 */
 extern struct fal_flash_dev w25q32;
 
-/* flash device table */
+/** FAL 仅注册用于 LittleFS 的 W25Q32。 */
 #define FAL_FLASH_DEV_TABLE                                          \
 {                                                                    \
-    &stm32_onchip_flash_128k,                                        \
     &w25q32,                                                         \
 }
 
-/* ====================== Partition Configuration ========================== */
+/** 整片 4 MiB 作为一个文件系统分区，无额外保留区域。 */
 
-#define FAL_PART_TABLE                                                                                              \
-{                                                                                                                   \
-    {FAL_PART_MAGIC_WROD,        "app", "onchip_flash_128k",                            0,       384 * 1024, 0}, \
-    {FAL_PART_MAGIC_WROD,      "param", "onchip_flash_128k",                   384 * 1024,       512 * 1024, 0}, \
-    {FAL_PART_MAGIC_WROD,  "easyflash",    "W25Q32",                                   0,       512 * 1024, 0}, \
-    {FAL_PART_MAGIC_WROD,   "download",    "W25Q32",                          512 * 1024,       512 * 1024, 0}, \
-    {FAL_PART_MAGIC_WROD, "filesystem",    "W25Q32",                  (512 + 512) * 1024,    3 * 1024 * 1024, 0}, \
+#define FAL_PART_TABLE                                                 \
+{                                                                      \
+    {FAL_PART_MAGIC_WORD, "filesystem", "W25Q32", 0, 4 * 1024 * 1024, 0}, \
 }
 #endif /*FAL_PART_TABLE*/

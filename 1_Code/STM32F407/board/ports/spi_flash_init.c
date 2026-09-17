@@ -1,4 +1,6 @@
-/*
+/**
+ * @file spi_flash_init.c
+ * @brief W25Q32 初始化及无文件系统时的整片测速。
  * SPDX-License-Identifier: Apache-2.0
  * Origin: restored from the BSP SPI NOR implementation
  * Created-By: xcwynya
@@ -40,6 +42,7 @@ static int rt_hw_spi_flash_init(void)
 }
 INIT_COMPONENT_EXPORT(rt_hw_spi_flash_init);
 
+#ifndef BSP_USING_FLASH_LITTLEFS
 #define W25Q32_TEST_BLOCK_SIZE 4096U
 
 static void print_speed(const char *name, rt_uint32_t bytes, rt_uint32_t cycles)
@@ -172,5 +175,6 @@ exit:
     rt_free(buffer);
 }
 MSH_CMD_EXPORT(w25q32_speed, erase/write/read full W25Q32 and show speed);
+#endif /* !BSP_USING_FLASH_LITTLEFS */
 
 #endif /* BSP_USING_SPI_FLASH */

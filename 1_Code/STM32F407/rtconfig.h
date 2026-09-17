@@ -170,7 +170,7 @@
 #define FAL_USING_DEBUG
 #define FAL_PART_HAS_TABLE_CFG
 #define FAL_USING_SFUD_PORT
-#define FAL_USING_NOR_FLASH_DEV_NAME "norflash0"
+#define FAL_USING_NOR_FLASH_DEV_NAME "W25Q32"
 
 /* Device Drivers */
 
@@ -185,6 +185,7 @@
 #define CPUTIME_TIMER_FREQ 0
 #define RT_USING_DAC
 #define RT_USING_PWM
+#define RT_USING_MTD_NOR
 #define RT_USING_RTC
 #define RT_USING_SDIO
 #define RT_SDIO_STACK_SIZE 512
@@ -388,6 +389,17 @@
 /* end of Micrium: Micrium software products porting for RT-Thread */
 #define PKG_USING_PERF_COUNTER
 #define PKG_USING_PERF_COUNTER_V2241
+#define PKG_USING_LITTLEFS
+#define PKG_USING_LITTLEFS_V2112
+#define LFS_READ_SIZE 256
+#define LFS_PROG_SIZE 256
+#define LFS_BLOCK_SIZE 4096
+#define LFS_NO_DEBUG
+#define LFS_CACHE_SIZE 256
+#define LFS_BLOCK_CYCLES 500
+#define LFS_THREADSAFE
+#define LFS_LOOKAHEAD_MAX 128
+#define RT_DEF_LFS_DRIVERS 1
 /* end of system packages */
 
 /* peripheral libraries and drivers */
@@ -406,6 +418,10 @@
 /* Kendryte SDK */
 
 /* end of Kendryte SDK */
+
+/* MM32 HAL & SDK Drivers */
+
+/* end of MM32 HAL & SDK Drivers */
 
 /* WCH HAL & SDK Drivers */
 
@@ -438,6 +454,14 @@
 /* FT32 HAL & SDK Drivers */
 
 /* end of FT32 HAL & SDK Drivers */
+
+/* NOVOSNS Drivers */
+
+/* end of NOVOSNS Drivers */
+
+/* N32 Drivers */
+
+/* end of N32 Drivers */
 /* end of HAL & SDK Drivers */
 
 /* sensors drivers */
@@ -558,6 +582,9 @@
 #define BSP_USING_SPI_FLASH
 #define BSP_USING_FS
 #define BSP_USING_SDCARD_FATFS
+#define BSP_USING_FLASH_LITTLEFS
+#define BSP_USING_FLASH_FS_AUTO_MOUNT
+#define BSP_USING_FAL
 /* end of Onboard Peripheral Drivers */
 
 /* On-chip Peripheral Drivers */
