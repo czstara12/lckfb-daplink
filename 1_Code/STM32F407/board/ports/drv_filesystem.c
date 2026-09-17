@@ -18,6 +18,8 @@
 #include <dfs_file.h>
 #ifdef BSP_USING_FLASH_LITTLEFS
 #include <fal.h>
+#include <sfud.h>
+#include <dev_spi_flash_sfud.h>
 #endif
 
 #if DFS_FILESYSTEMS_MAX < 4
@@ -27,6 +29,9 @@
 #error "Please define DFS_FILESYSTEM_TYPES_MAX more than 4"
 #endif
 
+/* SFUD 配置头定义了日志宏，这里恢复文件系统模块的日志配置。 */
+#undef DBG_TAG
+#undef DBG_LVL
 #define DBG_TAG "app.filesystem"
 #define DBG_LVL DBG_ERROR
 #include <rtdbg.h>
@@ -55,11 +60,19 @@ static int onboard_sdcard_mount(void)
 
 /**
  * @brief 将整片 W25Q32 的 LittleFS 挂载到 /fal，失败时保留数据。
- * @return 成功返回 RT_EOK，初始化或挂载失败返回负值。
+ * @return 成功或设备不可用而跳过挂载时返回 RT_EOK，其他失败返回负值。
  */
 static int onboard_fal_mount(void)
 {
     struct rt_device *flash_dev;
+    sfud_flash_t flash = rt_sfud_flash_find_by_dev_name("W25Q32");
+
+    /* FAL 不传播底层初始化错误，必须在创建 MTD 设备前检查。 */
+    if (flash == RT_NULL || !flash->init_ok)
+    {
+        LOG_E("W25Q32 unavailable; skip LittleFS mount at /fal");
+        return RT_EOK;
+    }
 
     if (fal_init() <= 0)
     {

@@ -36,6 +36,10 @@ static int rt_hw_spi_flash_init(void)
         return -RT_ERROR;
     }
     flash = rt_sfud_flash_find_by_dev_name("W25Q32");
+    if (flash == RT_NULL || !flash->init_ok)
+    {
+        return -RT_ERROR;
+    }
     flash->retry.delay = w25q32_retry_delay;
 
     return RT_EOK;
