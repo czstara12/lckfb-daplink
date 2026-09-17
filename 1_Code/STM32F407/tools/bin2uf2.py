@@ -16,6 +16,9 @@ _MAGIC_END = 0x0AB16F30
 _FAMILY_ID_PRESENT = 0x2000
 _PAYLOAD_SIZE = 256
 _DATA_SIZE = 476
+# TinyUF2 的 STM32F4 端口使用系列 ID，不能替换为注册表中的 STM32F407 ID。
+# 来源：https://github.com/adafruit/tinyuf2/blob/master/ports/stm32f4/port.mk
+_TINYUF2_STM32F4_FAMILY_ID = 0x57755A57
 
 
 def _to_uf2(source, base_address, family_id):
@@ -49,7 +52,10 @@ def _main():
     parser.add_argument("input", type=Path, help="输入 BIN 文件")
     parser.add_argument("output", type=Path, help="输出 UF2 文件")
     parser.add_argument("--base-address", type=_uint32, default=0x08010000)
-    parser.add_argument("--family-id", type=_uint32, default=0x6D0922FA)
+    parser.add_argument(
+        "--family-id", type=_uint32, default=_TINYUF2_STM32F4_FAMILY_ID,
+        help="必须匹配 Bootloader；默认 TinyUF2 STM32F4：0x57755A57",
+    )
     arguments = parser.parse_args()
     source = arguments.input.read_bytes()
     arguments.output.write_bytes(_to_uf2(source, arguments.base_address, arguments.family_id))
@@ -57,16 +63,16 @@ def _main():
 
 def _self_test():
     source = bytes(range(256)) + b"\xa5"
-    result = _to_uf2(source, 0x08010000, 0x6D0922FA)
+    result = _to_uf2(source, 0x08010000, _TINYUF2_STM32F4_FAMILY_ID)
 
     assert len(result) == 1024
     assert struct.unpack_from("<8I", result) == (
         0x0A324655, 0x9E5D5157, 0x2000, 0x08010000,
-        256, 0, 2, 0x6D0922FA,
+        256, 0, 2, 0x57755A57,
     )
     assert result[32:288] == source[:256]
     assert struct.unpack_from("<8I", result, 512)[3:8] == (
-        0x08010100, 256, 1, 2, 0x6D0922FA,
+        0x08010100, 256, 1, 2, 0x57755A57,
     )
     assert result[544] == 0xA5
     assert result[545:800] == bytes(255)
